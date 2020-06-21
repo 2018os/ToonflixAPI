@@ -1,0 +1,19 @@
+{
+  "name": "toonflixapi",
+  "version": "1.0.0",
+  "description": "Toonflix API server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2018os/ToonflixAPI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2018os/ToonflixAPI/issues"
+  },
+  "homepage": "https://github.com/2018os/ToonflixAPI#readme"
+}
