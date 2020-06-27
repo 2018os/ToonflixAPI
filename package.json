@@ -4,7 +4,10 @@
   "description": "Toonflix API server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc index.ts",
+    "lint": "eslint '**/*.ts'",
+    "lint:fix": "eslint --fix **/*.ts"
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,22 @@
   "bugs": {
     "url": "https://github.com/2018os/ToonflixAPI/issues"
   },
-  "homepage": "https://github.com/2018os/ToonflixAPI#readme"
+  "homepage": "https://github.com/2018os/ToonflixAPI#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.4.0",
+    "@typescript-eslint/parser": "^3.4.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^1.19.1"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "dependencies": {
+    "typescript": "^3.9.5"
+  }
 }
