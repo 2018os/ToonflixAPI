@@ -27,13 +27,15 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "ts-node": "^8.10.2"
   },
   "prettier": {
     "singleQuote": true,
     "arrowParens": "always"
   },
   "dependencies": {
+    "graphql-yoga": "^1.18.3",
     "typescript": "^3.9.5"
   }
 }
