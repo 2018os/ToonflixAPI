@@ -3,7 +3,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["dom", "es2017"],
-    "module": "esnext",
+    "module": "commonJS",
     "moduleResolution": "node",
     "noEmit": false,
     "noUnusedLocals": true,
