@@ -24,6 +24,14 @@
     "@typescript-eslint/no-unused-vars": [
       "error",
       { "argsIgnorePattern": "^_" }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "ts": "never"
+      }
     ]
   },
   "settings": {
@@ -31,6 +39,7 @@
       "node": {
         "extensions": [".js", ".ts"]
       }
-    }
+    },
+    "import/extensions": [".js", ".ts"]
   }
 }
