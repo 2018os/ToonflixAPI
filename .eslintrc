@@ -30,7 +30,8 @@
       "ignorePackages",
       {
         "js": "never",
-        "ts": "never"
+        "ts": "never",
+        "graphql": "ignorePackages"
       }
     ]
   },
@@ -40,6 +41,6 @@
         "extensions": [".js", ".ts"]
       }
     },
-    "import/extensions": [".js", ".ts"]
+    "import/extensions": [".js", ".ts", ".graphql"]
   }
 }

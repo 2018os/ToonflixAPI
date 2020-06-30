@@ -1,22 +1,23 @@
-import { GraphQLServer } from 'graphql-yoga';
+import { ApolloServer } from 'apollo-server-express';
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
 
-const typeDefs = `
-  type Query {
-    info: String
-  }
-`;
+import resolvers from './resolvers';
 
-const resolvers = {
-  Query: {
-    info: () => 'info'
-  }
-};
+const typeDefs = fs.readFileSync(
+  path.join(__dirname, '/schema', '/schema.graphql'),
+  'utf8'
+);
 
-const server = new GraphQLServer({
+const server = new ApolloServer({
   typeDefs,
   resolvers
 });
 
-server.start({ port: 4000 }, ({ port }) => {
-  console.log(`server on ${port} port`);
-});
+const app = express();
+server.applyMiddleware({ app });
+
+app.listen({ port: 4000 }, () =>
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+);
