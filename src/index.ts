@@ -3,7 +3,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 
-import { createContext } from './context';
+import { createContext } from './utils/context';
 import resolvers from './resolvers';
 
 const typeDefs = fs.readFileSync(
