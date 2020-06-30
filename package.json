@@ -37,7 +37,6 @@
     "arrowParens": "always"
   },
   "dependencies": {
-    "graphql-yoga": "^1.18.3",
     "typescript": "^3.9.5"
   }
 }
