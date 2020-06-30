@@ -1,3 +1,33 @@
 type Query {
-  hello: String!
+  webtoons: [Webtoon!]
+  authors: [Author!]
+}
+
+type Webtoon {
+  id: ID!
+  title: String!
+  description: String!
+  platform: Platform!
+  isFinish: Boolean!
+  isAdult: Boolean!
+  isPay: Boolean!
+  thumbnail: String!
+  source: String!
+  authors: [Author]
+  genres: [Genre!]
+}
+
+enum Platform {
+  NAVER
+  DAUM
+}
+
+type Author {
+  id: ID!
+  name: String!
+}
+
+type Genre {
+  id: ID!
+  name: String!
 }
