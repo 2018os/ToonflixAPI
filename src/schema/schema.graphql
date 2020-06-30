@@ -26,6 +26,7 @@ enum Platform {
 type Author {
   id: ID!
   name: String!
+  webtoons: [Webtoon]
 }
 
 type Genre {
