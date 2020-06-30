@@ -1,5 +1,6 @@
 type Query {
   webtoons: [Webtoon!]
+  webtoon(id: ID!): Webtoon!
   authors: [Author!]
 }
 
