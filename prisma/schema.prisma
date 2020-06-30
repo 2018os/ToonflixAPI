@@ -1,0 +1,34 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Enum
+enum Platform {
+  NAVER
+  DAUM
+}
+
+// Models
+model Webtoon {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  platform    Platform
+  isFinish    Boolean
+  isAdult     Boolean
+  isPay       Boolean
+  thumbnail   String
+  source      String
+  authors     Author[] @relation(references: [id])
+}
+
+model Author {
+  id       Int       @id @default(autoincrement())
+  name     String
+  webtoons Webtoon[] @relation(references: [id])
+}

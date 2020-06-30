@@ -3,6 +3,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 
+import { createContext } from './context';
 import resolvers from './resolvers';
 
 const typeDefs = fs.readFileSync(
@@ -12,7 +13,8 @@ const typeDefs = fs.readFileSync(
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  context: createContext
 });
 
 const app = express();
