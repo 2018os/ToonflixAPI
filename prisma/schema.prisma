@@ -25,9 +25,16 @@ model Webtoon {
   thumbnail   String
   source      String
   authors     Author[] @relation(references: [id])
+  genres      Genre[]  @relation(references: [id])
 }
 
 model Author {
+  id       Int       @id @default(autoincrement())
+  name     String
+  webtoons Webtoon[] @relation(references: [id])
+}
+
+model Genre {
   id       Int       @id @default(autoincrement())
   name     String
   webtoons Webtoon[] @relation(references: [id])
