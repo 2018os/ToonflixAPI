@@ -28,4 +28,9 @@ async function authors(_parent: any, _args: any, context: Context, _info: any) {
   return allAuthors;
 }
 
-export { webtoons, webtoon, authors };
+async function genres(_parent: any, _args: any, context: Context, _info: any) {
+  const allGenres = await context.prisma.genre.findMany();
+  return allGenres;
+}
+
+export { webtoons, webtoon, authors, genres };
