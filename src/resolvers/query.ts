@@ -1,15 +1,13 @@
 import { Context } from '../utils/context';
 
-async function webtoons(
-  _parent: any,
-  _args: any,
-  context: Context,
-  _info: any
-) {
+async function webtoons(_parent: any, args: any, context: Context, _info: any) {
+  const { first, offset } = args.page;
   const allWebtoons = await context.prisma.webtoon.findMany({
     include: {
       authors: true
-    }
+    },
+    skip: first,
+    take: offset
   });
   return allWebtoons;
 }

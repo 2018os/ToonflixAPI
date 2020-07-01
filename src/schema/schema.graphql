@@ -1,8 +1,18 @@
 type Query {
-  webtoons: [Webtoon!]
+  webtoons(page: Page): [Webtoon]
   webtoon(id: ID!): Webtoon!
   authors: [Author!]
   genres: [Genre!]
+}
+
+type WebtoonResult {
+  webtoons: [Webtoon]
+  totalCounts: Int
+}
+
+input Page {
+  first: Int
+  offset: Int
 }
 
 type Webtoon {
