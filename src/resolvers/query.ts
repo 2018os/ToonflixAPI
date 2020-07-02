@@ -7,7 +7,7 @@ async function webtoons(
   context: Context,
   _info: any
 ) {
-  const { pagination, filter } = args.input;
+  const { pagination, filter } = args;
   const allWebtoons = await context.prisma.webtoon.findMany({
     include: {
       authors: true

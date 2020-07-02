@@ -24,11 +24,7 @@ interface Filter {
   title: string;
 }
 
-interface Input {
+export interface WebtoonsArgument {
   pagination: Pagination;
   filter: Filter;
-}
-
-export interface WebtoonsArgument {
-  input: Input;
 }

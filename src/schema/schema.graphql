@@ -1,5 +1,5 @@
 type Query {
-  webtoons(input: Input): [Webtoon]
+  webtoons(pagination: Pagination, filter: Filter): [Webtoon]
   webtoon(id: ID!): Webtoon!
   authors: [Author!]
   genres: [Genre!]
@@ -8,11 +8,6 @@ type Query {
 type WebtoonResult {
   webtoons: [Webtoon]
   totalCounts: Int
-}
-
-input Input {
-  pagination: Pagination
-  filter: Filter
 }
 
 input Pagination {
