@@ -1,6 +1,6 @@
 enum Platform {
-  NAVER = 'NAVER',
-  DAUM = 'DAUM'
+  Naver = 'NAVER',
+  Daum = 'DAUM'
 }
 
 export interface Webtoon {
@@ -12,17 +12,15 @@ export interface Webtoon {
   isAdult: Boolean;
   isPay: Boolean;
   thumbnail: String;
-  source: String;
-  // authors: [Author]
-  // genres: [Genre!]
+  url: String;
 }
 
-export interface pagination {
+export interface Pagination {
   first: number;
   offset: number;
 }
 
 export interface WebtoonsArgument {
-  page: pagination;
-  webtoon: [Webtoon];
+  page: Pagination;
+  webtoon: Webtoon[];
 }
