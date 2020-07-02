@@ -23,7 +23,7 @@ model Webtoon {
   isAdult     Boolean
   isPay       Boolean
   thumbnail   String
-  source      String
+  url         String
   authors     Author[] @relation(references: [id])
   genres      Genre[]  @relation(references: [id])
 }
