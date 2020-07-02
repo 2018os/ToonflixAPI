@@ -24,7 +24,7 @@ type Webtoon {
   isAdult: Boolean!
   isPay: Boolean!
   thumbnail: String!
-  source: String!
+  url: String!
   authors: [Author]
   genres: [Genre!]
 }
