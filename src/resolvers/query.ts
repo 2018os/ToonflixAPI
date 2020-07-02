@@ -13,7 +13,7 @@ async function webtoons(
       authors: true
     },
     skip: pagination.first,
-    take: pagination.offset,
+    take: pagination.take,
     where: {
       title: {
         contains: filter.title

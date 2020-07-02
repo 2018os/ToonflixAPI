@@ -17,7 +17,7 @@ input Input {
 
 input Pagination {
   first: Int
-  offset: Int
+  take: Int
 }
 
 input Filter {

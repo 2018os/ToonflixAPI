@@ -17,7 +17,7 @@ export interface Webtoon {
 
 interface Pagination {
   first: number;
-  offset: number;
+  take: number;
 }
 
 interface Filter {
