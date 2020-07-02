@@ -15,12 +15,20 @@ export interface Webtoon {
   url: String;
 }
 
-export interface Pagination {
+interface Pagination {
   first: number;
   offset: number;
 }
 
+interface Filter {
+  title: string;
+}
+
+interface Input {
+  pagination: Pagination;
+  filter: Filter;
+}
+
 export interface WebtoonsArgument {
-  page: Pagination;
-  webtoon: Webtoon[];
+  input: Input;
 }
