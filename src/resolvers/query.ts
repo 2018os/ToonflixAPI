@@ -10,7 +10,8 @@ async function webtoons(
   const { pagination, filter } = args;
   const allWebtoons = await context.prisma.webtoon.findMany({
     include: {
-      authors: true
+      authors: true,
+      collections: true
     },
     skip: pagination.first,
     take: pagination.take,
@@ -42,4 +43,18 @@ async function genres(_parent: any, _args: any, context: Context, _info: any) {
   return allGenres;
 }
 
-export { webtoons, webtoon, authors, genres };
+async function collections(
+  _parent: any,
+  _args: any,
+  context: Context,
+  _info: any
+) {
+  const allCollections = await context.prisma.collection.findMany({
+    include: {
+      webtoons: true
+    }
+  });
+  return allCollections;
+}
+
+export { webtoons, webtoon, authors, genres, collections };

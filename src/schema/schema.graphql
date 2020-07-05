@@ -3,6 +3,7 @@ type Query {
   webtoon(id: ID!): Webtoon!
   authors: [Author!]
   genres: [Genre!]
+  collections: [Collection]
 }
 
 type WebtoonResult {
@@ -31,6 +32,7 @@ type Webtoon {
   url: String!
   authors: [Author]
   genres: [Genre!]
+  collections: [Collection]
 }
 
 enum Platform {
@@ -47,4 +49,10 @@ type Author {
 type Genre {
   id: ID!
   name: String!
+}
+
+type Collection {
+  title: String!
+  description: String!
+  webtoons: [Webtoon]
 }
