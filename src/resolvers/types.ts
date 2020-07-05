@@ -4,15 +4,15 @@ enum Platform {
 }
 
 export interface Webtoon {
-  id: String;
-  title: String;
-  description: String;
+  id: string;
+  title: string;
+  description: string;
   platform: Platform;
-  isFinish: Boolean;
-  isAdult: Boolean;
-  isPay: Boolean;
-  thumbnail: String;
-  url: String;
+  isFinish: boolean;
+  isAdult: boolean;
+  isPay: boolean;
+  thumbnail: string;
+  url: string;
 }
 
 interface Pagination {
