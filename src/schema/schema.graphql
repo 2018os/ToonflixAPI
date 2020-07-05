@@ -6,6 +6,10 @@ type Query {
   collections: [Collection]
 }
 
+type Mutation {
+  createCollection: Collection
+}
+
 type WebtoonResult {
   webtoons: [Webtoon]
   totalCounts: Int
