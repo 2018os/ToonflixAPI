@@ -1,6 +1,6 @@
 type Query {
   webtoons(pagination: Pagination, filter: Filter): [Webtoon]
-  webtoon(id: ID!): Webtoon!
+  webtoon(id: Int!): Webtoon!
   authors: [Author!]
   genres: [Genre!]
   collections: [Collection]
@@ -25,7 +25,7 @@ input Filter {
 }
 
 type Webtoon {
-  id: ID!
+  id: Int!
   title: String!
   description: String!
   platform: Platform!
@@ -45,13 +45,13 @@ enum Platform {
 }
 
 type Author {
-  id: ID!
+  id: Int!
   name: String!
   webtoons: [Webtoon]
 }
 
 type Genre {
-  id: ID!
+  id: Int!
   name: String!
 }
 

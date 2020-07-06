@@ -4,7 +4,7 @@ enum Platform {
 }
 
 export interface Webtoon {
-  id: string;
+  id: number;
   title: string;
   description: string;
   platform: Platform;

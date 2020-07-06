@@ -27,7 +27,7 @@ async function webtoons(
 async function webtoon(_parent: any, args: any, context: Context, _info: any) {
   const result = await context.prisma.webtoon.findOne({
     where: {
-      id: Number(args.id)
+      id: args.id
     }
   });
   return result;
