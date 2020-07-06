@@ -24,7 +24,17 @@ interface Filter {
   title: string;
 }
 
+interface Input {
+  title: string;
+  description: string;
+  webtoons: number[];
+}
+
 export interface WebtoonsArgument {
   pagination: Pagination;
   filter: Filter;
+}
+
+export interface CollectionArgument {
+  input: Input;
 }

@@ -1,24 +1,24 @@
 import { Context } from '../utils/context';
+import { CollectionArgument } from './types';
+
+type webtoonConnect = {
+  id: number;
+};
 
 async function createCollection(
   _parent: any,
-  _args: any,
+  args: CollectionArgument,
   context: Context,
   _info: any
 ) {
+  const { title, description, webtoons } = args.input;
+  const webtoonIds: webtoonConnect[] = webtoons.map((id) => ({ id }));
   const collection = context.prisma.collection.create({
     data: {
-      title: 'Collection3',
-      description: 'Test COllection',
+      title,
+      description,
       webtoons: {
-        connect: [
-          {
-            id: 1
-          },
-          {
-            id: 3
-          }
-        ]
+        connect: webtoonIds
       }
     }
   });
