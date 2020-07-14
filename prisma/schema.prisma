@@ -15,7 +15,7 @@ enum Platform {
 
 // Models
 model Webtoon {
-  id          Int          @id @default(autoincrement())
+  id          String       @id
   title       String
   description String
   platform    Platform
@@ -25,24 +25,24 @@ model Webtoon {
   thumbnail   String
   url         String
   authors     Author[]     @relation(references: [id])
-  genres      Genre[]      @relation(references: [id])
+  genres      Genre[]      @relation(references: [code])
   collections Collection[] @relation(references: [id])
 }
 
 model Author {
-  id       Int       @id @default(autoincrement())
+  id       String    @id
   name     String
   webtoons Webtoon[] @relation(references: [id])
 }
 
 model Genre {
-  id       Int       @id @default(autoincrement())
+  code     String    @id
   name     String
   webtoons Webtoon[] @relation(references: [id])
 }
 
 model Collection {
-  id          Int       @id @default(autoincrement())
+  id          String    @id
   title       String    @unique
   description String
   webtoons    Webtoon[] @relation(references: [id])
