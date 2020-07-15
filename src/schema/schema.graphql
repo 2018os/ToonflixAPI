@@ -1,72 +1,103 @@
+scalar Date
+scalar Url
+
 type Query {
-  webtoons(pagination: Pagination, filter: Filter): [Webtoon]
-  webtoon(id: Int!): Webtoon!
-  authors: [Author!]
-  genres: [Genre!]
-  collections: [Collection]
+  webtoons: WebtoonConnection!
 }
 
-type Mutation {
-  createCollection(input: Input): Collection
-}
+# type Mutation {
+#   createCollection(input: Input): Collection
+# }
 
-input Input {
-  title: String!
-  description: String!
-  webtoons: [Int!]!
-}
+# input Input {
+#   title: String!
+#   description: String!
+#   webtoons: [Int!]!
+# }
 
-type WebtoonResult {
-  webtoons: [Webtoon]
-  totalCounts: Int
-}
+# type WebtoonResult {
+#   webtoons: [Webtoon]
+#   totalCounts: Int
+# }
 
-input Pagination {
-  first: Int
-  take: Int
-}
+# input Pagination {
+#   first: Int
+#   take: Int
+# }
 
-input Filter {
-  title: String
-}
+# enum SortDirection {
+#   ASCENDING
+#   DESCENDING
+# }
 
-type Webtoon {
-  id: Int!
-  title: String!
-  description: String!
-  platform: Platform!
-  isFinish: Boolean!
-  isAdult: Boolean!
-  isPay: Boolean!
-  thumbnail: String!
-  url: String!
-  authors: [Author]
-  genres: [Genre!]
-  collections: [Collection]
-}
+# enum SortableCollectionField {
+#   created
+# }
+
+# type Sort {
+#   sort: SortDirection
+#   sortBy: SortableCollectionField
+# }
+
+# input Filter {
+#   title: String
+# }
 
 enum Platform {
   NAVER
   DAUM
 }
 
+type PageInfo {
+  startCursor: String
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+type WebtoonEdge {
+  # cursor: String!
+  node: Webtoon
+}
+
+type WebtoonConnection {
+  edges: [WebtoonEdge]
+  # pageInfo: PageInfo!
+  # totalCounts: Int!
+}
+
+type Webtoon {
+  id: ID!
+  title: String!
+  description: String!
+  platform: Platform!
+  isFinish: Boolean!
+  isAdult: Boolean!
+  isPay: Boolean!
+  thumbnail: Url!
+  url: Url!
+  authors: [Author!]
+  genres: [Genre!]
+  collections: [Collection]
+}
+
 type Author {
-  id: Int!
+  id: ID!
   name: String!
-  webtoons: [Webtoon]
+  webtoons: [Webtoon!]!
 }
 
 type Genre {
-  id: Int!
+  code: String!
   name: String!
+  webtoons: [Webtoon!]!
 }
 
-scalar Date
-
 type Collection {
+  id: ID!
   title: String!
   description: String!
-  webtoons: [Webtoon]
-  createdAt: Date
+  webtoons: [Webtoon!]!
+  createdAt: Date!
   updatedAt: Date
 }
