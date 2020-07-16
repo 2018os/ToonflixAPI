@@ -4,7 +4,7 @@ enum Platform {
 }
 
 export interface Webtoon {
-  id: number;
+  id: string;
   title: string;
   description: string;
   platform: Platform;
@@ -16,8 +16,8 @@ export interface Webtoon {
 }
 
 interface Pagination {
-  first: number;
   take: number;
+  cursor: string;
 }
 
 interface Filter {
@@ -31,8 +31,7 @@ interface Input {
 }
 
 export interface WebtoonsArgument {
-  pagination: Pagination;
-  filter: Filter;
+  page: Pagination;
 }
 
 export interface CollectionArgument {

@@ -2,7 +2,7 @@ scalar Date
 scalar Url
 
 type Query {
-  webtoons: WebtoonConnection!
+  webtoons(page: Pagination): WebtoonConnection!
 }
 
 # type Mutation {
@@ -20,10 +20,10 @@ type Query {
 #   totalCounts: Int
 # }
 
-# input Pagination {
-#   first: Int
-#   take: Int
-# }
+input Pagination {
+  take: Int!
+  cursor: String
+}
 
 # enum SortDirection {
 #   ASCENDING
@@ -56,14 +56,14 @@ type PageInfo {
 }
 
 type WebtoonEdge {
-  # cursor: String!
+  cursor: String!
   node: Webtoon
 }
 
 type WebtoonConnection {
   edges: [WebtoonEdge]
-  # pageInfo: PageInfo!
-  # totalCounts: Int!
+  pageInfo: PageInfo!
+  totalCounts: Int!
 }
 
 type Webtoon {

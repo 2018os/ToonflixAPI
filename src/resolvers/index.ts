@@ -1,9 +1,11 @@
 import * as Query from './query';
-import * as Mutation from './mutation';
+import Type from './type';
+// import * as Mutation from './mutation';
 
 const resolvers = {
   Query,
-  Mutation
+  ...Type
+  // Mutation
 };
 
 export default resolvers;
