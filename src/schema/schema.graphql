@@ -5,43 +5,10 @@ type Query {
   webtoons(page: Pagination): WebtoonConnection!
 }
 
-# type Mutation {
-#   createCollection(input: Input): Collection
-# }
-
-# input Input {
-#   title: String!
-#   description: String!
-#   webtoons: [Int!]!
-# }
-
-# type WebtoonResult {
-#   webtoons: [Webtoon]
-#   totalCounts: Int
-# }
-
 input Pagination {
   take: Int!
   cursor: String
 }
-
-# enum SortDirection {
-#   ASCENDING
-#   DESCENDING
-# }
-
-# enum SortableCollectionField {
-#   created
-# }
-
-# type Sort {
-#   sort: SortDirection
-#   sortBy: SortableCollectionField
-# }
-
-# input Filter {
-#   title: String
-# }
 
 enum Platform {
   NAVER
