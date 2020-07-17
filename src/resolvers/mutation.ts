@@ -1,5 +1,5 @@
 import { Context } from '../utils/context';
-import { CollectionArgument } from './types';
+import { CollectionInputArgument } from './types';
 
 type webtoonConnect = {
   id: string;
@@ -7,7 +7,7 @@ type webtoonConnect = {
 
 async function createCollection(
   _parent: any,
-  args: CollectionArgument,
+  args: CollectionInputArgument,
   context: Context,
   _info: any
 ) {

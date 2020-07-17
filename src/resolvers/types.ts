@@ -15,6 +15,15 @@ export interface Webtoon {
   url: string;
 }
 
+export interface Collection {
+  id: string;
+  title: string;
+  description: string;
+  webtoons: Webtoon[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 interface Pagination {
   take: number;
   cursor: string;
@@ -34,6 +43,10 @@ export interface WebtoonsArgument {
   page: Pagination;
 }
 
-export interface CollectionArgument {
+export interface CollectionsArgument {
+  page: Pagination;
+}
+
+export interface CollectionInputArgument {
   input: Input;
 }

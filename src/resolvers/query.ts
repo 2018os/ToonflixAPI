@@ -1,5 +1,5 @@
 import { Context } from '../utils/context';
-import { WebtoonsArgument } from './types';
+import { WebtoonsArgument, CollectionsArgument } from './types';
 
 async function webtoons(
   _parent: any,
@@ -27,4 +27,28 @@ async function webtoons(
   return allWebtoons;
 }
 
-export { webtoons };
+async function collections(
+  _parent: any,
+  args: CollectionsArgument,
+  context: Context
+) {
+  const { take, cursor } = args.page;
+  const commonQueryFragment = {
+    take,
+    include: {
+      webtoons: true
+    }
+  };
+  const allWebtoons = cursor
+    ? await context.prisma.collection.findMany({
+        ...commonQueryFragment,
+        cursor: {
+          id: Buffer.from(cursor, 'base64').toString('ascii')
+        },
+        skip: 1
+      })
+    : await context.prisma.collection.findMany(commonQueryFragment);
+  return allWebtoons;
+}
+
+export { webtoons, collections };

@@ -1,5 +1,5 @@
 import { Context } from '../utils/context';
-import { Webtoon } from './types';
+import { Collection, Webtoon } from './types';
 
 const Type = {
   WebtoonConnection: {
@@ -36,6 +36,43 @@ const Type = {
       return encoding;
     },
     node: (parent: Webtoon) => {
+      return parent;
+    }
+  },
+  CollectionConnection: {
+    edges: (parent: Collection[]) => {
+      console.log(parent);
+      return parent;
+    },
+    totalCounts: (_parent: any, _args: any, context: Context) => {
+      return context.prisma.collection.count();
+    },
+    pageInfo: async (parent: Collection[], _args: any, context: Context) => {
+      const startCollection = parent[0];
+      const endCollection = parent.slice(-1)[0];
+      const startCursor = Buffer.from(startCollection.id).toString('base64');
+      const endCursor = Buffer.from(endCollection.id).toString('base64');
+      const allCollections = await context.prisma.collection.findMany();
+      const lastWebtoon = allCollections.slice(-1)[0];
+      const firstWebtoon = allCollections[0];
+      const hasNextPage =
+        endCursor !== Buffer.from(lastWebtoon.id).toString('base64');
+      const hasPreviousPage =
+        startCursor !== Buffer.from(firstWebtoon.id).toString('base64');
+      return {
+        startCursor,
+        endCursor,
+        hasNextPage,
+        hasPreviousPage
+      };
+    }
+  },
+  CollectionEdge: {
+    cursor: (parent: Collection) => {
+      const encoding = Buffer.from(parent.id).toString('base64');
+      return encoding;
+    },
+    node: (parent: Collection) => {
       return parent;
     }
   }

@@ -3,6 +3,7 @@ scalar Url
 
 type Query {
   webtoons(page: Pagination): WebtoonConnection!
+  collections(page: Pagination): CollectionConnection!
 }
 
 type Mutation {
@@ -37,8 +38,19 @@ type WebtoonEdge {
   node: Webtoon
 }
 
+type CollectionEdge {
+  cursor: String!
+  node: Collection
+}
+
 type WebtoonConnection {
   edges: [WebtoonEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+}
+
+type CollectionConnection {
+  edges: [CollectionEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
 }
