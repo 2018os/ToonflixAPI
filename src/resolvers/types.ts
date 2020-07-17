@@ -27,7 +27,7 @@ interface Filter {
 interface Input {
   title: string;
   description: string;
-  webtoons: number[];
+  webtoons: string[];
 }
 
 export interface WebtoonsArgument {

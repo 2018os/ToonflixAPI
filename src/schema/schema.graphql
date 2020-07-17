@@ -5,9 +5,19 @@ type Query {
   webtoons(page: Pagination): WebtoonConnection!
 }
 
+type Mutation {
+  createCollection(input: CollectionInput): Collection!
+}
+
 input Pagination {
   take: Int!
   cursor: String
+}
+
+input CollectionInput {
+  title: String!
+  description: String!
+  webtoons: [String]!
 }
 
 enum Platform {
