@@ -36,7 +36,12 @@ async function collections(
   const commonQueryFragment = {
     take,
     include: {
-      webtoons: true
+      webtoons: {
+        include: {
+          authors: true,
+          genres: true
+        }
+      }
     }
   };
   const allWebtoons = cursor
