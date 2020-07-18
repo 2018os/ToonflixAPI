@@ -8,17 +8,13 @@ const Type = {
       return context.prisma.webtoon.count();
     },
     pageInfo: async (parent: Webtoon[], _args: any, context: Context) => {
-      const startWebtoon = parent[0];
-      const endWebtoon = parent.slice(-1)[0];
-      const startCursor = Buffer.from(startWebtoon.id).toString('base64');
-      const endCursor = Buffer.from(endWebtoon.id).toString('base64');
+      const startCursor = parent[0].id;
+      const endCursor = parent.slice(-1)[0].id;
       const allWebtoons = await context.prisma.webtoon.findMany();
-      const lastWebtoon = allWebtoons.slice(-1)[0];
-      const firstWebtoon = allWebtoons[0];
-      const hasNextPage =
-        endCursor !== Buffer.from(lastWebtoon.id).toString('base64');
-      const hasPreviousPage =
-        startCursor !== Buffer.from(firstWebtoon.id).toString('base64');
+      const lastWebtoonCursor = allWebtoons.slice(-1)[0].id;
+      const firstWebtoonCursor = allWebtoons[0].id;
+      const hasNextPage = endCursor !== lastWebtoonCursor;
+      const hasPreviousPage = startCursor !== firstWebtoonCursor;
       return {
         startCursor,
         endCursor,
@@ -28,10 +24,7 @@ const Type = {
     }
   },
   WebtoonEdge: {
-    cursor: (parent: Webtoon) => {
-      const encoding = Buffer.from(parent.id).toString('base64');
-      return encoding;
-    },
+    cursor: (parent: Webtoon) => parent.id,
     node: (parent: Webtoon) => parent
   },
   CollectionConnection: {
@@ -40,17 +33,13 @@ const Type = {
       return context.prisma.collection.count();
     },
     pageInfo: async (parent: Collection[], _args: any, context: Context) => {
-      const startCollection = parent[0];
-      const endCollection = parent.slice(-1)[0];
-      const startCursor = Buffer.from(startCollection.id).toString('base64');
-      const endCursor = Buffer.from(endCollection.id).toString('base64');
+      const startCursor = parent[0].id;
+      const endCursor = parent.slice(-1)[0].id;
       const allCollections = await context.prisma.collection.findMany();
-      const lastWebtoon = allCollections.slice(-1)[0];
-      const firstWebtoon = allCollections[0];
-      const hasNextPage =
-        endCursor !== Buffer.from(lastWebtoon.id).toString('base64');
-      const hasPreviousPage =
-        startCursor !== Buffer.from(firstWebtoon.id).toString('base64');
+      const lastCollectionCursor = allCollections.slice(-1)[0].id;
+      const firstCollectionCursor = allCollections[0].id;
+      const hasNextPage = endCursor !== lastCollectionCursor;
+      const hasPreviousPage = startCursor !== firstCollectionCursor;
       return {
         startCursor,
         endCursor,
@@ -60,10 +49,7 @@ const Type = {
     }
   },
   CollectionEdge: {
-    cursor: (parent: Collection) => {
-      const encoding = Buffer.from(parent.id).toString('base64');
-      return encoding;
-    },
+    cursor: (parent: Collection) => parent.id,
     node: (parent: Collection) => parent
   }
 };

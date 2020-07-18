@@ -19,7 +19,7 @@ async function webtoons(
     ? await context.prisma.webtoon.findMany({
         ...commonQueryFragment,
         cursor: {
-          id: Buffer.from(cursor, 'base64').toString('ascii')
+          id: cursor
         },
         skip: 1
       })
@@ -43,7 +43,7 @@ async function collections(
     ? await context.prisma.collection.findMany({
         ...commonQueryFragment,
         cursor: {
-          id: Buffer.from(cursor, 'base64').toString('ascii')
+          id: cursor
         },
         skip: 1
       })

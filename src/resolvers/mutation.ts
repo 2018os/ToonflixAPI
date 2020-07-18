@@ -9,15 +9,16 @@ type webtoonConnect = {
 async function createCollection(
   _parent: any,
   args: CollectionInputArgument,
-  context: Context,
-  _info: any
+  context: Context
 ) {
   const { title, description, webtoons } = args.input;
-  const collectionId = await context.prisma.collection.count();
+  const totalCollection = await context.prisma.collection.count();
+  const collectionId = String(COLLECTION_ID_UNIT + totalCollection);
+  const encodingId = Buffer.from(collectionId).toString('base64');
   const webtoonIds: webtoonConnect[] = webtoons.map((id) => ({ id }));
   const collection = context.prisma.collection.create({
     data: {
-      id: String(collectionId + COLLECTION_ID_UNIT),
+      id: encodingId,
       title,
       description,
       webtoons: {
