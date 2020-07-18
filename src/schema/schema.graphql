@@ -4,6 +4,7 @@ scalar Url
 type Query {
   webtoons(page: Pagination): WebtoonConnection!
   collections(page: Pagination): CollectionConnection!
+  webtoon(id: ID!): Webtoon!
 }
 
 type Mutation {

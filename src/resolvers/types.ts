@@ -46,3 +46,7 @@ export interface QueryPaginationArgument {
 export interface CollectionInputArgument {
   input: Input;
 }
+
+export interface QueryDetailArgument {
+  id: string;
+}

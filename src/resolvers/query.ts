@@ -1,5 +1,5 @@
 import { Context } from '../utils/context';
-import { QueryPaginationArgument } from './types';
+import { QueryPaginationArgument, QueryDetailArgument } from './types';
 
 async function webtoons(
   _parent: any,
@@ -56,4 +56,23 @@ async function collections(
   return allWebtoons;
 }
 
-export { webtoons, collections };
+async function webtoon(
+  _parent: any,
+  args: QueryDetailArgument,
+  context: Context
+) {
+  const id = args;
+  return context.prisma.webtoon.findOne({
+    where: id,
+    include: {
+      authors: true,
+      genres: true,
+      collections: {
+        include: {
+          webtoons: true
+        }
+      }
+    }
+  });
+}
+export { webtoons, collections, webtoon };
