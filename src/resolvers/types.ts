@@ -39,11 +39,7 @@ interface Input {
   webtoons: string[];
 }
 
-export interface WebtoonsArgument {
-  page: Pagination;
-}
-
-export interface CollectionsArgument {
+export interface QueryPaginationArgument {
   page: Pagination;
 }
 

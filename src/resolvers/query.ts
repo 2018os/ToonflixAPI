@@ -1,9 +1,9 @@
 import { Context } from '../utils/context';
-import { WebtoonsArgument, CollectionsArgument } from './types';
+import { QueryPaginationArgument } from './types';
 
 async function webtoons(
   _parent: any,
-  args: WebtoonsArgument,
+  args: QueryPaginationArgument,
   context: Context
 ) {
   const { take, cursor } = args.page;
@@ -29,7 +29,7 @@ async function webtoons(
 
 async function collections(
   _parent: any,
-  args: CollectionsArgument,
+  args: QueryPaginationArgument,
   context: Context
 ) {
   const { take, cursor } = args.page;
