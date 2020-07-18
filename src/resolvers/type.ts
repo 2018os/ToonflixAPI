@@ -3,10 +3,7 @@ import { Collection, Webtoon } from './types';
 
 const Type = {
   WebtoonConnection: {
-    edges: (parent: Webtoon[]) => {
-      // allWebtoons from Query
-      return parent;
-    },
+    edges: (parent: Webtoon[]) => parent,
     totalCounts: (_parent: any, _args: any, context: Context) => {
       return context.prisma.webtoon.count();
     },
@@ -35,15 +32,10 @@ const Type = {
       const encoding = Buffer.from(parent.id).toString('base64');
       return encoding;
     },
-    node: (parent: Webtoon) => {
-      return parent;
-    }
+    node: (parent: Webtoon) => parent
   },
   CollectionConnection: {
-    edges: (parent: Collection[]) => {
-      console.log(parent);
-      return parent;
-    },
+    edges: (parent: Collection[]) => parent,
     totalCounts: (_parent: any, _args: any, context: Context) => {
       return context.prisma.collection.count();
     },
@@ -72,9 +64,7 @@ const Type = {
       const encoding = Buffer.from(parent.id).toString('base64');
       return encoding;
     },
-    node: (parent: Collection) => {
-      return parent;
-    }
+    node: (parent: Collection) => parent
   }
 };
 
