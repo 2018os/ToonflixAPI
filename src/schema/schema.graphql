@@ -12,7 +12,7 @@ type Mutation {
 }
 
 input Pagination {
-  take: Int!
+  take: Int = 4
   cursor: String
 }
 
