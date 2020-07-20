@@ -1,5 +1,6 @@
 import { Context } from '../utils/context';
 import { QueryPaginationArgument, QueryDetailArgument } from './types';
+import { WEBTOON_ID_UNIT } from '../utils/unit';
 
 async function webtoons(
   _parent: any,
@@ -66,7 +67,11 @@ async function webtoon(
     where: id,
     include: {
       authors: true,
-      genres: true,
+      genres: {
+        include: {
+          webtoons: true
+        }
+      },
       collections: {
         include: {
           webtoons: true
@@ -75,4 +80,21 @@ async function webtoon(
     }
   });
 }
-export { webtoons, collections, webtoon };
+
+async function randomWebtoons(_parent: any, _args: any, context: Context) {
+  const allWebtoonCount = await context.prisma.webtoon.count();
+  const randomIds = [];
+  for (let i = 0; i < 6; i += 1) {
+    const randomNumber =
+      Math.floor(Math.random() * (allWebtoonCount - 0)) + WEBTOON_ID_UNIT;
+    const randomId = Buffer.from(String(randomNumber)).toString('base64');
+    randomIds.push({ id: randomId });
+  }
+  return context.prisma.webtoon.findMany({
+    where: {
+      OR: randomIds
+    }
+  });
+}
+
+export { webtoons, collections, webtoon, randomWebtoons };

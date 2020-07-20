@@ -5,6 +5,7 @@ type Query {
   webtoons(page: Pagination): WebtoonConnection!
   collections(page: Pagination): CollectionConnection!
   webtoon(id: ID!): Webtoon!
+  randomWebtoons: [Webtoon!]!
 }
 
 type Mutation {
