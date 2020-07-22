@@ -1,15 +1,23 @@
 import { Context } from '../utils/context';
-import { QueryPaginationArgument, QueryDetailArgument } from './types';
+import {
+  QueryDetailArgument,
+  WebtoonsArgument,
+  CollectionsArgument
+} from './types';
 import { WEBTOON_ID_UNIT } from '../utils/unit';
 
 async function webtoons(
   _parent: any,
-  args: QueryPaginationArgument,
+  args: WebtoonsArgument,
   context: Context
 ) {
   const { take, cursor } = args.page;
+  const { orderBy, field } = args.ordering;
   const commonQueryFragment = {
     take,
+    orderBy: {
+      [field]: orderBy
+    },
     include: {
       authors: true,
       genres: true,
@@ -30,12 +38,16 @@ async function webtoons(
 
 async function collections(
   _parent: any,
-  args: QueryPaginationArgument,
+  args: CollectionsArgument,
   context: Context
 ) {
   const { take, cursor } = args.page;
+  const { orderBy, field } = args.ordering;
   const commonQueryFragment = {
     take,
+    orderBy: {
+      [field]: orderBy
+    },
     include: {
       webtoons: {
         include: {

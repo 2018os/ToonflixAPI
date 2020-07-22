@@ -2,8 +2,11 @@ scalar Date
 scalar Url
 
 type Query {
-  webtoons(page: Pagination): WebtoonConnection!
-  collections(page: Pagination): CollectionConnection!
+  webtoons(page: Pagination, ordering: WebtoonOrdering): WebtoonConnection!
+  collections(
+    page: Pagination
+    ordering: CollectionOrdering
+  ): CollectionConnection!
   webtoon(id: ID!): Webtoon!
   randomWebtoons: [Webtoon!]!
 }
@@ -17,10 +20,34 @@ input Pagination {
   cursor: String
 }
 
+input WebtoonOrdering {
+  orderBy: OrderBy = asc
+  field: WebtoonOrderByField = title
+}
+
+input CollectionOrdering {
+  orderBy: OrderBy = asc
+  field: CollectionOrderByField = updatedAt
+}
+
 input CollectionInput {
   title: String!
   description: String!
   webtoons: [String]!
+}
+
+enum OrderBy {
+  asc
+  desc
+}
+
+enum WebtoonOrderByField {
+  title
+}
+
+enum CollectionOrderByField {
+  title
+  updatedAt
 }
 
 enum Platform {
