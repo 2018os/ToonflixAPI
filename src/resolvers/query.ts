@@ -3,7 +3,8 @@ import { Context } from '../utils/context';
 import {
   CollectionsArgument,
   QueryDetailArgument,
-  WebtoonsArgument
+  WebtoonsArgument,
+  SearchArgument
 } from './types';
 import { WEBTOON_ID_UNIT } from '../utils/unit';
 
@@ -110,7 +111,7 @@ async function randomWebtoons(_parent: any, _args: any, context: Context) {
   });
 }
 
-async function search(_parent: any, args: any, context: Context) {
+async function search(_parent: any, args: SearchArgument, context: Context) {
   const { keyword, where } = args;
   const genreCodes = arrayToObjectArrayConverter(where.genres, 'code');
   const platforms = arrayToObjectArrayConverter(where.platforms, 'platform');

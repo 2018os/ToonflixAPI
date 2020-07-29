@@ -43,10 +43,6 @@ interface Pagination {
   cursor: string;
 }
 
-interface Filter {
-  title: string;
-}
-
 interface Input {
   title: string;
   description: string;
@@ -61,6 +57,14 @@ interface CollectionOrdering {
 interface WebtoonOrdering {
   orderBy: OrderBy;
   field: WebtoonOrderByField;
+}
+
+interface SearchFiltering {
+  isPay: boolean;
+  isAdult: boolean;
+  isFinish: boolean;
+  platforms: Platform[];
+  genres: string[];
 }
 
 export interface WebtoonsArgument {
@@ -79,4 +83,9 @@ export interface CollectionInputArgument {
 
 export interface QueryDetailArgument {
   id: string;
+}
+
+export interface SearchArgument {
+  keyword: string;
+  where: SearchFiltering;
 }
