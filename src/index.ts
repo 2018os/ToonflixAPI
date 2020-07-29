@@ -3,7 +3,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 
-import { createContext } from './utils/context';
+import { prisma } from './utils/context';
 import resolvers from './resolvers';
 
 const typeDefs = fs.readFileSync(
@@ -14,7 +14,12 @@ const typeDefs = fs.readFileSync(
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: createContext
+  context: (request) => {
+    return {
+      ...request,
+      prisma
+    };
+  }
 });
 
 const app = express();
