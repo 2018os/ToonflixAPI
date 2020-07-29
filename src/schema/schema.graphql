@@ -13,7 +13,20 @@ type Query {
 }
 
 type Mutation {
+  login(input: LoginInput): AuthPayload!
+  signup(input: SignupInput): AuthPayload!
   createCollection(input: CollectionInput): Collection!
+}
+
+input SignupInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }
 
 input Pagination {
@@ -54,6 +67,11 @@ enum CollectionOrderByField {
 enum Platform {
   NAVER
   DAUM
+}
+
+type AuthPayload {
+  token: String
+  user: User
 }
 
 type PageInfo {
@@ -117,6 +135,7 @@ type Webtoon {
   authors: [Author!]
   genres: [Genre!]
   collections: [Collection]
+  comments: [Comment]
   # collections(take: int): WebtoonCollectionConnection!
 }
 
@@ -139,4 +158,19 @@ type Collection {
   webtoons: [Webtoon!]!
   createdAt: Date!
   updatedAt: Date
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  password: String!
+  comments: [Comment]
+}
+
+type Comment {
+  message: String!
+  writer: User!
+  writtenWebtoon: Webtoon!
+  subComments: [Comment]
 }
