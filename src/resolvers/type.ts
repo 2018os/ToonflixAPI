@@ -51,6 +51,10 @@ const Type = {
   CollectionEdge: {
     cursor: (parent: Collection) => parent.id,
     node: (parent: Collection) => parent
+  },
+  SearchResultConnection: {
+    webtoonResult: (parent: any) => parent.webtoonResult,
+    collectionResult: (parent: any) => parent.collectionResult
   }
 };
 

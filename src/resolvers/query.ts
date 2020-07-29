@@ -1,8 +1,9 @@
+import { arrayToObjectArrayConverter } from '../utils/tools';
 import { Context } from '../utils/context';
 import {
+  CollectionsArgument,
   QueryDetailArgument,
-  WebtoonsArgument,
-  CollectionsArgument
+  WebtoonsArgument
 } from './types';
 import { WEBTOON_ID_UNIT } from '../utils/unit';
 
@@ -95,7 +96,7 @@ async function webtoon(
 
 async function randomWebtoons(_parent: any, _args: any, context: Context) {
   const allWebtoonCount = await context.prisma.webtoon.count();
-  const randomIds = [];
+  const randomIds = []; // weird
   for (let i = 0; i < 6; i += 1) {
     const randomNumber =
       Math.floor(Math.random() * (allWebtoonCount - 0)) + WEBTOON_ID_UNIT;
@@ -109,4 +110,64 @@ async function randomWebtoons(_parent: any, _args: any, context: Context) {
   });
 }
 
-export { webtoons, collections, webtoon, randomWebtoons };
+async function search(_parent: any, args: any, context: Context) {
+  const { keyword, where } = args;
+  const genreCodes = arrayToObjectArrayConverter(where.genres, 'code');
+  const platforms = arrayToObjectArrayConverter(where.platforms, 'platform');
+  const keywordFilters = [
+    {
+      title: {
+        contains: keyword
+      }
+    },
+    {
+      description: {
+        contains: keyword
+      }
+    }
+  ];
+  const webtoonFilter = {
+    isPay: where.isPay,
+    isAdult: where.isAdult,
+    isFinish: where.isFinish,
+    genres: {
+      some: {
+        OR: genreCodes
+      }
+    },
+    AND: [...platforms],
+    OR: [...keywordFilters]
+  };
+  const collectionFilter = {
+    OR: [
+      ...keywordFilters,
+      {
+        webtoons: {
+          some: {
+            OR: [...keywordFilters]
+          }
+        }
+      }
+    ]
+  };
+  const webtoonResult = await context.prisma.webtoon.findMany({
+    include: {
+      genres: true
+    },
+    where: webtoonFilter
+  });
+  const collectionResult = await context.prisma.collection.findMany({
+    include: {
+      webtoons: {
+        include: {
+          genres: true,
+          authors: true
+        }
+      }
+    },
+    where: collectionFilter
+  });
+  return { webtoonResult, collectionResult };
+}
+
+export { webtoons, collections, webtoon, randomWebtoons, search };

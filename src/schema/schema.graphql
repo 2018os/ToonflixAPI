@@ -9,6 +9,7 @@ type Query {
   ): CollectionConnection!
   webtoon(id: ID!): Webtoon!
   randomWebtoons: [Webtoon!]!
+  search(keyword: String, where: SearchFiltering): SearchResultConnection!
 }
 
 type Mutation {
@@ -72,6 +73,12 @@ type CollectionEdge {
   node: Collection
 }
 
+# interface Connection {
+#   pageInfo: PageInfo!
+#   totalCounts: Int!
+# }
+# ref: https://github.com/apollographql/apollo-server/issues/1075
+
 type WebtoonConnection {
   edges: [WebtoonEdge]
   pageInfo: PageInfo!
@@ -82,6 +89,19 @@ type CollectionConnection {
   edges: [CollectionEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
+}
+
+type SearchResultConnection {
+  webtoonResult: WebtoonConnection
+  collectionResult: CollectionConnection
+}
+
+input SearchFiltering {
+  isPay: Boolean
+  isAdult: Boolean
+  isFinish: Boolean
+  platforms: [Platform]
+  genres: [String]
 }
 
 type Webtoon {
@@ -97,6 +117,7 @@ type Webtoon {
   authors: [Author!]
   genres: [Genre!]
   collections: [Collection]
+  # collections(take: int): WebtoonCollectionConnection!
 }
 
 type Author {
