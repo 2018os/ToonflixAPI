@@ -6,7 +6,7 @@ import {
   WebtoonsArgument,
   SearchArgument
 } from './types';
-import { WEBTOON_ID_UNIT } from '../utils/unit';
+import { WEBTOON_ID_UNIT } from '../utils/statics';
 
 async function webtoons(
   _parent: any,
