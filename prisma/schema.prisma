@@ -27,6 +27,7 @@ model Webtoon {
   authors     Author[]     @relation(references: [id])
   genres      Genre[]      @relation(references: [code])
   collections Collection[] @relation(references: [id])
+  comments    Comment[]
 }
 
 model Author {
@@ -48,4 +49,24 @@ model Collection {
   webtoons    Webtoon[] @relation(references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model User {
+  id       String    @id
+  name     String
+  email    String    @unique
+  password String
+  commnets Comment[]
+}
+
+model Comment {
+  id          String    @id
+  message     String
+  subComments Comment[]
+  webtoon     Webtoon?  @relation(fields: [webtoonId], references: [id])
+  webtoonId   String?
+  writer      User?     @relation(fields: [writerId], references: [id])
+  writerId    String?
+  comment     Comment?  @relation("CommentToComment", fields: [commentId], references: [id])
+  commentId   String?
 }
