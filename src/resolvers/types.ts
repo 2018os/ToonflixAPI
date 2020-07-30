@@ -43,7 +43,7 @@ interface Pagination {
   cursor: string;
 }
 
-interface Input {
+interface CollectionInput {
   title: string;
   description: string;
   webtoons: string[];
@@ -67,6 +67,17 @@ interface SearchFiltering {
   genres: string[];
 }
 
+interface SignupInput {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface LoginInput {
+  email: string;
+  password: string;
+}
+
 export interface WebtoonsArgument {
   page: Pagination;
   ordering: WebtoonOrdering;
@@ -78,7 +89,7 @@ export interface CollectionsArgument {
 }
 
 export interface CollectionInputArgument {
-  input: Input;
+  input: CollectionInput;
 }
 
 export interface QueryDetailArgument {
@@ -88,4 +99,12 @@ export interface QueryDetailArgument {
 export interface SearchArgument {
   keyword: string;
   where: SearchFiltering;
+}
+
+export interface SignupArgument {
+  input: SignupInput;
+}
+
+export interface LoginArgument {
+  input: LoginInput;
 }
