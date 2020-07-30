@@ -11,6 +11,15 @@ const typeDefs = fs.readFileSync(
   'utf8'
 );
 
+const formatError = (err: any) => {
+  console.error('--- GraphQL Error ---');
+  console.error('Path:', err.path);
+  console.error('Message:', err.message);
+  console.error('Code:', err.extensions.code);
+  console.error('Original Error: ', err.originalError);
+  return err;
+};
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -19,7 +28,9 @@ const server = new ApolloServer({
       ...request,
       prisma
     };
-  }
+  },
+  formatError,
+  debug: false
 });
 
 const app = express();
