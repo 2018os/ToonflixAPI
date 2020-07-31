@@ -9,12 +9,20 @@ function arrayToObjectArrayConverter(array: any[], key: string): any[] {
   return result;
 }
 
-function getUserId(context: Context): object | string {
+function getUserId(context: Context): string {
   const Authorization = context.req.get('Authorization');
+  let userId: string;
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '');
-    return jwt.verify(token, AUTH_TOKEN);
+    const result: any = jwt.verify(token, AUTH_TOKEN);
+    if (typeof result === 'object') {
+      userId = result.userId;
+    } else {
+      userId = result;
+    }
+    return userId;
   }
   throw new ApolloError('No Authentication User', 'NOT_AUTHENTICATION');
 }
+
 export { arrayToObjectArrayConverter, getUserId };
