@@ -2,8 +2,9 @@ import { ApolloError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { Context } from '../utils/context';
 import { AUTH_TOKEN, COLLECTION_ID_UNIT, USER_ID_UNIT } from '../utils/statics';
+import { Context } from '../utils/context';
+import { getUserId } from '../utils/tools';
 import {
   CollectionInputArgument,
   LoginArgument,
@@ -19,18 +20,24 @@ async function createCollection(
   args: CollectionInputArgument,
   context: Context
 ) {
+  const userId: string = getUserId(context);
   const { title, description, webtoons } = args.input;
   const totalCollection = await context.prisma.collection.count();
   const collectionId = String(COLLECTION_ID_UNIT + totalCollection);
   const encodingId = Buffer.from(collectionId).toString('base64');
   const webtoonIds: webtoonConnect[] = webtoons.map((id) => ({ id }));
-  const collection = context.prisma.collection.create({
+  const collection = await context.prisma.collection.create({
     data: {
       id: encodingId,
       title,
       description,
       webtoons: {
         connect: webtoonIds
+      },
+      writer: {
+        connect: {
+          id: userId
+        }
       }
     }
   });
