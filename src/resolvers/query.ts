@@ -56,10 +56,11 @@ async function collections(
           authors: true,
           genres: true
         }
-      }
+      },
+      writer: true
     }
   };
-  const allWebtoons = cursor
+  const allCollections = cursor
     ? await context.prisma.collection.findMany({
         ...commonQueryFragment,
         cursor: {
@@ -68,7 +69,7 @@ async function collections(
         skip: 1
       })
     : await context.prisma.collection.findMany(commonQueryFragment);
-  return allWebtoons;
+  return allCollections;
 }
 
 async function webtoon(
