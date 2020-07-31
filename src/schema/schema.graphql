@@ -48,7 +48,6 @@ input CollectionInput {
   title: String!
   description: String!
   webtoons: [String]!
-  writer: String!
 }
 
 enum OrderBy {
