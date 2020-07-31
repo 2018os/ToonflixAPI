@@ -48,6 +48,7 @@ input CollectionInput {
   title: String!
   description: String!
   webtoons: [String]!
+  writer: String!
 }
 
 enum OrderBy {
@@ -156,6 +157,7 @@ type Collection {
   title: String!
   description: String!
   webtoons: [Webtoon!]!
+  writer: User!
   createdAt: Date!
   updatedAt: Date
 }
@@ -166,6 +168,7 @@ type User {
   name: String!
   password: String!
   comments: [Comment]
+  collections: [Collection]
 }
 
 type Comment {

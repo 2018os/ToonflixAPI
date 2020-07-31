@@ -47,16 +47,18 @@ model Collection {
   title       String    @unique
   description String
   webtoons    Webtoon[] @relation(references: [id])
+  writer      User[]    @relation(references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
 
 model User {
-  id       String    @id
-  name     String
-  email    String    @unique
-  password String
-  commnets Comment[]
+  id          String       @id
+  name        String
+  email       String       @unique
+  password    String
+  collections Collection[] @relation(references: [id])
+  commnets    Comment[]
 }
 
 model Comment {
