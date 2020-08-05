@@ -132,11 +132,14 @@ async function search(_parent: any, args: SearchArgument, context: Context) {
     isPay: where.isPay,
     isAdult: where.isAdult,
     isFinish: where.isFinish,
-    genres: {
-      some: {
-        OR: genreCodes
-      }
-    },
+    genres:
+      genreCodes.length > 0
+        ? {
+            some: {
+              OR: genreCodes
+            }
+          }
+        : null,
     AND: [...platforms],
     OR: [...keywordFilters]
   };
