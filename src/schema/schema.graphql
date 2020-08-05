@@ -101,12 +101,14 @@ type WebtoonConnection {
   edges: [WebtoonEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
+  counts: Int!
 }
 
 type CollectionConnection {
   edges: [CollectionEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
+  counts: Int!
 }
 
 type SearchResultConnection {

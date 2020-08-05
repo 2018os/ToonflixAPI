@@ -21,7 +21,8 @@ const Type = {
         hasNextPage,
         hasPreviousPage
       };
-    }
+    },
+    counts: (parent: Webtoon[]) => parent.length
   },
   WebtoonEdge: {
     cursor: (parent: Webtoon) => parent.id,
@@ -46,7 +47,8 @@ const Type = {
         hasNextPage,
         hasPreviousPage
       };
-    }
+    },
+    counts: (parent: Collection[]) => parent.length
   },
   CollectionEdge: {
     cursor: (parent: Collection) => parent.id,
