@@ -8,7 +8,7 @@ type Query {
     ordering: CollectionOrdering
   ): CollectionConnection!
   webtoon(id: ID!): Webtoon!
-  randomWebtoons: [Webtoon!]!
+  randomWebtoons(take: Int = 1): [Webtoon!]
   search(keyword: String, where: SearchFiltering): SearchResultConnection!
 }
 

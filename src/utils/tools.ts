@@ -25,4 +25,19 @@ function getUserId(context: Context): string {
   throw new ApolloError('No Authentication User', 'NOT_AUTHENTICATION');
 }
 
-export { arrayToObjectArrayConverter, getUserId };
+function shuffle(array: number[]): number[] {
+  // fisher-yates shuffle
+  const result = array;
+  for (let i = result.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function encode(data: string | number): string {
+  const enhancedData = typeof data === 'number' ? String(data) : data;
+  return Buffer.from(enhancedData).toString('base64');
+}
+
+export { arrayToObjectArrayConverter, getUserId, shuffle, encode };

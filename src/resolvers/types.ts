@@ -78,6 +78,10 @@ interface LoginInput {
   password: string;
 }
 
+export interface RandomWebtoonsArgument {
+  take: number;
+}
+
 export interface WebtoonsArgument {
   page: Pagination;
   ordering: WebtoonOrdering;

@@ -1,10 +1,11 @@
-import { arrayToObjectArrayConverter } from '../utils/tools';
+import { arrayToObjectArrayConverter, encode, shuffle } from '../utils/tools';
 import { Context } from '../utils/context';
 import {
   CollectionsArgument,
   QueryDetailArgument,
-  WebtoonsArgument,
-  SearchArgument
+  RandomWebtoonsArgument,
+  SearchArgument,
+  WebtoonsArgument
 } from './types';
 import { WEBTOON_ID_UNIT } from '../utils/statics';
 
@@ -96,15 +97,21 @@ async function webtoon(
   });
 }
 
-async function randomWebtoons(_parent: any, _args: any, context: Context) {
+async function randomWebtoons(
+  _parent: any,
+  args: RandomWebtoonsArgument,
+  context: Context
+) {
+  const { take } = args;
   const allWebtoonCount = await context.prisma.webtoon.count();
-  const randomIds = []; // weird
-  for (let i = 0; i < 6; i += 1) {
-    const randomNumber =
-      Math.floor(Math.random() * (allWebtoonCount - 0)) + WEBTOON_ID_UNIT;
-    const randomId = Buffer.from(String(randomNumber)).toString('base64');
-    randomIds.push({ id: randomId });
-  }
+  const webtoonIndex = Array.from(
+    Array(allWebtoonCount),
+    (_, i) => WEBTOON_ID_UNIT + i
+  );
+  const shuffledWebtoonIndex = shuffle(webtoonIndex);
+  const randomIds = shuffledWebtoonIndex
+    .map((id) => ({ id: encode(id) }))
+    .slice(0, take);
   return context.prisma.webtoon.findMany({
     where: {
       OR: randomIds
