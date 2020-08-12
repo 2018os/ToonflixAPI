@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 import { AUTH_TOKEN, COLLECTION_ID_UNIT, USER_ID_UNIT } from '../utils/statics';
 import { Context } from '../utils/context';
-import { getUserId } from '../utils/tools';
+import { getUserId, encode } from '../utils/tools';
 import {
   CollectionInputArgument,
   LoginArgument,
@@ -24,7 +24,7 @@ async function createCollection(
   const { title, description, webtoons } = args.input;
   const totalCollection = await context.prisma.collection.count();
   const collectionId = String(COLLECTION_ID_UNIT + totalCollection);
-  const encodingId = Buffer.from(collectionId).toString('base64');
+  const encodingId = encode(collectionId);
   const webtoonIds: webtoonConnect[] = webtoons.map((id) => ({ id }));
   const collection = await context.prisma.collection.create({
     data: {
@@ -50,7 +50,7 @@ async function signup(_parent: any, args: SignupArgument, context: Context) {
   if (existed) throw new ApolloError('Already Existing Email', 'INVALID_DATA');
   const hashedPassword = bcrypt.hashSync(password, 10);
   const userCounts = await context.prisma.user.count();
-  const id = Buffer.from(String(USER_ID_UNIT + userCounts)).toString('base64');
+  const id = encode(USER_ID_UNIT + userCounts);
   const user = await context.prisma.user.create({
     data: {
       id,
