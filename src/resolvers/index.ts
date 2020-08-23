@@ -1,6 +1,6 @@
-import * as Query from './Query';
-import Type from './Type';
-import * as Mutation from './Mutation';
+import * as Query from './query';
+import Type from './type';
+import * as Mutation from './mutation';
 
 const resolvers = {
   Query,
