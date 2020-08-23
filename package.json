@@ -15,7 +15,7 @@
     "introspect": "npx prisma introspect"
   },
   "engines": {
-    "node": "6.11.1"
+    "node": "14.6.0"
   },
   "repository": {
     "type": "git",
