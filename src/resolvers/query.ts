@@ -182,4 +182,8 @@ async function search(_parent: any, args: SearchArgument, context: Context) {
   return { webtoonResult, collectionResult };
 }
 
-export { webtoons, collections, webtoon, randomWebtoons, search };
+async function allGenres(_parent: any, _args: any, context: Context) {
+  return context.prisma.genre.findMany();
+}
+
+export { webtoons, collections, webtoon, randomWebtoons, search, allGenres };

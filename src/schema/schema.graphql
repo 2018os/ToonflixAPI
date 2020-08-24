@@ -10,6 +10,7 @@ type Query {
   webtoon(id: ID!): Webtoon!
   randomWebtoons(take: Int = 1): [Webtoon!]
   search(keyword: String, where: SearchFiltering): SearchResultConnection!
+  allGenres: [Genre]
 }
 
 type Mutation {
