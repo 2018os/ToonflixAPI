@@ -9,8 +9,8 @@
     "build": "tsc src/index.ts",
     "lint": "eslint '**/*.ts'",
     "lint:fix": "eslint --fix **/*.ts",
-    "migrate": "npx prisma migrate save --name init --experimental",
-    "db": "npx prisma migrate up --experimental",
+    "migrate": "npx prisma migrate save --create-db --experimental",
+    "db": "npx prisma migrate up --create-db --experimental",
     "generate": "npx prisma generate",
     "introspect": "npx prisma introspect"
   },
