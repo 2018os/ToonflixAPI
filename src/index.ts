@@ -1,7 +1,10 @@
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import fs from 'fs';
+import morgan from 'morgan';
 import path from 'path';
+
+import logger from '../config/winston';
 
 import { prisma } from './utils/context';
 import resolvers from './resolvers';
@@ -12,11 +15,8 @@ const typeDefs = fs.readFileSync(
 );
 
 const formatError = (err: any) => {
-  console.error('--- GraphQL Error ---');
-  console.error('Path:', err.path);
-  console.error('Message:', err.message);
-  console.error('Code:', err.extensions.code);
-  console.error('Original Error: ', err.originalError);
+  const errLog = `GraphQL ${err.originalError}`;
+  logger.log('error', errLog);
   return err;
 };
 
@@ -34,6 +34,15 @@ const server = new ApolloServer({
 });
 
 const app = express();
+app.use(
+  morgan('common', {
+    stream: {
+      write: (str: string) => {
+        logger.log('info', str);
+      }
+    }
+  })
+);
 server.applyMiddleware({ app });
 
 app.listen({ port: process.env.PORT || 4000 }, () =>
