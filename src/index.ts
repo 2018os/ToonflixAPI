@@ -1,4 +1,4 @@
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
 import express from 'express';
 import fs from 'fs';
 import morgan from 'morgan';
@@ -20,15 +20,20 @@ const formatError = (err: any) => {
   return err;
 };
 
-const server = new ApolloServer({
+const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
-  context: (request) => {
-    return {
-      ...request,
-      prisma
-    };
-  },
+  resolverValidationOptions: {
+    requireResolversForResolveType: false
+  }
+});
+
+const server = new ApolloServer({
+  schema,
+  context: (request) => ({
+    ...request,
+    prisma
+  }),
   formatError,
   debug: false
 });
