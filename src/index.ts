@@ -25,7 +25,8 @@ const schema = makeExecutableSchema({
   resolvers,
   resolverValidationOptions: {
     requireResolversForResolveType: false
-  }
+  },
+  inheritResolversFromInterfaces: true
 });
 
 const server = new ApolloServer({

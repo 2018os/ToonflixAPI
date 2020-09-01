@@ -1,58 +1,33 @@
-import { Context } from '../utils/context';
-import { Collection, Webtoon } from './types';
+import { Node, ConnectionTypeRootArgument } from './types';
 
 const Type = {
-  WebtoonConnection: {
-    edges: (parent: Webtoon[]) => parent,
-    totalCounts: (_parent: any, _args: any, context: Context) => {
-      return context.prisma.webtoon.count();
+  Connection: {
+    edges: (root: ConnectionTypeRootArgument) => root.data,
+    totalCounts: (root: ConnectionTypeRootArgument) => {
+      const { delegate } = root;
+      return delegate.count();
     },
-    pageInfo: async (parent: Webtoon[], _args: any, context: Context) => {
-      const startCursor = parent[0].id;
-      const endCursor = parent.slice(-1)[0].id;
-      const allWebtoons = await context.prisma.webtoon.findMany();
-      const lastWebtoonCursor = allWebtoons.slice(-1)[0].id;
-      const firstWebtoonCursor = allWebtoons[0].id;
+    pageInfo: async (root: ConnectionTypeRootArgument) => {
+      const { data, delegate } = root;
+      const findAllData = await delegate.findMany();
+      const startCursor = data[0].id;
+      const endCursor = data.slice(-1)[0].id;
+      const lastWebtoonCursor = findAllData.slice(-1)[0].id;
+      const firstWebtoonCursor = findAllData[0].id;
       const hasNextPage = endCursor !== lastWebtoonCursor;
       const hasPreviousPage = startCursor !== firstWebtoonCursor;
       return {
         startCursor,
         endCursor,
         hasNextPage,
-        hasPreviousPage
+        hasPreviousPage // TODO: FIX ERROR
       };
     },
-    counts: (parent: Webtoon[]) => parent.length
+    counts: (root: ConnectionTypeRootArgument) => root.data.length
   },
-  WebtoonEdge: {
-    cursor: (parent: Webtoon) => parent.id,
-    node: (parent: Webtoon) => parent
-  },
-  CollectionConnection: {
-    edges: (parent: Collection[]) => parent,
-    totalCounts: (_parent: any, _args: any, context: Context) => {
-      return context.prisma.collection.count();
-    },
-    pageInfo: async (parent: Collection[], _args: any, context: Context) => {
-      const startCursor = parent[0].id;
-      const endCursor = parent.slice(-1)[0].id;
-      const allCollections = await context.prisma.collection.findMany();
-      const lastCollectionCursor = allCollections.slice(-1)[0].id;
-      const firstCollectionCursor = allCollections[0].id;
-      const hasNextPage = endCursor !== lastCollectionCursor;
-      const hasPreviousPage = startCursor !== firstCollectionCursor;
-      return {
-        startCursor,
-        endCursor,
-        hasNextPage,
-        hasPreviousPage
-      };
-    },
-    counts: (parent: Collection[]) => parent.length
-  },
-  CollectionEdge: {
-    cursor: (parent: Collection) => parent.id,
-    node: (parent: Collection) => parent
+  Edge: {
+    cursor: (parent: Node) => parent.id,
+    node: (parent: Node) => parent
   },
   SearchResultConnection: {
     webtoonResult: (parent: any) => parent.webtoonResult,

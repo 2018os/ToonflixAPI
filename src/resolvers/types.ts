@@ -78,6 +78,10 @@ interface LoginInput {
   password: string;
 }
 
+export interface Node {
+  id: string;
+}
+
 export interface RandomWebtoonsArgument {
   take: number;
 }
@@ -111,4 +115,9 @@ export interface SignupArgument {
 
 export interface LoginArgument {
   input: LoginInput;
+}
+
+export interface ConnectionTypeRootArgument {
+  delegate: any; // TODO: Change type any
+  data: Node[];
 }

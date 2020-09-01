@@ -5,7 +5,8 @@ import {
   QueryDetailArgument,
   RandomWebtoonsArgument,
   SearchArgument,
-  WebtoonsArgument
+  WebtoonsArgument,
+  ConnectionTypeRootArgument
 } from './types';
 import { WEBTOON_ID_UNIT } from '../utils/statics';
 
@@ -13,7 +14,7 @@ async function webtoons(
   _parent: any,
   args: WebtoonsArgument,
   context: Context
-) {
+): Promise<ConnectionTypeRootArgument> {
   const { take, cursor } = args.page;
   const { orderBy, field } = args.ordering;
   const commonQueryFragment = {
@@ -36,14 +37,17 @@ async function webtoons(
         skip: 1
       })
     : await context.prisma.webtoon.findMany(commonQueryFragment);
-  return allWebtoons;
+  return {
+    delegate: context.prisma.webtoon,
+    data: allWebtoons
+  };
 }
 
 async function collections(
   _parent: any,
   args: CollectionsArgument,
   context: Context
-) {
+): Promise<ConnectionTypeRootArgument> {
   const { take, cursor } = args.page;
   const { orderBy, field } = args.ordering;
   const commonQueryFragment = {
@@ -70,7 +74,10 @@ async function collections(
         skip: 1
       })
     : await context.prisma.collection.findMany(commonQueryFragment);
-  return allCollections;
+  return {
+    delegate: context.prisma.collection,
+    data: allCollections
+  };
 }
 
 async function webtoon(
