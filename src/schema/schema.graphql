@@ -1,7 +1,46 @@
 scalar Date
 scalar Url
 
+# enum
+enum OrderBy {
+  asc
+  desc
+}
+
+enum WebtoonOrderByField {
+  title
+}
+
+enum CollectionOrderByField {
+  title
+  updatedAt
+}
+
+enum Platform {
+  NAVER
+  DAUM
+}
+
+# interface
+interface Node {
+  id: ID!
+}
+
+interface Connection {
+  edges: [Edge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+  counts: Int!
+}
+
+interface Edge {
+  cursor: String!
+  node: Node
+}
+
+# types
 type Query {
+  allAuthors: AuthorConnection!
   webtoons(page: Pagination, ordering: WebtoonOrdering): WebtoonConnection!
   collections(
     page: Pagination
@@ -19,6 +58,128 @@ type Mutation {
   createCollection(input: CollectionInput): Collection!
 }
 
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type PageInfo {
+  startCursor: String
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+# nodes
+type Webtoon implements Node {
+  id: ID!
+  title: String!
+  description: String!
+  platform: Platform!
+  isFinish: Boolean!
+  isAdult: Boolean!
+  isPay: Boolean!
+  thumbnail: Url!
+  url: Url!
+  # authorsConnection(
+  #   first: Int
+  #   after: String
+  #   last: Int
+  #   before: String
+  # ): WebtoonAuthorsConnection
+  authors: [Author!]
+  genres: [Genre!]
+  collections: [Collection]
+  comments: [Comment]
+}
+
+type Author implements Node {
+  id: ID!
+  name: String!
+  webtoons: [Webtoon!]!
+}
+
+type Genre {
+  code: String!
+  name: String!
+  webtoons: [Webtoon!]!
+}
+
+type Collection implements Node {
+  id: ID!
+  title: String!
+  description: String!
+  webtoons: [Webtoon!]!
+  writer: User!
+  createdAt: Date!
+  updatedAt: Date
+}
+
+type User implements Node {
+  id: ID!
+  email: String!
+  name: String!
+  password: String!
+  comments: [Comment]
+  collections: [Collection]
+}
+
+type Comment {
+  message: String!
+  writer: User!
+  writtenWebtoon: Webtoon!
+  subComments: [Comment]
+}
+
+# connections
+type WebtoonConnection implements Connection {
+  edges: [WebtoonEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+  counts: Int!
+}
+
+type CollectionConnection implements Connection {
+  edges: [CollectionEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+  counts: Int!
+}
+
+type AuthorConnection implements Connection {
+  edges: [AuthorEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+  counts: Int!
+}
+
+type SearchResultConnection {
+  webtoonResult: WebtoonConnection
+  collectionResult: CollectionConnection
+}
+
+# edges
+type WebtoonEdge implements Edge {
+  cursor: String!
+  node: Webtoon
+}
+
+type CollectionEdge implements Edge {
+  cursor: String!
+  node: Collection
+}
+
+type AuthorEdge implements Edge {
+  cursor: String!
+  node: Author
+}
+
+type WebtoonAuthorsEdge implements Edge {
+  cursor: String!
+  node: Author
+}
+
+# input
 input SignupInput {
   name: String!
   email: String!
@@ -51,131 +212,10 @@ input CollectionInput {
   webtoons: [String]!
 }
 
-enum OrderBy {
-  asc
-  desc
-}
-
-enum WebtoonOrderByField {
-  title
-}
-
-enum CollectionOrderByField {
-  title
-  updatedAt
-}
-
-enum Platform {
-  NAVER
-  DAUM
-}
-
-type AuthPayload {
-  token: String
-  user: User
-}
-
-type PageInfo {
-  startCursor: String
-  endCursor: String
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-}
-
-type WebtoonEdge {
-  cursor: String!
-  node: Webtoon
-}
-
-type CollectionEdge {
-  cursor: String!
-  node: Collection
-}
-
-# interface Connection {
-#   pageInfo: PageInfo!
-#   totalCounts: Int!
-# }
-# ref: https://github.com/apollographql/apollo-server/issues/1075
-
-type WebtoonConnection {
-  edges: [WebtoonEdge]
-  pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
-}
-
-type CollectionConnection {
-  edges: [CollectionEdge]
-  pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
-}
-
-type SearchResultConnection {
-  webtoonResult: WebtoonConnection
-  collectionResult: CollectionConnection
-}
-
 input SearchFiltering {
   isPay: Boolean
   isAdult: Boolean
   isFinish: Boolean
   platforms: [Platform]
   genres: [String]
-}
-
-type Webtoon {
-  id: ID!
-  title: String!
-  description: String!
-  platform: Platform!
-  isFinish: Boolean!
-  isAdult: Boolean!
-  isPay: Boolean!
-  thumbnail: Url!
-  url: Url!
-  authors: [Author!]
-  genres: [Genre!]
-  collections: [Collection]
-  comments: [Comment]
-  # collections(take: int): WebtoonCollectionConnection!
-}
-
-type Author {
-  id: ID!
-  name: String!
-  webtoons: [Webtoon!]!
-}
-
-type Genre {
-  code: String!
-  name: String!
-  webtoons: [Webtoon!]!
-}
-
-type Collection {
-  id: ID!
-  title: String!
-  description: String!
-  webtoons: [Webtoon!]!
-  writer: User!
-  createdAt: Date!
-  updatedAt: Date
-}
-
-type User {
-  id: ID!
-  email: String!
-  name: String!
-  password: String!
-  comments: [Comment]
-  collections: [Collection]
-}
-
-type Comment {
-  message: String!
-  writer: User!
-  writtenWebtoon: Webtoon!
-  subComments: [Comment]
 }
