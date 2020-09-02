@@ -33,6 +33,12 @@ interface Connection {
   counts: Int!
 }
 
+interface FieldConnection {
+  edges: [Edge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+}
+
 interface Edge {
   cursor: String!
   node: Node
@@ -81,12 +87,7 @@ type Webtoon implements Node {
   isPay: Boolean!
   thumbnail: Url!
   url: Url!
-  # authorsConnection(
-  #   first: Int
-  #   after: String
-  #   last: Int
-  #   before: String
-  # ): WebtoonAuthorsConnection
+  authorsConnection(page: Pagination): WebtoonAuthorsConnection!
   authors: [Author!]
   genres: [Genre!]
   collections: [Collection]
@@ -151,6 +152,12 @@ type AuthorConnection implements Connection {
   pageInfo: PageInfo!
   totalCounts: Int!
   counts: Int!
+}
+
+type WebtoonAuthorsConnection implements FieldConnection {
+  edges: [WebtoonAuthorsEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
 }
 
 type SearchResultConnection {
