@@ -17,6 +17,15 @@ enum CollectionOrderByField {
   UpdatedAt = 'updatedAt'
 }
 
+export interface FieldArgument {
+  page: Pagination;
+}
+
+export interface Author {
+  id: string;
+  name: string;
+}
+
 export interface Webtoon {
   id: string;
   title: string;
@@ -27,6 +36,7 @@ export interface Webtoon {
   isPay: boolean;
   thumbnail: string;
   url: string;
+  authors: Author[];
 }
 
 export interface Collection {
@@ -120,4 +130,9 @@ export interface LoginArgument {
 export interface ConnectionTypeRootArgument {
   delegate: any; // TODO: Change type any
   data: Node[];
+}
+export interface FieldConnectionInterface {
+  data: Node[];
+  edges: Node[];
+  args: Pagination;
 }

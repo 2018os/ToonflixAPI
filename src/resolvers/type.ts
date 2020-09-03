@@ -1,4 +1,10 @@
-import { Node, ConnectionTypeRootArgument } from './types';
+import {
+  Node,
+  ConnectionTypeRootArgument,
+  Webtoon,
+  FieldArgument,
+  FieldConnectionInterface
+} from './types';
 
 const Type = {
   Connection: {
@@ -34,7 +40,7 @@ const Type = {
     node: (parent: Node) => parent
   },
   Webtoon: {
-    authorsConnection: (root: any, args: any) => {
+    authorsConnection: (root: Webtoon, args: FieldArgument) => {
       const { authors } = root;
       const { cursor, take } = args.page;
       const cursorIndex = cursor
@@ -42,25 +48,26 @@ const Type = {
         : 0;
       return {
         data: authors,
-        edges: authors.slice(cursorIndex, take),
+        edges: authors.slice(cursorIndex, cursorIndex + take),
         args: args.page
       };
     }
   },
   FieldConnection: {
-    edges: (root: any) => root.edges,
-    pageInfo: (root: any) => {
+    edges: (root: FieldConnectionInterface) => root.edges,
+    pageInfo: (root: FieldConnectionInterface) => {
       const { data, edges, args } = root;
-      const { cursor: startCursor } = args;
-      const endCursor = edges.slice(-1)[0] ? edges.slice(-1)[0].id : '';
+      const { cursor } = args;
+      const startCursor = edges.length > 0 ? edges[0].id : '';
+      const endCursor = edges.length > 0 ? edges.slice(-1)[0].id : '';
       return {
         startCursor,
         endCursor,
-        hasNextPage: endCursor !== data.slice(-1)[0].id,
-        hasPreviousPage: startCursor !== data[0].id
+        hasNextPage: endCursor ? endCursor !== data.slice(-1)[0].id : false,
+        hasPreviousPage: cursor ? cursor !== data[0].id : false
       };
     },
-    totalCounts: (root: any) => root.data.length
+    totalCounts: (root: FieldConnectionInterface) => root.data.length
   },
   SearchResultConnection: {
     webtoonResult: (parent: any) => parent.webtoonResult,

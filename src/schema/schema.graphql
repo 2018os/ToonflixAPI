@@ -88,7 +88,7 @@ type Webtoon implements Node {
   thumbnail: Url!
   url: Url!
   authorsConnection(page: Pagination): WebtoonAuthorsConnection!
-  authors: [Author!]
+  # authors: [Author!] legacy
   genres: [Genre!]
   collections: [Collection]
   comments: [Comment]
@@ -199,8 +199,8 @@ input LoginInput {
 }
 
 input Pagination {
-  take: Int = 4
-  cursor: String
+  take: Int = 4 # first
+  cursor: String # after
 }
 
 input WebtoonOrdering {
