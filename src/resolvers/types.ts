@@ -24,6 +24,7 @@ export interface FieldArgument {
 export interface Author {
   id: string;
   name: string;
+  webtoons: Webtoon[];
 }
 
 export interface Webtoon {
@@ -37,6 +38,7 @@ export interface Webtoon {
   thumbnail: string;
   url: string;
   authors: Author[];
+  collections: Collection[];
 }
 
 export interface Collection {

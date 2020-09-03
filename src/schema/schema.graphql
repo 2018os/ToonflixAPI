@@ -90,14 +90,16 @@ type Webtoon implements Node {
   authorsConnection(page: Pagination): WebtoonAuthorsConnection!
   # authors: [Author!] legacy
   genres: [Genre!]
-  collections: [Collection]
+  collectionsConnection(page: Pagination): WebtoonCollectionsConnection!
+  # collections: [Collection]
   comments: [Comment]
 }
 
 type Author implements Node {
   id: ID!
   name: String!
-  webtoons: [Webtoon!]!
+  webtoonsConnection(page: Pagination): AuthorWebtoonsConnection!
+  # webtoons: [Webtoon!]!
 }
 
 type Genre {
@@ -161,6 +163,18 @@ type WebtoonAuthorsConnection implements FieldConnection {
   totalCounts: Int!
 }
 
+type WebtoonCollectionsConnection implements FieldConnection {
+  edges: [WebtoonCollectionsEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+}
+
+type AuthorWebtoonsConnection implements FieldConnection {
+  edges: [AuthorWebtoonsEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+}
+
 type SearchResultConnection {
   webtoonResult: WebtoonConnection
   collectionResult: CollectionConnection
@@ -185,6 +199,16 @@ type AuthorEdge implements Edge {
 type WebtoonAuthorsEdge implements Edge {
   cursor: String!
   node: Author
+}
+
+type WebtoonCollectionsEdge implements Edge {
+  cursor: String!
+  node: Collection
+}
+
+type AuthorWebtoonsEdge implements Edge {
+  cursor: String!
+  node: Collection
 }
 
 # input
