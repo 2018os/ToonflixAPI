@@ -7,7 +7,7 @@ import {
 } from './types';
 
 const Type = {
-  Connection: {
+  QueryConnection: {
     edges: (root: ConnectionTypeRootArgument) => root.data,
     totalCounts: (root: ConnectionTypeRootArgument) => {
       const { delegate } = root;

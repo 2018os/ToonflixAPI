@@ -26,7 +26,7 @@ interface Node {
   id: ID!
 }
 
-interface Connection {
+interface QueryConnection {
   edges: [Edge]
   pageInfo: PageInfo!
   totalCounts: Int!
@@ -132,28 +132,29 @@ type Comment {
   subComments: [Comment]
 }
 
-# connections
-type WebtoonConnection implements Connection {
+# query connections
+type WebtoonConnection implements QueryConnection {
   edges: [WebtoonEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
   counts: Int!
 }
 
-type CollectionConnection implements Connection {
+type CollectionConnection implements QueryConnection {
   edges: [CollectionEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
   counts: Int!
 }
 
-type AuthorConnection implements Connection {
+type AuthorConnection implements QueryConnection {
   edges: [AuthorEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
   counts: Int!
 }
 
+# field connections
 type WebtoonAuthorsConnection implements FieldConnection {
   edges: [WebtoonAuthorsEdge]
   pageInfo: PageInfo!
