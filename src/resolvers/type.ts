@@ -1,11 +1,25 @@
 import {
   Author,
+  Collection,
   ConnectionTypeRootArgument,
   FieldArgument,
   FieldConnectionInterface,
+  Genre,
   Node,
   Webtoon
 } from './types';
+
+const passToFieldConnection = (data: any, args: FieldArgument) => {
+  const { cursor, take } = args.page;
+  const cursorIndex = cursor
+    ? data.findIndex((element: Node) => element.id === cursor) + 1
+    : 0;
+  return {
+    data,
+    edges: data.slice(cursorIndex, cursorIndex + take),
+    args: args.page
+  };
+};
 
 const Type = {
   QueryConnection: {
@@ -58,42 +72,25 @@ const Type = {
   },
   Webtoon: {
     authorsConnection: (root: Webtoon, args: FieldArgument) => {
-      const { authors } = root;
-      const { cursor, take } = args.page;
-      const cursorIndex = cursor
-        ? authors.findIndex((element: Node) => element.id === cursor) + 1
-        : 0;
-      return {
-        data: authors,
-        edges: authors.slice(cursorIndex, cursorIndex + take),
-        args: args.page
-      };
+      return passToFieldConnection(root.authors, args);
     },
     collectionsConnection: (root: Webtoon, args: FieldArgument) => {
-      const { collections } = root;
-      const { cursor, take } = args.page;
-      const cursorIndex = cursor
-        ? collections.findIndex((element: Node) => element.id === cursor) + 1
-        : 0;
-      return {
-        data: collections,
-        edges: collections.slice(cursorIndex, cursorIndex + take),
-        args: args.page
-      };
+      return passToFieldConnection(root.collections, args);
     }
   },
   Author: {
     webtoonsConnection: (root: Author, args: FieldArgument) => {
-      const { webtoons } = root;
-      const { cursor, take } = args.page;
-      const cursorIndex = cursor
-        ? webtoons.findIndex((element: Node) => element.id === cursor) + 1
-        : 0;
-      return {
-        data: webtoons,
-        edges: webtoons.slice(cursorIndex, cursorIndex + take),
-        args: args.page
-      };
+      return passToFieldConnection(root.webtoons, args);
+    }
+  },
+  Collection: {
+    webtoonsConnection: (root: Collection, args: FieldArgument) => {
+      return passToFieldConnection(root.webtoons, args);
+    }
+  },
+  Genre: {
+    webtoonsConnection: (root: Genre, args: FieldArgument) => {
+      return passToFieldConnection(root.webtoons, args);
     }
   },
   SearchResultConnection: {
