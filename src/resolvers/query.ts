@@ -5,8 +5,8 @@ import {
   QueryDetailArgument,
   RandomWebtoonsArgument,
   SearchArgument,
-  WebtoonsArgument,
-  ConnectionTypeRootArgument
+  QueryConnectionInterface,
+  WebtoonsArgument
 } from './types';
 import { WEBTOON_ID_UNIT } from '../utils/statics';
 
@@ -14,7 +14,7 @@ async function webtoons(
   _parent: any,
   args: WebtoonsArgument,
   context: Context
-): Promise<ConnectionTypeRootArgument> {
+): Promise<QueryConnectionInterface> {
   const { take, cursor } = args.page;
   const { orderBy, field } = args.ordering;
   const commonQueryFragment = {
@@ -47,7 +47,7 @@ async function collections(
   _parent: any,
   args: CollectionsArgument,
   context: Context
-): Promise<ConnectionTypeRootArgument> {
+): Promise<QueryConnectionInterface> {
   const { take, cursor } = args.page;
   const { orderBy, field } = args.ordering;
   const commonQueryFragment = {

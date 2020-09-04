@@ -135,12 +135,18 @@ export interface LoginArgument {
   input: LoginInput;
 }
 
-export interface ConnectionTypeRootArgument {
+export interface QueryConnectionInterface {
   delegate: any; // TODO: Change type any
   data: Node[];
 }
+
 export interface FieldConnectionInterface {
   data: Node[];
   edges: Node[];
   args: Pagination;
+}
+
+export interface SearchResultConnection {
+  webtoonResult: Webtoon[];
+  collectionResult: Collection[];
 }

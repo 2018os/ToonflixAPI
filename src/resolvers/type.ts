@@ -1,15 +1,18 @@
 import {
   Author,
   Collection,
-  ConnectionTypeRootArgument,
   FieldArgument,
   FieldConnectionInterface,
   Genre,
   Node,
+  QueryConnectionInterface,
+  SearchResultConnection,
   Webtoon
 } from './types';
 
 const passToFieldConnection = (data: any, args: FieldArgument) => {
+  // TODO: Enhance type any
+  // TODO: Enhance Naming
   const { cursor, take } = args.page;
   const cursorIndex = cursor
     ? data.findIndex((element: Node) => element.id === cursor) + 1
@@ -23,12 +26,12 @@ const passToFieldConnection = (data: any, args: FieldArgument) => {
 
 const Type = {
   QueryConnection: {
-    edges: (root: ConnectionTypeRootArgument) => root.data,
-    totalCounts: (root: ConnectionTypeRootArgument) => {
+    edges: (root: QueryConnectionInterface) => root.data,
+    totalCounts: (root: QueryConnectionInterface) => {
       const { delegate } = root;
       return delegate.count();
     },
-    pageInfo: async (root: ConnectionTypeRootArgument) => {
+    pageInfo: async (root: QueryConnectionInterface) => {
       const { data, delegate } = root;
       const findAllData = await delegate.findMany({
         orderBy: {
@@ -48,7 +51,7 @@ const Type = {
         hasPreviousPage // TODO: FIX ERROR
       };
     },
-    counts: (root: ConnectionTypeRootArgument) => root.data.length
+    counts: (root: QueryConnectionInterface) => root.data.length
   },
   FieldConnection: {
     edges: (root: FieldConnectionInterface) => root.edges,
@@ -67,8 +70,8 @@ const Type = {
     totalCounts: (root: FieldConnectionInterface) => root.data.length
   },
   Edge: {
-    cursor: (parent: Node) => parent.id,
-    node: (parent: Node) => parent
+    cursor: (root: Node) => root.id,
+    node: (root: Node) => root
   },
   Webtoon: {
     authorsConnection: (root: Webtoon, args: FieldArgument) => {
@@ -94,8 +97,12 @@ const Type = {
     }
   },
   SearchResultConnection: {
-    webtoonResult: (parent: any) => parent.webtoonResult,
-    collectionResult: (parent: any) => parent.collectionResult
+    webtoonResult: (root: SearchResultConnection, args: FieldArgument) => {
+      return passToFieldConnection(root.webtoonResult, args);
+    },
+    collectionResult: (root: SearchResultConnection, args: FieldArgument) => {
+      return passToFieldConnection(root.collectionResult, args);
+    }
   }
 };
 

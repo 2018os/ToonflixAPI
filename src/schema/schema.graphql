@@ -184,9 +184,22 @@ type GenreWebtoonsConnection implements FieldConnection {
   totalCounts: Int!
 }
 
+type SearchResultWebtoonConnection implements FieldConnection {
+  edges: [SearchResultWebtoonEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+}
+
+type SearchResultCollectionConnection implements FieldConnection {
+  edges: [SearchResultCollectionEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+}
+
+# other connections
 type SearchResultConnection {
-  webtoonResult: WebtoonConnection
-  collectionResult: CollectionConnection
+  webtoonResult(page: Pagination): SearchResultWebtoonConnection
+  collectionResult(page: Pagination): SearchResultCollectionConnection
 }
 
 # edges
@@ -228,6 +241,16 @@ type CollectionWebtoonsEdge implements Edge {
 type GenreWebtoonsEdge implements Edge {
   cursor: String!
   node: Webtoon
+}
+
+type SearchResultWebtoonEdge implements Edge {
+  cursor: String!
+  node: Webtoon
+}
+
+type SearchResultCollectionEdge implements Edge {
+  cursor: String!
+  node: Collection
 }
 
 # input
