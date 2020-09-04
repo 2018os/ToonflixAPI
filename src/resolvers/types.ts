@@ -50,6 +50,12 @@ export interface Collection {
   updatedAt: Date;
 }
 
+export interface Genre {
+  code: string;
+  name: string;
+  webtoons: Webtoon[];
+}
+
 interface Pagination {
   take: number;
   cursor: string;

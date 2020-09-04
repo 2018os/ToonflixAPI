@@ -190,7 +190,15 @@ async function search(_parent: any, args: SearchArgument, context: Context) {
 }
 
 async function allGenres(_parent: any, _args: any, context: Context) {
-  return context.prisma.genre.findMany();
+  return context.prisma.genre.findMany({
+    include: {
+      webtoons: {
+        include: {
+          authors: true
+        }
+      }
+    }
+  });
 }
 
 export { webtoons, collections, webtoon, randomWebtoons, search, allGenres };
