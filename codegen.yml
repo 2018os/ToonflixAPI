@@ -4,6 +4,7 @@ documents: null
 generates:
   src/generated/graphql.ts:
     config:
+      useIndexSignature: true
       contextType: ../utils/context#Context
     plugins:
       - 'typescript'
