@@ -62,6 +62,7 @@
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "graphql": "^15.2.0",
+    "graphql-connection-resolver": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "typescript": "^3.9.5",
