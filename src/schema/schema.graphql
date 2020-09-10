@@ -87,8 +87,18 @@ type Webtoon implements Node {
   isPay: Boolean!
   thumbnail: Url!
   url: Url!
-  authorsConnection(page: Pagination): WebtoonAuthorsConnection!
-  collectionsConnection(page: Pagination): WebtoonCollectionsConnection!
+  authorsConnection(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): WebtoonAuthorsConnection!
+  collectionsConnection(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): WebtoonCollectionsConnection!
   genres: [Genre!]
   comments: [Comment]
 }
