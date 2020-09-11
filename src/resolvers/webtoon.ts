@@ -13,7 +13,7 @@ export default {
     nodes: async (parent: Webtoon, args, context: Context) => {
       const cursor = args.after || args.before;
       const encodedCursor = cursor && encodeCursor(cursor);
-      const authors = await context.prisma.author.findMany({
+      const nodes = await context.prisma.author.findMany({
         where: {
           webtoons: {
             some: {
@@ -31,7 +31,7 @@ export default {
           id: args.before ? 'desc' : 'asc'
         }
       });
-      return authors;
+      return nodes;
     }
   }),
   collectionsConnection: connection({
@@ -39,7 +39,7 @@ export default {
     nodes: async (parent: Webtoon, args, context: Context) => {
       const cursor = args.after || args.before;
       const encodedCursor = cursor && encodeCursor(cursor);
-      const authors = await context.prisma.collection.findMany({
+      const nodes = await context.prisma.collection.findMany({
         where: {
           webtoons: {
             some: {
@@ -57,7 +57,7 @@ export default {
           id: args.before ? 'desc' : 'asc'
         }
       });
-      return authors;
+      return nodes;
     }
   })
 };

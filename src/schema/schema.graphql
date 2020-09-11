@@ -26,17 +26,11 @@ interface Node {
   id: ID!
 }
 
-interface QueryConnection {
+interface Connection {
   edges: [Edge]
   pageInfo: PageInfo!
   totalCounts: Int!
   counts: Int!
-}
-
-interface FieldConnection {
-  edges: [Edge]
-  pageInfo: PageInfo!
-  totalCounts: Int!
 }
 
 interface Edge {
@@ -46,16 +40,28 @@ interface Edge {
 
 # types
 type Query {
-  allAuthors: AuthorConnection!
-  webtoons(page: Pagination, ordering: WebtoonOrdering): WebtoonConnection!
+  authors(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): AuthorConnection!
+  webtoons(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): WebtoonConnection!
   collections(
-    page: Pagination
-    ordering: CollectionOrdering
+    first: Int
+    last: Int
+    before: String
+    after: String
   ): CollectionConnection!
+  genres: [Genre]
   webtoon(id: ID!): Webtoon!
   randomWebtoons(take: Int = 1): [Webtoon!]
   search(keyword: String, where: SearchFiltering): SearchResultConnection!
-  allGenres: [Genre]
 }
 
 type Mutation {
@@ -106,20 +112,35 @@ type Webtoon implements Node {
 type Author implements Node {
   id: ID!
   name: String!
-  webtoonsConnection(page: Pagination): AuthorWebtoonsConnection!
+  webtoonsConnection(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): AuthorWebtoonsConnection!
 }
 
 type Genre {
   code: String!
   name: String!
-  webtoonsConnection(page: Pagination): GenreWebtoonsConnection!
+  webtoonsConnection(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): GenreWebtoonsConnection!
 }
 
 type Collection implements Node {
   id: ID!
   title: String!
   description: String!
-  webtoonsConnection(page: Pagination): CollectionWebtoonsConnection!
+  webtoonsConnection(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): CollectionWebtoonsConnection!
   writer: User!
   createdAt: Date!
   updatedAt: Date
@@ -142,74 +163,90 @@ type Comment {
 }
 
 # query connections
-type WebtoonConnection implements QueryConnection {
+type WebtoonConnection implements Connection {
   edges: [WebtoonEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
   counts: Int!
 }
 
-type CollectionConnection implements QueryConnection {
+type CollectionConnection implements Connection {
   edges: [CollectionEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
   counts: Int!
 }
 
-type AuthorConnection implements QueryConnection {
+type AuthorConnection implements Connection {
   edges: [AuthorEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
   counts: Int!
 }
 
-# field connections
-type WebtoonAuthorsConnection implements FieldConnection {
+type WebtoonAuthorsConnection implements Connection {
   edges: [WebtoonAuthorsEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
+  counts: Int!
 }
 
-type WebtoonCollectionsConnection implements FieldConnection {
+type WebtoonCollectionsConnection implements Connection {
   edges: [WebtoonCollectionsEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
+  counts: Int!
 }
 
-type AuthorWebtoonsConnection implements FieldConnection {
+type AuthorWebtoonsConnection implements Connection {
   edges: [AuthorWebtoonsEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
+  counts: Int!
 }
 
-type CollectionWebtoonsConnection implements FieldConnection {
+type CollectionWebtoonsConnection implements Connection {
   edges: [CollectionWebtoonsEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
+  counts: Int!
 }
 
-type GenreWebtoonsConnection implements FieldConnection {
+type GenreWebtoonsConnection implements Connection {
   edges: [GenreWebtoonsEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
+  counts: Int!
 }
 
-type SearchResultWebtoonConnection implements FieldConnection {
+type SearchResultWebtoonConnection implements Connection {
   edges: [SearchResultWebtoonEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
+  counts: Int!
 }
 
-type SearchResultCollectionConnection implements FieldConnection {
+type SearchResultCollectionConnection implements Connection {
   edges: [SearchResultCollectionEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
+  counts: Int!
 }
 
 # other connections
 type SearchResultConnection {
-  webtoonResult(page: Pagination): SearchResultWebtoonConnection
-  collectionResult(page: Pagination): SearchResultCollectionConnection
+  webtoonResult(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): SearchResultWebtoonConnection
+  collectionResult(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): SearchResultCollectionConnection
 }
 
 # edges
@@ -273,21 +310,6 @@ input SignupInput {
 input LoginInput {
   email: String!
   password: String!
-}
-
-input Pagination {
-  take: Int = 4 # first
-  cursor: String # after
-}
-
-input WebtoonOrdering {
-  orderBy: OrderBy = asc
-  field: WebtoonOrderByField = title
-}
-
-input CollectionOrdering {
-  orderBy: OrderBy = asc
-  field: CollectionOrderByField = updatedAt
 }
 
 input CollectionInput {
