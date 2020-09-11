@@ -4,7 +4,10 @@ import jwt from 'jsonwebtoken';
 import { AUTH_TOKEN } from './statics';
 import { Context } from './context';
 
-function arrayToObjectArrayConverter(array: any[], key: string): any[] {
+function arrayToObjectArrayConverter<T>(
+  array: T[] | null | undefined,
+  key: string
+): any[] {
   const result = array ? array.map((value) => ({ [key]: value })) : [];
   return result;
 }
@@ -25,7 +28,7 @@ function getUserId(context: Context): string {
   throw new ApolloError('No Authentication User', 'NOT_AUTHENTICATION');
 }
 
-function shuffle(array: number[]): number[] {
+function shuffle<T>(array: T[]): T[] {
   // fisher-yates shuffle
   const result = array;
   for (let i = result.length - 1; i > 0; i -= 1) {
