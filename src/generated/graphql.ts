@@ -112,15 +112,15 @@ export type Mutation = {
 };
 
 export type MutationLoginArgs = {
-  input?: Maybe<LoginInput>;
+  input: LoginInput;
 };
 
 export type MutationSignupArgs = {
-  input?: Maybe<SignupInput>;
+  input: SignupInput;
 };
 
 export type MutationCreateCollectionArgs = {
-  input?: Maybe<CollectionInput>;
+  input: CollectionInput;
 };
 
 export type AuthPayload = {
@@ -406,7 +406,7 @@ export type LoginInput = {
 export type CollectionInput = {
   title: Scalars['String'];
   description: Scalars['String'];
-  webtoons: Array<Maybe<Scalars['String']>>;
+  webtoons: Array<Scalars['String']>;
 };
 
 export type SearchFiltering = {
@@ -816,19 +816,19 @@ export type MutationResolvers<
     ResolversTypes['AuthPayload'],
     ParentType,
     ContextType,
-    RequireFields<MutationLoginArgs, never>
+    RequireFields<MutationLoginArgs, 'input'>
   >;
   signup?: Resolver<
     ResolversTypes['AuthPayload'],
     ParentType,
     ContextType,
-    RequireFields<MutationSignupArgs, never>
+    RequireFields<MutationSignupArgs, 'input'>
   >;
   createCollection?: Resolver<
     ResolversTypes['Collection'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateCollectionArgs, never>
+    RequireFields<MutationCreateCollectionArgs, 'input'>
   >;
 }>;
 

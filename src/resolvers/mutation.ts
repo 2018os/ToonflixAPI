@@ -5,11 +5,12 @@ import jwt from 'jsonwebtoken';
 import { AUTH_TOKEN, COLLECTION_ID_UNIT, USER_ID_UNIT } from '../utils/statics';
 import { Context } from '../utils/context';
 import { getUserId, encode } from '../utils/tools';
+
 import {
-  CollectionInputArgument,
-  LoginArgument,
-  SignupArgument
-} from './types';
+  MutationLoginArgs,
+  MutationCreateCollectionArgs,
+  MutationSignupArgs
+} from '../generated/graphql';
 
 type webtoonConnect = {
   id: string;
@@ -18,7 +19,7 @@ type webtoonConnect = {
 const Mutation = {
   createCollection: async (
     _parent: any,
-    args: CollectionInputArgument,
+    args: MutationCreateCollectionArgs,
     context: Context
   ) => {
     const userId: string = getUserId(context);
@@ -44,7 +45,7 @@ const Mutation = {
     });
     return collection;
   },
-  signup: async (_parent: any, args: SignupArgument, context: Context) => {
+  signup: async (_parent: any, args: MutationSignupArgs, context: Context) => {
     const { name, email, password } = args.input;
     const existed = await context.prisma.user.findOne({ where: { email } });
     if (existed)
@@ -66,7 +67,7 @@ const Mutation = {
       user
     };
   },
-  login: async (_parent: any, args: LoginArgument, context: Context) => {
+  login: async (_parent: any, args: MutationLoginArgs, context: Context) => {
     const { email, password } = args.input;
     const user = await context.prisma.user.findOne({ where: { email } });
     if (!user) throw new ApolloError('Not Found User', 'INVALID_DATA');

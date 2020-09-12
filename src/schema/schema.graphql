@@ -65,9 +65,9 @@ type Query {
 }
 
 type Mutation {
-  login(input: LoginInput): AuthPayload!
-  signup(input: SignupInput): AuthPayload!
-  createCollection(input: CollectionInput): Collection!
+  login(input: LoginInput!): AuthPayload!
+  signup(input: SignupInput!): AuthPayload!
+  createCollection(input: CollectionInput!): Collection!
 }
 
 type AuthPayload {
@@ -315,7 +315,7 @@ input LoginInput {
 input CollectionInput {
   title: String!
   description: String!
-  webtoons: [String]!
+  webtoons: [String!]!
 }
 
 input SearchFiltering {

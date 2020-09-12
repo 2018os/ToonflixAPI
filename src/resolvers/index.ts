@@ -1,6 +1,5 @@
 import Query from './query';
 import Mutation from './mutation';
-// import Type from './type';
 
 import Author from './author';
 import Collection from './collection';
@@ -18,7 +17,6 @@ const resolvers = {
   Webtoon,
   Genre,
   SearchResultConnection: SearchResult
-  // ...Type
 };
 
 export default resolvers;
