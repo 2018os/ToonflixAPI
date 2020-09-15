@@ -7,6 +7,7 @@ import Webtoon from './webtoon';
 import Genre from './genre';
 import SearchResult from './search';
 import Connection from './connection';
+import User from './user';
 
 const resolvers = {
   Query,
@@ -16,6 +17,7 @@ const resolvers = {
   Collection,
   Webtoon,
   Genre,
+  User,
   SearchResultConnection: SearchResult
 };
 

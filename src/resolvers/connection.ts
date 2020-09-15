@@ -31,6 +31,9 @@ export default {
       case 'CollectionWebtoonsConnection': {
         return context.prisma.webtoon.count();
       }
+      case 'UserConnection': {
+        return context.prisma.user.count();
+      }
       default:
         return 0;
     }

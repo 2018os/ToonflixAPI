@@ -96,6 +96,32 @@ const Query = {
       return nodes;
     }
   }),
+  users: connection({
+    cursorFromNode: (node: Node) => node.id,
+    nodes: async (_parent, args, context: Context) => {
+      const cursor = args.after || args.before;
+      const encodedCursor = cursor && encodeCursor(cursor);
+      const nodes = await context.prisma.user.findMany({
+        skip: cursor ? 1 : undefined,
+        cursor: cursor
+          ? {
+              id: encodedCursor || undefined
+            }
+          : undefined,
+        include: {
+          collections: {
+            include: {
+              webtoons: true
+            }
+          }
+        },
+        orderBy: {
+          id: args.before ? 'desc' : 'asc'
+        }
+      });
+      return nodes;
+    }
+  }),
   webtoon: async (_parent: any, args: QueryWebtoonArgs, context: Context) => {
     const id = args;
     const webtoon = await context.prisma.webtoon.findOne({
