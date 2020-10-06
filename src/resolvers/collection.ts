@@ -22,6 +22,9 @@ export default {
             }
           }
         },
+        include: {
+          genres: true
+        },
         skip: cursor ? 1 : undefined,
         cursor: cursor
           ? {

@@ -15,6 +15,9 @@ export default {
       const cursor = args.after || args.before;
       const encodedCursor = cursor && encodeCursor(cursor);
       const nodes = await context.prisma.webtoon.findMany({
+        include: {
+          genres: true
+        },
         where: {
           genres: {
             some: {
