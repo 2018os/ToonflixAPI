@@ -40,26 +40,16 @@ interface Edge {
 
 # types
 type Query {
-  authors(
-    first: Int
-    last: Int
-    before: String
-    after: String
-  ): AuthorConnection!
-  webtoons(
-    first: Int
-    last: Int
-    before: String
-    after: String
-  ): WebtoonConnection!
+  authors(first: Int, last: Int, before: ID, after: ID): AuthorConnection!
+  webtoons(first: Int, last: Int, before: ID, after: ID): WebtoonConnection!
   collections(
     first: Int
     last: Int
-    before: String
-    after: String
+    before: ID
+    after: ID
   ): CollectionConnection!
   genres: [Genre]
-  users(first: Int, last: Int, before: String, after: String): UserConnection!
+  users(first: Int, last: Int, before: ID, after: ID): UserConnection!
   webtoon(id: ID!): Webtoon!
   randomWebtoons(take: Int = 1): [Webtoon!]
   search(keyword: String, where: SearchFiltering): SearchResultConnection!
@@ -97,14 +87,14 @@ type Webtoon implements Node {
   authorsConnection(
     first: Int
     last: Int
-    before: String
-    after: String
+    before: ID
+    after: ID
   ): WebtoonAuthorsConnection!
   collectionsConnection(
     first: Int
     last: Int
-    before: String
-    after: String
+    before: ID
+    after: ID
   ): WebtoonCollectionsConnection!
   genres: [Genre!]
   comments: [Comment]
@@ -116,8 +106,8 @@ type Author implements Node {
   webtoonsConnection(
     first: Int
     last: Int
-    before: String
-    after: String
+    before: ID
+    after: ID
   ): AuthorWebtoonsConnection!
 }
 
@@ -127,8 +117,8 @@ type Genre {
   webtoonsConnection(
     first: Int
     last: Int
-    before: String
-    after: String
+    before: ID
+    after: ID
   ): GenreWebtoonsConnection!
 }
 
@@ -139,8 +129,8 @@ type Collection implements Node {
   webtoonsConnection(
     first: Int
     last: Int
-    before: String
-    after: String
+    before: ID
+    after: ID
   ): CollectionWebtoonsConnection!
   writer: User!
   createdAt: Date!
@@ -155,8 +145,8 @@ type User implements Node {
   collectionsConnection(
     first: Int
     last: Int
-    before: String
-    after: String
+    before: ID
+    after: ID
   ): UserCollectionsConnection!
   comments: [Comment]
 }
@@ -258,14 +248,14 @@ type SearchResultConnection {
   webtoonResult(
     first: Int
     last: Int
-    before: String
-    after: String
+    before: ID
+    after: ID
   ): SearchResultWebtoonConnection
   collectionResult(
     first: Int
     last: Int
-    before: String
-    after: String
+    before: ID
+    after: ID
   ): SearchResultCollectionConnection
 }
 
