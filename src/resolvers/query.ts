@@ -8,7 +8,9 @@ import {
   Node,
   QueryWebtoonArgs,
   QuerySearchArgs,
-  QueryRandomWebtoonsArgs
+  QueryRandomWebtoonsArgs,
+  QueryUserArgs,
+  QueryCollectionsArgs
 } from '../generated/graphql';
 
 import { arrayToObjectArrayConverter, encode, shuffle } from '../utils/tools';
@@ -75,7 +77,8 @@ const Query = {
   }),
   collections: connection({
     cursorFromNode: (node: Node) => decodeCursor(node.id),
-    nodes: async (_parent, args, context: Context) => {
+    nodes: async (_parent, args: QueryCollectionsArgs, context: Context) => {
+      const { keyword } = args;
       const cursor = args.after || args.before;
       const encodedCursor = cursor && encodeCursor(cursor);
       const nodes = await context.prisma.collection.findMany({
@@ -91,7 +94,23 @@ const Query = {
         },
         orderBy: {
           title: args.before ? 'desc' : 'asc'
-        }
+        },
+        where: keyword
+          ? {
+              OR: [
+                {
+                  title: {
+                    contains: keyword
+                  }
+                },
+                {
+                  description: {
+                    contains: keyword
+                  }
+                }
+              ]
+            }
+          : undefined
       });
       return nodes;
     }
@@ -141,6 +160,20 @@ const Query = {
       }
     });
     return webtoon;
+  },
+  user: async (_parent: any, args: QueryUserArgs, context: Context) => {
+    const id = args;
+    const user = await context.prisma.user.findOne({
+      where: id,
+      include: {
+        collections: {
+          include: {
+            webtoons: true
+          }
+        }
+      }
+    });
+    return user;
   },
   randomWebtoons: async (
     _parent: any,

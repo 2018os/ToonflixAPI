@@ -47,9 +47,12 @@ type Query {
     last: Int
     before: ID
     after: ID
+    keyword: String
   ): CollectionConnection!
   genres: [Genre]
   users(first: Int, last: Int, before: ID, after: ID): UserConnection!
+  user(id: ID!): User!
+  # myProfile(id: ID!): User!
   webtoon(id: ID!): Webtoon!
   randomWebtoons(take: Int = 1): [Webtoon!]
   search(keyword: String, where: SearchFiltering): SearchResultConnection!
@@ -142,6 +145,7 @@ type User implements Node {
   email: String!
   name: String!
   password: String!
+  # likedWebtoon
   collectionsConnection(
     first: Int
     last: Int
