@@ -100,7 +100,12 @@ type Webtoon implements Node {
     after: ID
   ): WebtoonCollectionsConnection!
   genres: [Genre!]
-  comments: [Comment]
+  commentsConnection(
+    first: Int
+    last: Int
+    before: ID
+    after: ID
+  ): WebtoonCommentsConnection!
 }
 
 type Author implements Node {
@@ -135,6 +140,12 @@ type Collection implements Node {
     before: ID
     after: ID
   ): CollectionWebtoonsConnection!
+  commentsConnection(
+    first: Int
+    last: Int
+    before: ID
+    after: ID
+  ): CollectionCommentsConnection!
   writer: User!
   createdAt: Date!
   updatedAt: Date
@@ -152,14 +163,24 @@ type User implements Node {
     before: ID
     after: ID
   ): UserCollectionsConnection!
-  comments: [Comment]
+  commentsConnection(
+    first: Int
+    last: Int
+    before: ID
+    after: ID
+  ): UserCommentsConnection!
 }
 
-type Comment {
+type Comment implements Node {
+  id: ID!
   message: String!
   writer: User!
-  writtenWebtoon: Webtoon!
-  subComments: [Comment]
+  commentsConnection(
+    first: Int
+    last: Int
+    before: ID
+    after: ID
+  ): CommentCommentsConnection!
 }
 
 # query connections
@@ -205,6 +226,13 @@ type WebtoonCollectionsConnection implements Connection {
   counts: Int!
 }
 
+type WebtoonCommentsConnection implements Connection {
+  edges: [WebtoonCommentsEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+  counts: Int!
+}
+
 type AuthorWebtoonsConnection implements Connection {
   edges: [AuthorWebtoonsEdge]
   pageInfo: PageInfo!
@@ -214,6 +242,13 @@ type AuthorWebtoonsConnection implements Connection {
 
 type CollectionWebtoonsConnection implements Connection {
   edges: [CollectionWebtoonsEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+  counts: Int!
+}
+
+type CollectionCommentsConnection implements Connection {
+  edges: [CollectionCommentsEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
   counts: Int!
@@ -247,6 +282,19 @@ type UserCollectionsConnection implements Connection {
   counts: Int!
 }
 
+type UserCommentsConnection implements Connection {
+  edges: [UserCommentsEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+  counts: Int!
+}
+
+type CommentCommentsConnection implements Connection {
+  edges: [CommentCommentsEdge]
+  pageInfo: PageInfo!
+  totalCounts: Int!
+  counts: Int!
+}
 # other connections
 type SearchResultConnection {
   webtoonResult(
@@ -289,6 +337,11 @@ type WebtoonCollectionsEdge implements Edge {
   node: Collection
 }
 
+type WebtoonCommentsEdge implements Edge {
+  cursor: String!
+  node: Comment
+}
+
 type AuthorWebtoonsEdge implements Edge {
   cursor: String!
   node: Webtoon
@@ -297,6 +350,11 @@ type AuthorWebtoonsEdge implements Edge {
 type CollectionWebtoonsEdge implements Edge {
   cursor: String!
   node: Webtoon
+}
+
+type CollectionCommentsEdge implements Edge {
+  cursor: String!
+  node: Comment
 }
 
 type GenreWebtoonsEdge implements Edge {
@@ -322,6 +380,16 @@ type UserEdge implements Edge {
 type UserCollectionsEdge implements Edge {
   cursor: String!
   node: Collection
+}
+
+type UserCommentsEdge implements Edge {
+  cursor: String!
+  node: Comment
+}
+
+type CommentCommentsEdge implements Edge {
+  cursor: String!
+  node: Comment
 }
 
 # input

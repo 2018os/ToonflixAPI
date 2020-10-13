@@ -164,7 +164,7 @@ export type Webtoon = Node & {
   authorsConnection: WebtoonAuthorsConnection;
   collectionsConnection: WebtoonCollectionsConnection;
   genres?: Maybe<Array<Genre>>;
-  comments?: Maybe<Array<Maybe<Comment>>>;
+  commentsConnection: WebtoonCommentsConnection;
 };
 
 export type WebtoonAuthorsConnectionArgs = {
@@ -175,6 +175,13 @@ export type WebtoonAuthorsConnectionArgs = {
 };
 
 export type WebtoonCollectionsConnectionArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['ID']>;
+};
+
+export type WebtoonCommentsConnectionArgs = {
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['ID']>;
@@ -215,12 +222,20 @@ export type Collection = Node & {
   title: Scalars['String'];
   description: Scalars['String'];
   webtoonsConnection: CollectionWebtoonsConnection;
+  commentsConnection: CollectionCommentsConnection;
   writer: User;
   createdAt: Scalars['Date'];
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
 export type CollectionWebtoonsConnectionArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['ID']>;
+};
+
+export type CollectionCommentsConnectionArgs = {
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['ID']>;
@@ -234,7 +249,7 @@ export type User = Node & {
   name: Scalars['String'];
   password: Scalars['String'];
   collectionsConnection: UserCollectionsConnection;
-  comments?: Maybe<Array<Maybe<Comment>>>;
+  commentsConnection: UserCommentsConnection;
 };
 
 export type UserCollectionsConnectionArgs = {
@@ -244,12 +259,26 @@ export type UserCollectionsConnectionArgs = {
   after?: Maybe<Scalars['ID']>;
 };
 
-export type Comment = {
+export type UserCommentsConnectionArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['ID']>;
+};
+
+export type Comment = Node & {
   __typename?: 'Comment';
+  id: Scalars['ID'];
   message: Scalars['String'];
   writer: User;
-  writtenWebtoon: Webtoon;
-  subComments?: Maybe<Array<Maybe<Comment>>>;
+  commentsConnection: CommentCommentsConnection;
+};
+
+export type CommentCommentsConnectionArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['ID']>;
 };
 
 export type UserConnection = Connection & {
@@ -300,6 +329,14 @@ export type WebtoonCollectionsConnection = Connection & {
   counts: Scalars['Int'];
 };
 
+export type WebtoonCommentsConnection = Connection & {
+  __typename?: 'WebtoonCommentsConnection';
+  edges?: Maybe<Array<Maybe<WebtoonCommentsEdge>>>;
+  pageInfo: PageInfo;
+  totalCounts: Scalars['Int'];
+  counts: Scalars['Int'];
+};
+
 export type AuthorWebtoonsConnection = Connection & {
   __typename?: 'AuthorWebtoonsConnection';
   edges?: Maybe<Array<Maybe<AuthorWebtoonsEdge>>>;
@@ -311,6 +348,14 @@ export type AuthorWebtoonsConnection = Connection & {
 export type CollectionWebtoonsConnection = Connection & {
   __typename?: 'CollectionWebtoonsConnection';
   edges?: Maybe<Array<Maybe<CollectionWebtoonsEdge>>>;
+  pageInfo: PageInfo;
+  totalCounts: Scalars['Int'];
+  counts: Scalars['Int'];
+};
+
+export type CollectionCommentsConnection = Connection & {
+  __typename?: 'CollectionCommentsConnection';
+  edges?: Maybe<Array<Maybe<CollectionCommentsEdge>>>;
   pageInfo: PageInfo;
   totalCounts: Scalars['Int'];
   counts: Scalars['Int'];
@@ -343,6 +388,22 @@ export type SearchResultCollectionConnection = Connection & {
 export type UserCollectionsConnection = Connection & {
   __typename?: 'UserCollectionsConnection';
   edges?: Maybe<Array<Maybe<UserCollectionsEdge>>>;
+  pageInfo: PageInfo;
+  totalCounts: Scalars['Int'];
+  counts: Scalars['Int'];
+};
+
+export type UserCommentsConnection = Connection & {
+  __typename?: 'UserCommentsConnection';
+  edges?: Maybe<Array<Maybe<UserCommentsEdge>>>;
+  pageInfo: PageInfo;
+  totalCounts: Scalars['Int'];
+  counts: Scalars['Int'];
+};
+
+export type CommentCommentsConnection = Connection & {
+  __typename?: 'CommentCommentsConnection';
+  edges?: Maybe<Array<Maybe<CommentCommentsEdge>>>;
   pageInfo: PageInfo;
   totalCounts: Scalars['Int'];
   counts: Scalars['Int'];
@@ -398,6 +459,12 @@ export type WebtoonCollectionsEdge = Edge & {
   node?: Maybe<Collection>;
 };
 
+export type WebtoonCommentsEdge = Edge & {
+  __typename?: 'WebtoonCommentsEdge';
+  cursor: Scalars['String'];
+  node?: Maybe<Comment>;
+};
+
 export type AuthorWebtoonsEdge = Edge & {
   __typename?: 'AuthorWebtoonsEdge';
   cursor: Scalars['String'];
@@ -408,6 +475,12 @@ export type CollectionWebtoonsEdge = Edge & {
   __typename?: 'CollectionWebtoonsEdge';
   cursor: Scalars['String'];
   node?: Maybe<Webtoon>;
+};
+
+export type CollectionCommentsEdge = Edge & {
+  __typename?: 'CollectionCommentsEdge';
+  cursor: Scalars['String'];
+  node?: Maybe<Comment>;
 };
 
 export type GenreWebtoonsEdge = Edge & {
@@ -438,6 +511,18 @@ export type UserCollectionsEdge = Edge & {
   __typename?: 'UserCollectionsEdge';
   cursor: Scalars['String'];
   node?: Maybe<Collection>;
+};
+
+export type UserCommentsEdge = Edge & {
+  __typename?: 'UserCommentsEdge';
+  cursor: Scalars['String'];
+  node?: Maybe<Comment>;
+};
+
+export type CommentCommentsEdge = Edge & {
+  __typename?: 'CommentCommentsEdge';
+  cursor: Scalars['String'];
+  node?: Maybe<Comment>;
 };
 
 export type SignupInput = {
@@ -593,7 +678,8 @@ export type ResolversTypes = ResolversObject<{
     | ResolversTypes['Webtoon']
     | ResolversTypes['Author']
     | ResolversTypes['Collection']
-    | ResolversTypes['User'];
+    | ResolversTypes['User']
+    | ResolversTypes['Comment'];
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Connection:
     | ResolversTypes['UserConnection']
@@ -602,12 +688,16 @@ export type ResolversTypes = ResolversObject<{
     | ResolversTypes['AuthorConnection']
     | ResolversTypes['WebtoonAuthorsConnection']
     | ResolversTypes['WebtoonCollectionsConnection']
+    | ResolversTypes['WebtoonCommentsConnection']
     | ResolversTypes['AuthorWebtoonsConnection']
     | ResolversTypes['CollectionWebtoonsConnection']
+    | ResolversTypes['CollectionCommentsConnection']
     | ResolversTypes['GenreWebtoonsConnection']
     | ResolversTypes['SearchResultWebtoonConnection']
     | ResolversTypes['SearchResultCollectionConnection']
-    | ResolversTypes['UserCollectionsConnection'];
+    | ResolversTypes['UserCollectionsConnection']
+    | ResolversTypes['UserCommentsConnection']
+    | ResolversTypes['CommentCommentsConnection'];
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Edge:
     | ResolversTypes['WebtoonEdge']
@@ -615,13 +705,17 @@ export type ResolversTypes = ResolversObject<{
     | ResolversTypes['AuthorEdge']
     | ResolversTypes['WebtoonAuthorsEdge']
     | ResolversTypes['WebtoonCollectionsEdge']
+    | ResolversTypes['WebtoonCommentsEdge']
     | ResolversTypes['AuthorWebtoonsEdge']
     | ResolversTypes['CollectionWebtoonsEdge']
+    | ResolversTypes['CollectionCommentsEdge']
     | ResolversTypes['GenreWebtoonsEdge']
     | ResolversTypes['SearchResultWebtoonEdge']
     | ResolversTypes['SearchResultCollectionEdge']
     | ResolversTypes['UserEdge']
-    | ResolversTypes['UserCollectionsEdge'];
+    | ResolversTypes['UserCollectionsEdge']
+    | ResolversTypes['UserCommentsEdge']
+    | ResolversTypes['CommentCommentsEdge'];
   String: ResolverTypeWrapper<Scalars['String']>;
   Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -642,9 +736,13 @@ export type ResolversTypes = ResolversObject<{
   WebtoonCollectionsConnection: ResolverTypeWrapper<
     WebtoonCollectionsConnection
   >;
+  WebtoonCommentsConnection: ResolverTypeWrapper<WebtoonCommentsConnection>;
   AuthorWebtoonsConnection: ResolverTypeWrapper<AuthorWebtoonsConnection>;
   CollectionWebtoonsConnection: ResolverTypeWrapper<
     CollectionWebtoonsConnection
+  >;
+  CollectionCommentsConnection: ResolverTypeWrapper<
+    CollectionCommentsConnection
   >;
   GenreWebtoonsConnection: ResolverTypeWrapper<GenreWebtoonsConnection>;
   SearchResultWebtoonConnection: ResolverTypeWrapper<
@@ -654,19 +752,25 @@ export type ResolversTypes = ResolversObject<{
     SearchResultCollectionConnection
   >;
   UserCollectionsConnection: ResolverTypeWrapper<UserCollectionsConnection>;
+  UserCommentsConnection: ResolverTypeWrapper<UserCommentsConnection>;
+  CommentCommentsConnection: ResolverTypeWrapper<CommentCommentsConnection>;
   SearchResultConnection: ResolverTypeWrapper<SearchResultConnection>;
   WebtoonEdge: ResolverTypeWrapper<WebtoonEdge>;
   CollectionEdge: ResolverTypeWrapper<CollectionEdge>;
   AuthorEdge: ResolverTypeWrapper<AuthorEdge>;
   WebtoonAuthorsEdge: ResolverTypeWrapper<WebtoonAuthorsEdge>;
   WebtoonCollectionsEdge: ResolverTypeWrapper<WebtoonCollectionsEdge>;
+  WebtoonCommentsEdge: ResolverTypeWrapper<WebtoonCommentsEdge>;
   AuthorWebtoonsEdge: ResolverTypeWrapper<AuthorWebtoonsEdge>;
   CollectionWebtoonsEdge: ResolverTypeWrapper<CollectionWebtoonsEdge>;
+  CollectionCommentsEdge: ResolverTypeWrapper<CollectionCommentsEdge>;
   GenreWebtoonsEdge: ResolverTypeWrapper<GenreWebtoonsEdge>;
   SearchResultWebtoonEdge: ResolverTypeWrapper<SearchResultWebtoonEdge>;
   SearchResultCollectionEdge: ResolverTypeWrapper<SearchResultCollectionEdge>;
   UserEdge: ResolverTypeWrapper<UserEdge>;
   UserCollectionsEdge: ResolverTypeWrapper<UserCollectionsEdge>;
+  UserCommentsEdge: ResolverTypeWrapper<UserCommentsEdge>;
+  CommentCommentsEdge: ResolverTypeWrapper<CommentCommentsEdge>;
   SignupInput: SignupInput;
   LoginInput: LoginInput;
   CollectionInput: CollectionInput;
@@ -681,7 +785,8 @@ export type ResolversParentTypes = ResolversObject<{
     | ResolversParentTypes['Webtoon']
     | ResolversParentTypes['Author']
     | ResolversParentTypes['Collection']
-    | ResolversParentTypes['User'];
+    | ResolversParentTypes['User']
+    | ResolversParentTypes['Comment'];
   ID: Scalars['ID'];
   Connection:
     | ResolversParentTypes['UserConnection']
@@ -690,12 +795,16 @@ export type ResolversParentTypes = ResolversObject<{
     | ResolversParentTypes['AuthorConnection']
     | ResolversParentTypes['WebtoonAuthorsConnection']
     | ResolversParentTypes['WebtoonCollectionsConnection']
+    | ResolversParentTypes['WebtoonCommentsConnection']
     | ResolversParentTypes['AuthorWebtoonsConnection']
     | ResolversParentTypes['CollectionWebtoonsConnection']
+    | ResolversParentTypes['CollectionCommentsConnection']
     | ResolversParentTypes['GenreWebtoonsConnection']
     | ResolversParentTypes['SearchResultWebtoonConnection']
     | ResolversParentTypes['SearchResultCollectionConnection']
-    | ResolversParentTypes['UserCollectionsConnection'];
+    | ResolversParentTypes['UserCollectionsConnection']
+    | ResolversParentTypes['UserCommentsConnection']
+    | ResolversParentTypes['CommentCommentsConnection'];
   Int: Scalars['Int'];
   Edge:
     | ResolversParentTypes['WebtoonEdge']
@@ -703,13 +812,17 @@ export type ResolversParentTypes = ResolversObject<{
     | ResolversParentTypes['AuthorEdge']
     | ResolversParentTypes['WebtoonAuthorsEdge']
     | ResolversParentTypes['WebtoonCollectionsEdge']
+    | ResolversParentTypes['WebtoonCommentsEdge']
     | ResolversParentTypes['AuthorWebtoonsEdge']
     | ResolversParentTypes['CollectionWebtoonsEdge']
+    | ResolversParentTypes['CollectionCommentsEdge']
     | ResolversParentTypes['GenreWebtoonsEdge']
     | ResolversParentTypes['SearchResultWebtoonEdge']
     | ResolversParentTypes['SearchResultCollectionEdge']
     | ResolversParentTypes['UserEdge']
-    | ResolversParentTypes['UserCollectionsEdge'];
+    | ResolversParentTypes['UserCollectionsEdge']
+    | ResolversParentTypes['UserCommentsEdge']
+    | ResolversParentTypes['CommentCommentsEdge'];
   String: Scalars['String'];
   Query: {};
   Mutation: {};
@@ -728,25 +841,33 @@ export type ResolversParentTypes = ResolversObject<{
   AuthorConnection: AuthorConnection;
   WebtoonAuthorsConnection: WebtoonAuthorsConnection;
   WebtoonCollectionsConnection: WebtoonCollectionsConnection;
+  WebtoonCommentsConnection: WebtoonCommentsConnection;
   AuthorWebtoonsConnection: AuthorWebtoonsConnection;
   CollectionWebtoonsConnection: CollectionWebtoonsConnection;
+  CollectionCommentsConnection: CollectionCommentsConnection;
   GenreWebtoonsConnection: GenreWebtoonsConnection;
   SearchResultWebtoonConnection: SearchResultWebtoonConnection;
   SearchResultCollectionConnection: SearchResultCollectionConnection;
   UserCollectionsConnection: UserCollectionsConnection;
+  UserCommentsConnection: UserCommentsConnection;
+  CommentCommentsConnection: CommentCommentsConnection;
   SearchResultConnection: SearchResultConnection;
   WebtoonEdge: WebtoonEdge;
   CollectionEdge: CollectionEdge;
   AuthorEdge: AuthorEdge;
   WebtoonAuthorsEdge: WebtoonAuthorsEdge;
   WebtoonCollectionsEdge: WebtoonCollectionsEdge;
+  WebtoonCommentsEdge: WebtoonCommentsEdge;
   AuthorWebtoonsEdge: AuthorWebtoonsEdge;
   CollectionWebtoonsEdge: CollectionWebtoonsEdge;
+  CollectionCommentsEdge: CollectionCommentsEdge;
   GenreWebtoonsEdge: GenreWebtoonsEdge;
   SearchResultWebtoonEdge: SearchResultWebtoonEdge;
   SearchResultCollectionEdge: SearchResultCollectionEdge;
   UserEdge: UserEdge;
   UserCollectionsEdge: UserCollectionsEdge;
+  UserCommentsEdge: UserCommentsEdge;
+  CommentCommentsEdge: CommentCommentsEdge;
   SignupInput: SignupInput;
   LoginInput: LoginInput;
   CollectionInput: CollectionInput;
@@ -768,7 +889,7 @@ export type NodeResolvers<
   ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']
 > = ResolversObject<{
   __resolveType: TypeResolveFn<
-    'Webtoon' | 'Author' | 'Collection' | 'User',
+    'Webtoon' | 'Author' | 'Collection' | 'User' | 'Comment',
     ParentType,
     ContextType
   >;
@@ -786,12 +907,16 @@ export type ConnectionResolvers<
     | 'AuthorConnection'
     | 'WebtoonAuthorsConnection'
     | 'WebtoonCollectionsConnection'
+    | 'WebtoonCommentsConnection'
     | 'AuthorWebtoonsConnection'
     | 'CollectionWebtoonsConnection'
+    | 'CollectionCommentsConnection'
     | 'GenreWebtoonsConnection'
     | 'SearchResultWebtoonConnection'
     | 'SearchResultCollectionConnection'
-    | 'UserCollectionsConnection',
+    | 'UserCollectionsConnection'
+    | 'UserCommentsConnection'
+    | 'CommentCommentsConnection',
     ParentType,
     ContextType
   >;
@@ -815,13 +940,17 @@ export type EdgeResolvers<
     | 'AuthorEdge'
     | 'WebtoonAuthorsEdge'
     | 'WebtoonCollectionsEdge'
+    | 'WebtoonCommentsEdge'
     | 'AuthorWebtoonsEdge'
     | 'CollectionWebtoonsEdge'
+    | 'CollectionCommentsEdge'
     | 'GenreWebtoonsEdge'
     | 'SearchResultWebtoonEdge'
     | 'SearchResultCollectionEdge'
     | 'UserEdge'
-    | 'UserCollectionsEdge',
+    | 'UserCollectionsEdge'
+    | 'UserCommentsEdge'
+    | 'CommentCommentsEdge',
     ParentType,
     ContextType
   >;
@@ -974,10 +1103,11 @@ export type WebtoonResolvers<
     ParentType,
     ContextType
   >;
-  comments?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes['Comment']>>>,
+  commentsConnection?: Resolver<
+    ResolversTypes['WebtoonCommentsConnection'],
     ParentType,
-    ContextType
+    ContextType,
+    RequireFields<WebtoonCommentsConnectionArgs, never>
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
@@ -1025,6 +1155,12 @@ export type CollectionResolvers<
     ContextType,
     RequireFields<CollectionWebtoonsConnectionArgs, never>
   >;
+  commentsConnection?: Resolver<
+    ResolversTypes['CollectionCommentsConnection'],
+    ParentType,
+    ContextType,
+    RequireFields<CollectionCommentsConnectionArgs, never>
+  >;
   writer?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
@@ -1045,10 +1181,11 @@ export type UserResolvers<
     ContextType,
     RequireFields<UserCollectionsConnectionArgs, never>
   >;
-  comments?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes['Comment']>>>,
+  commentsConnection?: Resolver<
+    ResolversTypes['UserCommentsConnection'],
     ParentType,
-    ContextType
+    ContextType,
+    RequireFields<UserCommentsConnectionArgs, never>
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
@@ -1057,13 +1194,14 @@ export type CommentResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']
 > = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   writer?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  writtenWebtoon?: Resolver<ResolversTypes['Webtoon'], ParentType, ContextType>;
-  subComments?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes['Comment']>>>,
+  commentsConnection?: Resolver<
+    ResolversTypes['CommentCommentsConnection'],
     ParentType,
-    ContextType
+    ContextType,
+    RequireFields<CommentCommentsConnectionArgs, never>
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
@@ -1158,6 +1296,21 @@ export type WebtoonCollectionsConnectionResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
+export type WebtoonCommentsConnectionResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['WebtoonCommentsConnection'] = ResolversParentTypes['WebtoonCommentsConnection']
+> = ResolversObject<{
+  edges?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['WebtoonCommentsEdge']>>>,
+    ParentType,
+    ContextType
+  >;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+}>;
+
 export type AuthorWebtoonsConnectionResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['AuthorWebtoonsConnection'] = ResolversParentTypes['AuthorWebtoonsConnection']
@@ -1179,6 +1332,21 @@ export type CollectionWebtoonsConnectionResolvers<
 > = ResolversObject<{
   edges?: Resolver<
     Maybe<Array<Maybe<ResolversTypes['CollectionWebtoonsEdge']>>>,
+    ParentType,
+    ContextType
+  >;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+}>;
+
+export type CollectionCommentsConnectionResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['CollectionCommentsConnection'] = ResolversParentTypes['CollectionCommentsConnection']
+> = ResolversObject<{
+  edges?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['CollectionCommentsEdge']>>>,
     ParentType,
     ContextType
   >;
@@ -1239,6 +1407,36 @@ export type UserCollectionsConnectionResolvers<
 > = ResolversObject<{
   edges?: Resolver<
     Maybe<Array<Maybe<ResolversTypes['UserCollectionsEdge']>>>,
+    ParentType,
+    ContextType
+  >;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+}>;
+
+export type UserCommentsConnectionResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['UserCommentsConnection'] = ResolversParentTypes['UserCommentsConnection']
+> = ResolversObject<{
+  edges?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['UserCommentsEdge']>>>,
+    ParentType,
+    ContextType
+  >;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+}>;
+
+export type CommentCommentsConnectionResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['CommentCommentsConnection'] = ResolversParentTypes['CommentCommentsConnection']
+> = ResolversObject<{
+  edges?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['CommentCommentsEdge']>>>,
     ParentType,
     ContextType
   >;
@@ -1312,6 +1510,15 @@ export type WebtoonCollectionsEdgeResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
+export type WebtoonCommentsEdgeResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['WebtoonCommentsEdge'] = ResolversParentTypes['WebtoonCommentsEdge']
+> = ResolversObject<{
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  node?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+}>;
+
 export type AuthorWebtoonsEdgeResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['AuthorWebtoonsEdge'] = ResolversParentTypes['AuthorWebtoonsEdge']
@@ -1327,6 +1534,15 @@ export type CollectionWebtoonsEdgeResolvers<
 > = ResolversObject<{
   cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   node?: Resolver<Maybe<ResolversTypes['Webtoon']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+}>;
+
+export type CollectionCommentsEdgeResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['CollectionCommentsEdge'] = ResolversParentTypes['CollectionCommentsEdge']
+> = ResolversObject<{
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  node?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1375,6 +1591,24 @@ export type UserCollectionsEdgeResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
+export type UserCommentsEdgeResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['UserCommentsEdge'] = ResolversParentTypes['UserCommentsEdge']
+> = ResolversObject<{
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  node?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+}>;
+
+export type CommentCommentsEdgeResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['CommentCommentsEdge'] = ResolversParentTypes['CommentCommentsEdge']
+> = ResolversObject<{
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  node?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+}>;
+
 export type Resolvers<ContextType = Context> = ResolversObject<{
   Date?: GraphQLScalarType;
   Url?: GraphQLScalarType;
@@ -1399,8 +1633,12 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   WebtoonCollectionsConnection?: WebtoonCollectionsConnectionResolvers<
     ContextType
   >;
+  WebtoonCommentsConnection?: WebtoonCommentsConnectionResolvers<ContextType>;
   AuthorWebtoonsConnection?: AuthorWebtoonsConnectionResolvers<ContextType>;
   CollectionWebtoonsConnection?: CollectionWebtoonsConnectionResolvers<
+    ContextType
+  >;
+  CollectionCommentsConnection?: CollectionCommentsConnectionResolvers<
     ContextType
   >;
   GenreWebtoonsConnection?: GenreWebtoonsConnectionResolvers<ContextType>;
@@ -1411,19 +1649,25 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
     ContextType
   >;
   UserCollectionsConnection?: UserCollectionsConnectionResolvers<ContextType>;
+  UserCommentsConnection?: UserCommentsConnectionResolvers<ContextType>;
+  CommentCommentsConnection?: CommentCommentsConnectionResolvers<ContextType>;
   SearchResultConnection?: SearchResultConnectionResolvers<ContextType>;
   WebtoonEdge?: WebtoonEdgeResolvers<ContextType>;
   CollectionEdge?: CollectionEdgeResolvers<ContextType>;
   AuthorEdge?: AuthorEdgeResolvers<ContextType>;
   WebtoonAuthorsEdge?: WebtoonAuthorsEdgeResolvers<ContextType>;
   WebtoonCollectionsEdge?: WebtoonCollectionsEdgeResolvers<ContextType>;
+  WebtoonCommentsEdge?: WebtoonCommentsEdgeResolvers<ContextType>;
   AuthorWebtoonsEdge?: AuthorWebtoonsEdgeResolvers<ContextType>;
   CollectionWebtoonsEdge?: CollectionWebtoonsEdgeResolvers<ContextType>;
+  CollectionCommentsEdge?: CollectionCommentsEdgeResolvers<ContextType>;
   GenreWebtoonsEdge?: GenreWebtoonsEdgeResolvers<ContextType>;
   SearchResultWebtoonEdge?: SearchResultWebtoonEdgeResolvers<ContextType>;
   SearchResultCollectionEdge?: SearchResultCollectionEdgeResolvers<ContextType>;
   UserEdge?: UserEdgeResolvers<ContextType>;
   UserCollectionsEdge?: UserCollectionsEdgeResolvers<ContextType>;
+  UserCommentsEdge?: UserCommentsEdgeResolvers<ContextType>;
+  CommentCommentsEdge?: CommentCommentsEdgeResolvers<ContextType>;
 }>;
 
 /**
