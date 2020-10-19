@@ -2,14 +2,20 @@ import { ApolloError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { AUTH_TOKEN, COLLECTION_ID_UNIT, USER_ID_UNIT } from '../utils/statics';
+import {
+  AUTH_TOKEN,
+  COLLECTION_ID_UNIT,
+  USER_ID_UNIT,
+  COMMENT_ID_UNIT
+} from '../utils/statics';
 import { Context } from '../utils/context';
 import { getUserId, encode } from '../utils/tools';
 
 import {
   MutationLoginArgs,
   MutationCreateCollectionArgs,
-  MutationSignupArgs
+  MutationSignupArgs,
+  MutationPostCommentArgs
 } from '../generated/graphql';
 
 type webtoonConnect = {
@@ -78,6 +84,41 @@ const Mutation = {
       token,
       user
     };
+  },
+  postComment: async (
+    _parent: any,
+    args: MutationPostCommentArgs,
+    context: Context
+  ) => {
+    const userId: string = getUserId(context);
+    const { message } = args.input;
+    const commentCounts = await context.prisma.comment.count();
+    const id = encode(COMMENT_ID_UNIT + commentCounts);
+    const comment = await context.prisma.comment.create({
+      data: {
+        id,
+        writer: {
+          connect: { id: userId }
+        },
+        message,
+        webtoon: args.input.webtoonId
+          ? {
+              connect: { id: args.input.webtoonId }
+            }
+          : null,
+        collection: args.input.collectionId
+          ? {
+              connect: { id: args.input.collectionId }
+            }
+          : null,
+        subComments: args.input.commentId
+          ? {
+              connect: { id: args.input.commentId }
+            }
+          : null
+      }
+    });
+    return comment;
   }
 };
 

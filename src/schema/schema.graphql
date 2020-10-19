@@ -67,6 +67,7 @@ type Mutation {
   login(input: LoginInput!): AuthPayload!
   signup(input: SignupInput!): AuthPayload!
   createCollection(input: CollectionInput!): Collection!
+  postComment(input: CommentInput!): Comment!
 }
 
 type AuthPayload {
@@ -180,6 +181,7 @@ type Comment implements Node {
   id: ID!
   message: String!
   writer: User!
+  createdAt: Date!
   commentsConnection(
     first: Int
     last: Int
@@ -414,6 +416,13 @@ input CollectionInput {
   title: String!
   description: String!
   webtoons: [String!]!
+}
+
+input CommentInput {
+  message: String!
+  webtoonId: ID
+  collectionId: ID
+  commentId: ID
 }
 
 input SearchFiltering {
