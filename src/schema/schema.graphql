@@ -55,7 +55,12 @@ type Query {
   # myProfile(id: ID!): User!
   webtoon(id: ID!): Webtoon!
   randomWebtoons(take: Int = 1): [Webtoon!]
-  search(keyword: String, where: SearchFiltering): SearchResultConnection!
+  search(
+    keyword: String
+    where: SearchFiltering
+    webtoonPaging: Paging
+    collectionPaging: Paging
+  ): SearchResult!
 }
 
 type Mutation {
@@ -261,15 +266,15 @@ type GenreWebtoonsConnection implements Connection {
   counts: Int!
 }
 
-type SearchResultWebtoonConnection implements Connection {
-  edges: [SearchResultWebtoonEdge]
+type SearchResultWebtoonsConnection implements Connection {
+  edges: [SearchResultWebtoonsEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
   counts: Int!
 }
 
-type SearchResultCollectionConnection implements Connection {
-  edges: [SearchResultCollectionEdge]
+type SearchResultCollectionsConnection implements Connection {
+  edges: [SearchResultCollectionsEdge]
   pageInfo: PageInfo!
   totalCounts: Int!
   counts: Int!
@@ -295,20 +300,21 @@ type CommentCommentsConnection implements Connection {
   totalCounts: Int!
   counts: Int!
 }
-# other connections
-type SearchResultConnection {
+
+# searchResult
+type SearchResult {
   webtoonResult(
     first: Int
     last: Int
     before: ID
     after: ID
-  ): SearchResultWebtoonConnection
+  ): SearchResultWebtoonsConnection
   collectionResult(
     first: Int
     last: Int
     before: ID
     after: ID
-  ): SearchResultCollectionConnection
+  ): SearchResultCollectionsConnection
 }
 
 # edges
@@ -362,12 +368,12 @@ type GenreWebtoonsEdge implements Edge {
   node: Webtoon
 }
 
-type SearchResultWebtoonEdge implements Edge {
+type SearchResultWebtoonsEdge implements Edge {
   cursor: String!
   node: Webtoon
 }
 
-type SearchResultCollectionEdge implements Edge {
+type SearchResultCollectionsEdge implements Edge {
   cursor: String!
   node: Collection
 }
@@ -416,4 +422,11 @@ input SearchFiltering {
   isFinish: Boolean
   platforms: [Platform]
   genres: [String]
+}
+
+input Paging {
+  first: Int
+  last: Int
+  before: ID
+  after: ID
 }

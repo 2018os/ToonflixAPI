@@ -10,12 +10,23 @@ import {
   QuerySearchArgs,
   QueryRandomWebtoonsArgs,
   QueryUserArgs,
-  QueryCollectionsArgs
+  QueryCollectionsArgs,
+  SearchFiltering
 } from '../generated/graphql';
 
 import { arrayToObjectArrayConverter, encode, shuffle } from '../utils/tools';
 import { WEBTOON_ID_UNIT } from '../utils/statics';
 import { Context } from '../utils/context';
+
+type SearchArgs = {
+  first?: number | null;
+  last?: number | null;
+  after?: string | null;
+  before?: string | null;
+  keyword?: string | null;
+};
+
+type WebtoonSearchArgs = SearchArgs & SearchFiltering;
 
 const Query = {
   genres: (_parent: any, _args: any, context: Context) => {
@@ -196,69 +207,119 @@ const Query = {
       }
     });
   },
-  search: async (_parent: any, args: QuerySearchArgs, context: Context) => {
-    const { keyword, where } = args;
-    const genreCodes = arrayToObjectArrayConverter(where?.genres, 'code');
-    const platforms = arrayToObjectArrayConverter(where?.platforms, 'platform');
-    const keywordFilters = keyword
-      ? [
-          {
-            title: {
-              contains: keyword
-            }
-          },
-          {
-            description: {
-              contains: keyword
-            }
-          }
-        ]
-      : [];
-    const webtoonFilter = {
-      isPay: where?.isPay ? where.isPay : undefined,
-      isAdult: where?.isAdult ? where.isAdult : undefined,
-      isFinish: where?.isFinish ? where.isFinish : undefined,
-      genres:
-        genreCodes.length > 0
-          ? {
-              some: {
-                OR: genreCodes
+  search: async (
+    parent: any,
+    queryArgs: QuerySearchArgs,
+    queryContext: Context
+  ) => {
+    const webtoonArgs = {
+      ...(queryArgs.webtoonPaging || {}),
+      ...(queryArgs.where || {}),
+      keyword: queryArgs.keyword
+    };
+    const collectionArgs = {
+      ...(queryArgs.collectionPaging || {}),
+      keyword: queryArgs.keyword
+    };
+    const webtoonConnection = connection({
+      cursorFromNode: (node: Node) => node.id,
+      nodes: async (_parent, args: WebtoonSearchArgs, context: Context) => {
+        const cursor = args.after || args.before;
+        const { keyword } = args;
+        const encodedCursor = cursor && encodeCursor(cursor);
+        const filtering = {
+          isAdult: args.isAdult ? args.isAdult : undefined,
+          isPay: args.isPay ? args.isPay : undefined,
+          isFinish: args.isFinish ? args.isFinish : undefined
+        };
+        const genres = arrayToObjectArrayConverter(args.genres, 'code');
+        const platforms = arrayToObjectArrayConverter(
+          args.platforms,
+          'platform'
+        );
+        const nodes = await context.prisma.webtoon.findMany({
+          skip: cursor ? 1 : undefined,
+          cursor: cursor
+            ? {
+                id: encodedCursor || undefined
               }
-            }
-          : null,
-      AND: [...platforms],
-      OR: [...keywordFilters]
-    };
-    const collectionFilter = {
-      OR: [
-        ...keywordFilters,
-        {
-          webtoons: {
-            some: {
-              OR: [...keywordFilters]
-            }
-          }
-        }
-      ]
-    };
-    const webtoonResult = await context.prisma.webtoon.findMany({
-      include: {
-        genres: true
-      },
-      where: webtoonFilter
-    });
-    const collectionResult = await context.prisma.collection.findMany({
-      include: {
-        webtoons: {
+            : undefined,
           include: {
+            authors: true,
             genres: true,
-            authors: true
+            collections: true
+          },
+          orderBy: {
+            title: args.before ? 'desc' : 'asc'
+          },
+          where: {
+            ...filtering,
+            genres: genres.length > 0 ? { some: { OR: genres } } : null,
+            AND:
+              platforms.length > 0
+                ? {
+                    OR: platforms
+                  }
+                : undefined,
+            OR: keyword
+              ? [
+                  { title: { contains: keyword } },
+                  { description: { contains: keyword } }
+                ]
+              : undefined
           }
-        }
-      },
-      where: collectionFilter
+        });
+        return nodes;
+      }
     });
-    return { webtoonResult, collectionResult };
+    const collectionConnection = connection({
+      cursorFromNode: (node: Node) => node.id,
+      nodes: async (_parent, args: SearchArgs, context: Context) => {
+        const cursor = args.after || args.before;
+        const { keyword } = args;
+        const encodedCursor = cursor && encodeCursor(cursor);
+        const nodes = await context.prisma.collection.findMany({
+          skip: cursor ? 1 : undefined,
+          cursor: cursor
+            ? {
+                id: encodedCursor || undefined
+              }
+            : undefined,
+          include: {
+            webtoons: true,
+            writer: true
+          },
+          orderBy: {
+            title: args.before ? 'desc' : 'asc'
+          }, // TODO: customize
+          where: keyword
+            ? {
+                OR: [
+                  {
+                    title: {
+                      contains: keyword
+                    }
+                  },
+                  {
+                    description: {
+                      contains: keyword
+                    }
+                  }
+                ]
+              }
+            : undefined
+        });
+        return nodes;
+      }
+    });
+    return {
+      webtoonResult: webtoonConnection(parent, webtoonArgs, queryContext),
+      collectionResult: collectionConnection(
+        parent,
+        collectionArgs,
+        queryContext
+      )
+    };
   }
 };
 

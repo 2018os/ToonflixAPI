@@ -5,7 +5,6 @@ import Author from './author';
 import Collection from './collection';
 import Webtoon from './webtoon';
 import Genre from './genre';
-import SearchResult from './search';
 import Connection from './connection';
 import User from './user';
 
@@ -17,8 +16,7 @@ const resolvers = {
   Collection,
   Webtoon,
   Genre,
-  User,
-  SearchResultConnection: SearchResult
+  User
 };
 
 export default resolvers;
