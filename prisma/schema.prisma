@@ -67,12 +67,13 @@ model Comment {
   id           String      @id
   message      String
   subComments  Comment[]
+  createdAt    DateTime    @default(now())
   webtoon      Webtoon?    @relation(fields: [webtoonId], references: [id])
   webtoonId    String?
   writer       User?       @relation(fields: [writerId], references: [id])
   writerId     String?
-  Comment      Comment?    @relation("CommentToComment", fields: [commentId], references: [id])
+  comment      Comment?    @relation("CommentToComment", fields: [commentId], references: [id])
   commentId    String?
-  Collection   Collection? @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id])
   collectionId String?
 }
