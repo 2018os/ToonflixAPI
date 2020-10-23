@@ -61,6 +61,7 @@ type Query {
     webtoonPaging: Paging
     collectionPaging: Paging
   ): SearchResult!
+  collection(id: ID!): Collection!
 }
 
 type Mutation {

@@ -11,7 +11,8 @@ import {
   QueryRandomWebtoonsArgs,
   QueryUserArgs,
   QueryCollectionsArgs,
-  SearchFiltering
+  SearchFiltering,
+  QueryCollectionArgs
 } from '../generated/graphql';
 
 import { arrayToObjectArrayConverter, encode, shuffle } from '../utils/tools';
@@ -185,6 +186,25 @@ const Query = {
       }
     });
     return user;
+  },
+  collection: async (
+    _parent: any,
+    args: QueryCollectionArgs,
+    context: Context
+  ) => {
+    const id = args;
+    const collection = await context.prisma.collection.findOne({
+      where: id,
+      include: {
+        writer: true,
+        webtoons: {
+          include: {
+            authors: true
+          }
+        }
+      }
+    });
+    return collection;
   },
   randomWebtoons: async (
     _parent: any,
