@@ -306,18 +306,8 @@ type CommentCommentsConnection implements Connection {
 
 # searchResult
 type SearchResult {
-  webtoonResult(
-    first: Int
-    last: Int
-    before: ID
-    after: ID
-  ): SearchResultWebtoonsConnection
-  collectionResult(
-    first: Int
-    last: Int
-    before: ID
-    after: ID
-  ): SearchResultCollectionsConnection
+  webtoonResult: SearchResultWebtoonsConnection
+  collectionResult: SearchResultCollectionsConnection
 }
 
 # edges
