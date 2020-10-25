@@ -128,7 +128,7 @@ const Query = {
     }
   }),
   users: connection({
-    cursorFromNode: (node: Node) => node.id,
+    cursorFromNode: (node: Node) => decodeCursor(node.id),
     nodes: async (_parent, args, context: Context) => {
       const cursor = args.after || args.before;
       const encodedCursor = cursor && encodeCursor(cursor);
@@ -242,7 +242,7 @@ const Query = {
       keyword: queryArgs.keyword
     };
     const webtoonConnection = connection({
-      cursorFromNode: (node: Node) => node.id,
+      cursorFromNode: (node: Node) => decodeCursor(node.id),
       nodes: async (_parent, args: WebtoonSearchArgs, context: Context) => {
         const cursor = args.after || args.before;
         const { keyword } = args;
@@ -293,7 +293,7 @@ const Query = {
       }
     });
     const collectionConnection = connection({
-      cursorFromNode: (node: Node) => node.id,
+      cursorFromNode: (node: Node) => decodeCursor(node.id),
       nodes: async (_parent, args: SearchArgs, context: Context) => {
         const cursor = args.after || args.before;
         const { keyword } = args;
@@ -323,6 +323,24 @@ const Query = {
                   {
                     description: {
                       contains: keyword
+                    }
+                  },
+                  {
+                    webtoons: {
+                      some: {
+                        OR: [
+                          {
+                            title: {
+                              contains: keyword
+                            }
+                          },
+                          {
+                            description: {
+                              contains: keyword
+                            }
+                          }
+                        ]
+                      }
                     }
                   }
                 ]
