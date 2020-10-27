@@ -59,6 +59,7 @@ const Mutation = {
     const hashedPassword = bcrypt.hashSync(password, 10);
     const userCounts = await context.prisma.user.count();
     const id = encode(USER_ID_UNIT + userCounts);
+    // TODO: email authentication
     const user = await context.prisma.user.create({
       data: {
         id,

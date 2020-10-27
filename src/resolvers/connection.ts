@@ -4,6 +4,7 @@ import { ConnectionResolvers } from '../generated/graphql';
 export default {
   __resolveType: () => null,
   counts: (parent) => parent.edges?.length,
+  // TODO: Enhance counts
   totalCounts: (_parent, _args, context: Context, info: any) => {
     const type = info.path.typename;
     switch (type) {
