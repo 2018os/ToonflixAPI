@@ -109,6 +109,9 @@ const Query = {
         },
         where: keyword
           ? {
+              NOT: {
+                type: 'Private'
+              },
               OR: [
                 {
                   title: {
@@ -122,7 +125,11 @@ const Query = {
                 }
               ]
             }
-          : undefined
+          : {
+              NOT: {
+                type: 'Private'
+              }
+            }
       });
       return nodes;
     }

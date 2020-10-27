@@ -13,6 +13,11 @@ enum Platform {
   DAUM
 }
 
+enum CollectionType {
+  Private
+  Public
+}
+
 // Models
 model Webtoon {
   id          String       @id
@@ -43,14 +48,15 @@ model Genre {
 }
 
 model Collection {
-  id          String    @id
-  title       String    @unique
+  id          String         @id
+  title       String
   description String
-  webtoons    Webtoon[] @relation(references: [id])
-  writer      User      @relation(fields: [writerId], references: [id])
+  type        CollectionType @default(Public)
+  webtoons    Webtoon[]      @relation(references: [id])
+  writer      User           @relation(fields: [writerId], references: [id])
   writerId    String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
   comments    Comment[]
 }
 

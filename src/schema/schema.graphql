@@ -21,6 +21,11 @@ enum Platform {
   DAUM
 }
 
+enum CollectionType {
+  Private
+  Public
+}
+
 # interface
 interface Node {
   id: ID!
@@ -141,6 +146,7 @@ type Collection implements Node {
   id: ID!
   title: String!
   description: String!
+  type: CollectionType!
   webtoonsConnection(
     first: Int
     last: Int

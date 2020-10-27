@@ -58,14 +58,25 @@ const Mutation = {
       throw new ApolloError('Already Existing Email', 'INVALID_DATA');
     const hashedPassword = bcrypt.hashSync(password, 10);
     const userCounts = await context.prisma.user.count();
+    const collectionCounts = await context.prisma.collection.count();
     const id = encode(USER_ID_UNIT + userCounts);
+    const collectionId = encode(COLLECTION_ID_UNIT + collectionCounts);
     // TODO: email authentication
     const user = await context.prisma.user.create({
       data: {
         id,
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        collections: {
+          create: {
+            id: collectionId,
+            title: '좋아요 표시한 작품',
+            type: 'Private',
+            description: ''
+          }
+        }
+        // default collection, Read only
       }
     });
     const token = jwt.sign({ userId: user.id }, AUTH_TOKEN);
