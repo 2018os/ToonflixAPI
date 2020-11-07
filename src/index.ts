@@ -1,8 +1,9 @@
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
-import express from 'express';
 import fs from 'fs';
+import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
+import { express as voyagerMiddleware } from 'graphql-voyager/middleware';
 
 import logger from '../config/winston';
 
@@ -49,7 +50,10 @@ app.use(
     }
   })
 );
+
 server.applyMiddleware({ app });
+
+app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
 
 app.listen({ port: process.env.PORT || 4000 }, () =>
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
