@@ -122,6 +122,15 @@ const Query = {
                   description: {
                     contains: keyword
                   }
+                },
+                {
+                  webtoons: {
+                    some: {
+                      title: {
+                        contains: keyword
+                      }
+                    }
+                  }
                 }
               ]
             }
@@ -291,7 +300,8 @@ const Query = {
             OR: keyword
               ? [
                   { title: { contains: keyword } },
-                  { description: { contains: keyword } }
+                  { description: { contains: keyword } },
+                  { genres: { some: { name: keyword } } }
                 ]
               : undefined
           }
@@ -321,6 +331,9 @@ const Query = {
           }, // TODO: customize
           where: keyword
             ? {
+                NOT: {
+                  type: 'Private'
+                },
                 OR: [
                   {
                     title: {
@@ -352,7 +365,11 @@ const Query = {
                   }
                 ]
               }
-            : undefined
+            : {
+                NOT: {
+                  type: 'Private'
+                }
+              }
         });
         return nodes;
       }
