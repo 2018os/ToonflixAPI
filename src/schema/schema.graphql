@@ -120,6 +120,7 @@ type Webtoon implements Node {
   ): WebtoonCommentsConnection!
 }
 
+# TODO: Fix name webtoonsConnection => webtoons
 type Author implements Node {
   id: ID!
   name: String!
