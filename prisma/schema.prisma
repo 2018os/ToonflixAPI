@@ -42,7 +42,7 @@ model Collection {
   description String         @db.Text
   id          String         @id @db.VarChar(191)
   title       String         @db.VarChar(191)
-  updatedAt   DateTime       @db.Datetime(3)
+  updatedAt   DateTime       @default(now()) @db.Datetime(3)
   writerId    String         @db.VarChar(191)
   type        CollectionType @default(Public)
   writer      User           @relation(fields: [writerId], references: [id])
