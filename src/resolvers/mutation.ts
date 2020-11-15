@@ -39,6 +39,7 @@ const Mutation = {
         id: encodingId,
         title,
         description,
+        updatedAt: new Date(),
         webtoons: {
           connect: webtoonIds
         },
@@ -51,6 +52,7 @@ const Mutation = {
     });
     return collection;
   },
+
   signup: async (_parent: any, args: MutationSignupArgs, context: Context) => {
     const { name, email, password } = args.input;
     const existed = await context.prisma.user.findOne({ where: { email } });
@@ -73,7 +75,9 @@ const Mutation = {
             id: collectionId,
             title: '좋아요 표시한 작품',
             type: 'Private',
-            description: ''
+            description: '',
+            updatedAt: new Date()
+            // TODO: Enhance date
           }
         }
         // default collection, Read only
@@ -85,6 +89,7 @@ const Mutation = {
       user
     };
   },
+
   login: async (_parent: any, args: MutationLoginArgs, context: Context) => {
     const { email, password } = args.input;
     const user = await context.prisma.user.findOne({ where: { email } });
@@ -97,6 +102,7 @@ const Mutation = {
       user
     };
   },
+
   postComment: async (
     _parent: any,
     args: MutationPostCommentArgs,
@@ -113,21 +119,27 @@ const Mutation = {
           connect: { id: userId }
         },
         message,
-        webtoon: args.input.webtoonId
-          ? {
-              connect: { id: args.input.webtoonId }
-            }
-          : null,
-        collection: args.input.collectionId
-          ? {
-              connect: { id: args.input.collectionId }
-            }
-          : null,
-        subComments: args.input.commentId
-          ? {
-              connect: { id: args.input.commentId }
-            }
-          : null
+        webtoon: {
+          connect: args.input.webtoonId
+            ? {
+                id: args.input.webtoonId
+              }
+            : undefined
+        },
+        collection: {
+          connect: args.input.webtoonId
+            ? {
+                id: args.input.webtoonId
+              }
+            : undefined
+        },
+        subComments: {
+          connect: args.input.webtoonId
+            ? {
+                id: args.input.webtoonId
+              }
+            : undefined
+        }
       }
     });
     return comment;
