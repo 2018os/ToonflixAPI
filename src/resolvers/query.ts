@@ -290,7 +290,11 @@ const Query = {
           },
           where: {
             ...filtering,
-            genres: genres.length > 0 ? { some: { OR: genres } } : null,
+            genres: {
+              some: {
+                OR: genres
+              }
+            },
             AND:
               platforms.length > 0
                 ? {
