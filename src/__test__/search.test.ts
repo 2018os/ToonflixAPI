@@ -3,14 +3,48 @@ import { gql } from 'apollo-server-express';
 import { query } from './testUtils';
 import { prisma } from '../utils/context';
 
-const SEARCH_WEBTOON = gql`
-  query($keyword: String, $webtoonPaging: Paging) {
-    search(keyword: $keyword, webtoonPaging: $webtoonPaging) {
+const KEYWORD = '헬퍼';
+
+expect.extend({
+  toObjectContain: (received, properties) => {
+    let pass = false;
+    properties.forEach((property: any) => {
+      const match = expect.objectContaining(property);
+      if (match.asymmetricMatch(received)) {
+        pass = true;
+      }
+    });
+    if (pass) {
+      return {
+        message: () =>
+          `expect ${JSON.stringify(received)} is containing property`,
+        pass: true
+      };
+    }
+    return {
+      message: () =>
+        `expect ${JSON.stringify(received)} is not containing property`,
+      pass: false
+    };
+  }
+});
+
+const SEARCH_WEBTOONS_WITH_KEYWORD = gql`
+  query($keyword: String) {
+    search(keyword: $keyword, webtoonPaging: { first: 10 }) {
       webtoonResult {
         counts
+        pageInfo {
+          startCursor
+        }
         edges {
           node {
+            id
             title
+            description
+            genres {
+              name
+            }
           }
         }
       }
@@ -18,49 +52,36 @@ const SEARCH_WEBTOON = gql`
   }
 `;
 
-const HELPER = [
-  {
-    node: {
-      title: '헬퍼'
-    }
-  },
-  {
-    node: {
-      title: '헬퍼 2 : 킬베로스'
-    }
-  }
-];
-
 test('Success get webtoon with keyword', async () => {
   const data: any = await query({
-    query: SEARCH_WEBTOON,
+    query: SEARCH_WEBTOONS_WITH_KEYWORD,
     variables: {
-      keyword: '헬퍼',
-      webtoonPaging: {
-        first: 2
-      }
+      keyword: KEYWORD
     }
   });
-  expect(data.data.search.webtoonResult.edges).toEqual(HELPER);
-});
+  const { webtoonResult } = data.data.search;
 
-test('Success get webtoon with keyword and platform', async () => {
-  const data: any = await query({
-    query: SEARCH_WEBTOON,
-    variables: {
-      keyword: '헬퍼',
-      where: {
-        platform: ['NAVER']
-      },
-      webtoonPaging: {
-        first: 2
+  expect(webtoonResult.counts <= 3).toBeTruthy();
+
+  expect(webtoonResult.pageInfo.startCursor).toEqual(
+    webtoonResult.edges[0].node.id
+  );
+
+  webtoonResult.edges.forEach((edge: any) => {
+    expect(edge.node).toObjectContain([
+      { title: expect.stringContaining(KEYWORD) },
+      { description: expect.stringContaining(KEYWORD) },
+      {
+        genres: expect.arrayContaining([
+          expect.objectContaining({
+            name: expect.stringContaining(KEYWORD)
+          })
+        ])
       }
-    }
+    ]);
   });
-  expect(data.data.search.webtoonResult.edges).toEqual(HELPER);
-  expect(data.data.search.webtoonResult.counts).toEqual(2);
 });
 
 afterAll(() => {
-  prisma.disconnect();
+  prisma.$disconnect();
 });
