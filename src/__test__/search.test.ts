@@ -4,6 +4,7 @@ import { prisma } from '../utils/context';
 import toIncludeObjects from './matchers';
 
 import {
+  SEARCH,
   SEARCH_WEBTOONS_WITH_FILTERING,
   SEARCH_WEBTOONS_WITH_GENRES,
   SEARCH_WEBTOONS_WITH_KEYWORD,
@@ -16,6 +17,32 @@ expect.extend({
   toIncludeObjects
 });
 
+test('Success get search Result', async () => {
+  const data: any = await query({
+    query: SEARCH
+  });
+  const { webtoonResult, collectionResult } = data.data.search;
+  expect(webtoonResult.counts).toEqual(expect.any(Number));
+  expect(collectionResult.counts).toEqual(expect.any(Number));
+  expect(webtoonResult.pageInfo.startCursor).toEqual(
+    webtoonResult.edges[0].node.id
+  );
+  expect(collectionResult.pageInfo.startCursor).toEqual(
+    collectionResult.edges[0].node.id
+  );
+  webtoonResult.edges.forEach((edge: any) => {
+    // Test GraphQL Type Node
+    expect(edge.node).toEqual({
+      id: expect.any(String)
+    });
+  });
+  collectionResult.edges.forEach((edge: any) => {
+    expect(edge.node).toEqual({
+      id: expect.any(String)
+    });
+  });
+});
+
 test('Success get webtoon with keyword', async () => {
   const data: any = await query({
     query: SEARCH_WEBTOONS_WITH_KEYWORD,
@@ -24,13 +51,6 @@ test('Success get webtoon with keyword', async () => {
     }
   });
   const { webtoonResult } = data.data.search;
-
-  expect(webtoonResult.counts <= 3).toBeTruthy();
-
-  expect(webtoonResult.pageInfo.startCursor).toEqual(
-    webtoonResult.edges[0].node.id
-  );
-
   webtoonResult.edges.forEach((edge: any) => {
     expect(edge.node).toIncludeObjects([
       { title: expect.stringContaining(KEYWORD) },
@@ -57,9 +77,7 @@ test('Success get webtoon with filterings', async () => {
       }
     }
   });
-
   const { webtoonResult } = data.data.search;
-
   webtoonResult.edges.forEach((edge: any) => {
     expect(edge.node).toEqual(
       expect.objectContaining({

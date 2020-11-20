@@ -20,10 +20,6 @@ export const SEARCH_WEBTOONS_WITH_KEYWORD = gql`
   query($keyword: String) {
     search(keyword: $keyword, webtoonPaging: { first: 10 }) {
       webtoonResult {
-        counts
-        pageInfo {
-          startCursor
-        }
         edges {
           node {
             ...Webtoon
@@ -78,4 +74,33 @@ export const SEARCH_WEBTOONS_WITH_PLATFORM = gql`
     }
   }
   ${WEBTOON_FRAGMENT}
+`;
+
+export const SEARCH = gql`
+  query {
+    search(webtoonPaging: { first: 10 }, collectionPaging: { first: 10 }) {
+      webtoonResult {
+        counts
+        pageInfo {
+          startCursor
+        }
+        edges {
+          node {
+            id
+          }
+        }
+      }
+      collectionResult {
+        counts
+        pageInfo {
+          startCursor
+        }
+        edges {
+          node {
+            id
+          }
+        }
+      }
+    }
+  }
 `;
