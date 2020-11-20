@@ -1,56 +1,20 @@
-import { gql } from 'apollo-server-express';
-
 import { query } from './testUtils';
 import { prisma } from '../utils/context';
+
+import toIncludeObjects from './matchers';
+
+import {
+  SEARCH_WEBTOONS_WITH_FILTERING,
+  SEARCH_WEBTOONS_WITH_GENRES,
+  SEARCH_WEBTOONS_WITH_KEYWORD,
+  SEARCH_WEBTOONS_WITH_PLATFORM
+} from './testSchema';
 
 const KEYWORD = '헬퍼';
 
 expect.extend({
-  toObjectContain: (received, properties) => {
-    let pass = false;
-    properties.forEach((property: any) => {
-      const match = expect.objectContaining(property);
-      if (match.asymmetricMatch(received)) {
-        pass = true;
-      }
-    });
-    if (pass) {
-      return {
-        message: () =>
-          `expect ${JSON.stringify(received)} is containing property`,
-        pass: true
-      };
-    }
-    return {
-      message: () =>
-        `expect ${JSON.stringify(received)} is not containing property`,
-      pass: false
-    };
-  }
+  toIncludeObjects
 });
-
-const SEARCH_WEBTOONS_WITH_KEYWORD = gql`
-  query($keyword: String) {
-    search(keyword: $keyword, webtoonPaging: { first: 10 }) {
-      webtoonResult {
-        counts
-        pageInfo {
-          startCursor
-        }
-        edges {
-          node {
-            id
-            title
-            description
-            genres {
-              name
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 test('Success get webtoon with keyword', async () => {
   const data: any = await query({
@@ -68,7 +32,7 @@ test('Success get webtoon with keyword', async () => {
   );
 
   webtoonResult.edges.forEach((edge: any) => {
-    expect(edge.node).toObjectContain([
+    expect(edge.node).toIncludeObjects([
       { title: expect.stringContaining(KEYWORD) },
       { description: expect.stringContaining(KEYWORD) },
       {
@@ -79,6 +43,81 @@ test('Success get webtoon with keyword', async () => {
         ])
       }
     ]);
+  });
+});
+
+test('Success get webtoon with filterings', async () => {
+  const data: any = await query({
+    query: SEARCH_WEBTOONS_WITH_FILTERING,
+    variables: {
+      where: {
+        isPay: true,
+        isAdult: true,
+        isFinish: true
+      }
+    }
+  });
+
+  const { webtoonResult } = data.data.search;
+
+  webtoonResult.edges.forEach((edge: any) => {
+    expect(edge.node).toEqual(
+      expect.objectContaining({
+        isPay: true,
+        isAdult: true,
+        isFinish: true
+      })
+    );
+  });
+});
+
+test('Success get webtoon with genres', async () => {
+  const genres = ['action', 'comic'];
+  const data: any = await query({
+    query: SEARCH_WEBTOONS_WITH_GENRES,
+    variables: {
+      where: {
+        genres
+      }
+    }
+  });
+  const { webtoonResult } = data.data.search;
+  webtoonResult.edges.forEach((edge: any) => {
+    expect(edge.node).toIncludeObjects([
+      {
+        genres: expect.arrayContaining([
+          expect.objectContaining({
+            code: genres[0]
+          })
+        ])
+      },
+      {
+        genres: expect.arrayContaining([
+          expect.objectContaining({
+            code: genres[1]
+          })
+        ])
+      }
+    ]);
+  });
+});
+
+test('Success get webtoon with platform', async () => {
+  const data: any = await query({
+    query: SEARCH_WEBTOONS_WITH_PLATFORM,
+    variables: {
+      where: {
+        platforms: ['DAUM']
+      }
+    }
+  });
+  const { webtoonResult } = data.data.search;
+  webtoonResult.edges.forEach((edge: any) => {
+    expect(edge.node).toEqual(
+      expect.objectContaining({
+        platform: 'DAUM'
+      })
+    );
   });
 });
 
