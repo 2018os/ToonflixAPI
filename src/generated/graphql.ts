@@ -559,7 +559,7 @@ export type SearchFiltering = {
   isPay?: Maybe<Scalars['Boolean']>;
   isAdult?: Maybe<Scalars['Boolean']>;
   isFinish?: Maybe<Scalars['Boolean']>;
-  platforms?: Maybe<Array<Maybe<Platform>>>;
+  platforms?: Maybe<Array<Platform>>;
   genres?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
@@ -898,15 +898,6 @@ export type ResolversParentTypes = ResolversObject<{
   SearchFiltering: SearchFiltering;
   Paging: Paging;
 }>;
-
-export type UpperDirectiveArgs = {};
-
-export type UpperDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = Context,
-  Args = UpperDirectiveArgs
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export interface DateScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
@@ -1723,14 +1714,3 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
  */
 export type IResolvers<ContextType = Context> = Resolvers<ContextType>;
-export type DirectiveResolvers<ContextType = Context> = ResolversObject<{
-  upper?: UpperDirectiveResolver<any, any, ContextType>;
-}>;
-
-/**
- * @deprecated
- * Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
- */
-export type IDirectiveResolvers<ContextType = Context> = DirectiveResolvers<
-  ContextType
->;

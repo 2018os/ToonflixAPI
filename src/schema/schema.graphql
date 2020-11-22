@@ -427,7 +427,7 @@ input SearchFiltering {
   isPay: Boolean
   isAdult: Boolean
   isFinish: Boolean
-  platforms: [Platform]
+  platforms: [Platform!]
   genres: [String]
 }
 
