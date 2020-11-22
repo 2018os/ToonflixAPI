@@ -263,16 +263,7 @@ const Query = {
         const cursor = args.after || args.before;
         const { keyword } = args;
         const encodedCursor = cursor && encodeCursor(cursor);
-        const filtering = {
-          isAdult: args.isAdult ? args.isAdult : undefined,
-          isPay: args.isPay ? args.isPay : undefined,
-          isFinish: args.isFinish ? args.isFinish : undefined
-        };
         const genres = arrayToObjectArrayConverter(args.genres, 'code');
-        const platforms = arrayToObjectArrayConverter(
-          args.platforms,
-          'platform'
-        );
         const nodes = await context.prisma.webtoon.findMany({
           skip: cursor ? 1 : undefined,
           cursor: cursor
@@ -289,25 +280,32 @@ const Query = {
             title: args.before ? 'desc' : 'asc'
           },
           where: {
-            ...filtering,
-            genres: {
-              some: {
-                OR: genres
-              }
-            },
-            AND:
-              platforms.length > 0
+            platform:
+              args.platforms && args.platforms.length > 0
                 ? {
-                    OR: platforms
+                    in: args.platforms
                   }
                 : undefined,
-            OR: keyword
-              ? [
-                  { title: { contains: keyword } },
-                  { description: { contains: keyword } },
-                  { genres: { some: { name: keyword } } }
-                ]
-              : undefined
+            title: keyword
+              ? {
+                  contains: keyword
+                }
+              : undefined,
+            description: keyword
+              ? {
+                  contains: keyword
+                }
+              : undefined,
+            genres: {
+              some: {
+                OR: keyword
+                  ? [...genres, { name: keyword }, { code: keyword }]
+                  : genres
+              }
+            },
+            isPay: args.isPay ? args.isPay : undefined,
+            isAdult: args.isAdult ? args.isAdult : undefined,
+            isFinish: args.isFinish ? args.isFinish : undefined
           }
         });
         return nodes;
@@ -332,7 +330,7 @@ const Query = {
           },
           orderBy: {
             title: args.before ? 'desc' : 'asc'
-          }, // TODO: customize
+          }, // TODO: Customize ordering
           where: keyword
             ? {
                 NOT: {
