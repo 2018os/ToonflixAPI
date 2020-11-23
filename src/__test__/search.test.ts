@@ -5,10 +5,8 @@ import toIncludeObjects from './matchers';
 
 import {
   SEARCH,
-  SEARCH_WEBTOONS_WITH_FILTERING,
-  SEARCH_WEBTOONS_WITH_GENRES,
   SEARCH_WEBTOONS_WITH_KEYWORD,
-  SEARCH_WEBTOONS_WITH_PLATFORM
+  SEARCH_WEBTOONS_WITH_WHERE
 } from './testSchema';
 
 const KEYWORD = '헬퍼';
@@ -68,7 +66,7 @@ test('Success get webtoon with keyword', async () => {
 
 test('Success get webtoon with filterings', async () => {
   const data: any = await query({
-    query: SEARCH_WEBTOONS_WITH_FILTERING,
+    query: SEARCH_WEBTOONS_WITH_WHERE,
     variables: {
       where: {
         isPay: true,
@@ -92,7 +90,7 @@ test('Success get webtoon with filterings', async () => {
 test('Success get webtoon with genres', async () => {
   const genres = ['action', 'comic'];
   const data: any = await query({
-    query: SEARCH_WEBTOONS_WITH_GENRES,
+    query: SEARCH_WEBTOONS_WITH_WHERE,
     variables: {
       where: {
         genres
@@ -122,7 +120,7 @@ test('Success get webtoon with genres', async () => {
 
 test('Success get webtoon with platform', async () => {
   const data: any = await query({
-    query: SEARCH_WEBTOONS_WITH_PLATFORM,
+    query: SEARCH_WEBTOONS_WITH_WHERE,
     variables: {
       where: {
         platforms: ['DAUM']

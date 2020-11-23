@@ -16,66 +16,6 @@ export const WEBTOON_FRAGMENT = gql`
   }
 `;
 
-export const SEARCH_WEBTOONS_WITH_KEYWORD = gql`
-  query($keyword: String) {
-    search(keyword: $keyword, webtoonPaging: { first: 10 }) {
-      webtoonResult {
-        edges {
-          node {
-            ...Webtoon
-          }
-        }
-      }
-    }
-  }
-  ${WEBTOON_FRAGMENT}
-`;
-
-export const SEARCH_WEBTOONS_WITH_FILTERING = gql`
-  query($where: SearchFiltering) {
-    search(where: $where, webtoonPaging: { first: 10 }) {
-      webtoonResult {
-        edges {
-          node {
-            ...Webtoon
-          }
-        }
-      }
-    }
-  }
-  ${WEBTOON_FRAGMENT}
-`;
-
-export const SEARCH_WEBTOONS_WITH_GENRES = gql`
-  query($where: SearchFiltering) {
-    search(where: $where, webtoonPaging: { first: 10 }) {
-      webtoonResult {
-        edges {
-          node {
-            ...Webtoon
-          }
-        }
-      }
-    }
-  }
-  ${WEBTOON_FRAGMENT}
-`;
-
-export const SEARCH_WEBTOONS_WITH_PLATFORM = gql`
-  query($where: SearchFiltering) {
-    search(where: $where, webtoonPaging: { first: 10 }) {
-      webtoonResult {
-        edges {
-          node {
-            ...Webtoon
-          }
-        }
-      }
-    }
-  }
-  ${WEBTOON_FRAGMENT}
-`;
-
 export const SEARCH = gql`
   query {
     search(webtoonPaging: { first: 10 }, collectionPaging: { first: 10 }) {
@@ -103,4 +43,49 @@ export const SEARCH = gql`
       }
     }
   }
+`;
+
+export const SEARCH_WEBTOONS_WITH_KEYWORD = gql`
+  query($keyword: String) {
+    search(keyword: $keyword, webtoonPaging: { first: 10 }) {
+      webtoonResult {
+        edges {
+          node {
+            ...Webtoon
+          }
+        }
+      }
+    }
+  }
+  ${WEBTOON_FRAGMENT}
+`;
+
+export const SEARCH_WEBTOONS_WITH_WHERE = gql`
+  query($where: SearchFiltering) {
+    search(where: $where, webtoonPaging: { first: 10 }) {
+      webtoonResult {
+        edges {
+          node {
+            ...Webtoon
+          }
+        }
+      }
+    }
+  }
+  ${WEBTOON_FRAGMENT}
+`;
+
+export const SEARCH_WEBTOONS_WITH_KEYWORD_AND_WHERE = gql`
+  query($keyword: String, $where: SearchFiltering) {
+    search(keyword: $keyword, where: $where, webtoonPaging: { first: 10 }) {
+      webtoonResult {
+        edges {
+          node {
+            ...Webtoon
+          }
+        }
+      }
+    }
+  }
+  ${WEBTOON_FRAGMENT}
 `;
