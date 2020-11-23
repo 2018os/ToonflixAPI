@@ -280,27 +280,22 @@ const Query = {
             title: args.before ? 'desc' : 'asc'
           },
           where: {
+            OR: keyword
+              ? [
+                  { title: { contains: keyword } },
+                  { description: { contains: keyword } },
+                  { genres: { some: { name: keyword } } }
+                ]
+              : undefined,
             platform:
               args.platforms && args.platforms.length > 0
                 ? {
                     in: args.platforms
                   }
                 : undefined,
-            title: keyword
-              ? {
-                  contains: keyword
-                }
-              : undefined,
-            description: keyword
-              ? {
-                  contains: keyword
-                }
-              : undefined,
             genres: {
               some: {
-                OR: keyword
-                  ? [...genres, { name: keyword }, { code: keyword }]
-                  : genres
+                OR: genres
               }
             },
             isPay: args.isPay ? args.isPay : undefined,
