@@ -276,9 +276,11 @@ const Query = {
             genres: true,
             collections: true
           },
-          orderBy: {
-            title: args.before ? 'desc' : 'asc'
-          },
+          // TODO:
+          // Fix Error "mysql lost connection during query"
+          // orderBy: {
+          //   title: args.before ? 'desc' : 'asc'
+          // },
           where: {
             OR: keyword
               ? [
