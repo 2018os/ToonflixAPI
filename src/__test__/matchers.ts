@@ -1,4 +1,4 @@
-const toIncludeObjects = (received: any, properties: any[]) => {
+const toIncludeObjects = (received: object, properties: object[]) => {
   let pass = false;
   properties.forEach((property: any) => {
     const match = expect.objectContaining(property);
