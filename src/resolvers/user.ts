@@ -4,14 +4,14 @@ import {
   encodeCursor
 } from 'graphql-connection-resolver';
 
-import { Collection, Node } from '../generated/graphql';
+import { User, Node } from '../generated/graphql';
 
 import { Context } from '../utils/context';
 
 export default {
   collectionsConnection: connection({
     cursorFromNode: (node: Node) => decodeCursor(node.id),
-    nodes: async (parent: Collection, args, context: Context) => {
+    nodes: async (parent: User, args, context: Context) => {
       const cursor = args.after || args.before;
       const encodedCursor = cursor && encodeCursor(cursor);
       const nodes = await context.prisma.collection.findMany({
