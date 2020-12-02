@@ -5,6 +5,15 @@ import {
 } from 'graphql-connection-resolver';
 
 import {
+  arrayToObjectArrayConverter,
+  encode,
+  getUserId,
+  shuffle
+} from '../utils/tools';
+import { WEBTOON_ID_UNIT } from '../utils/statics';
+import { Context } from '../utils/context';
+
+import {
   Node,
   QueryWebtoonArgs,
   QuerySearchArgs,
@@ -14,10 +23,6 @@ import {
   SearchFiltering,
   QueryCollectionArgs
 } from '../generated/graphql';
-
-import { arrayToObjectArrayConverter, encode, shuffle } from '../utils/tools';
-import { WEBTOON_ID_UNIT } from '../utils/statics';
-import { Context } from '../utils/context';
 
 type SearchArgs = {
   first?: number | null;
@@ -381,6 +386,22 @@ const Query = {
         queryContext
       )
     };
+  },
+  me: async (_parent: any, _args: any, context: Context) => {
+    const id: string = getUserId(context);
+    const user = await context.prisma.user.findOne({
+      where: {
+        id
+      },
+      include: {
+        collections: {
+          include: {
+            webtoons: true
+          }
+        }
+      }
+    });
+    return user;
   }
 };
 

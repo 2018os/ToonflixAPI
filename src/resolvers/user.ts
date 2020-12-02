@@ -9,7 +9,8 @@ import { User, Node } from '../generated/graphql';
 import { Context } from '../utils/context';
 
 export default {
-  collectionsConnection: connection({
+  myCollections: connection({
+    // TODO: Check Permission
     cursorFromNode: (node: Node) => decodeCursor(node.id),
     nodes: async (parent: User, args, context: Context) => {
       const cursor = args.after || args.before;
