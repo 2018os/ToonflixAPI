@@ -14,13 +14,10 @@ import { getUserId, encode } from '../utils/tools';
 import {
   MutationLoginArgs,
   MutationCreateCollectionArgs,
+  MutationUpdateCollectionArgs,
   MutationSignupArgs,
   MutationPostCommentArgs
 } from '../generated/graphql';
-
-type webtoonConnect = {
-  id: string;
-};
 
 const Mutation = {
   createCollection: async (
@@ -29,11 +26,10 @@ const Mutation = {
     context: Context
   ) => {
     const userId: string = getUserId(context);
-    const { title, description, webtoons } = args.input;
+    const { title, description, webtoonIds } = args.input;
     const totalCollection = await context.prisma.collection.count();
     const collectionId = String(COLLECTION_ID_UNIT + totalCollection);
     const encodingId = encode(collectionId);
-    const webtoonIds: webtoonConnect[] = webtoons.map((id) => ({ id }));
     const collection = await context.prisma.collection.create({
       data: {
         id: encodingId,
@@ -41,7 +37,7 @@ const Mutation = {
         description,
         updatedAt: new Date(),
         webtoons: {
-          connect: webtoonIds
+          connect: webtoonIds.map((id) => ({ id }))
         },
         writer: {
           connect: {
@@ -52,7 +48,31 @@ const Mutation = {
     });
     return collection;
   },
-
+  updateCollection: async (
+    _parent: any,
+    args: MutationUpdateCollectionArgs,
+    context: Context
+  ) => {
+    const { title, description } = args.input;
+    const webtoonIds =
+      args.input.webtoonIds && args.input.webtoonIds.map((id) => ({ id }));
+    const collection = await context.prisma.collection.update({
+      where: {
+        id: args.input.collectionId
+      },
+      data: {
+        updatedAt: new Date(),
+        title: title || undefined,
+        description: description || undefined,
+        webtoons: webtoonIds
+          ? {
+              connect: webtoonIds
+            }
+          : undefined
+      }
+    });
+    return collection;
+  },
   signup: async (_parent: any, args: MutationSignupArgs, context: Context) => {
     const { name, email, password } = args.input;
     const existed = await context.prisma.user.findOne({ where: { email } });
@@ -89,7 +109,6 @@ const Mutation = {
       user
     };
   },
-
   login: async (_parent: any, args: MutationLoginArgs, context: Context) => {
     const { email, password } = args.input;
     const user = await context.prisma.user.findOne({ where: { email } });
@@ -102,7 +121,6 @@ const Mutation = {
       user
     };
   },
-
   postComment: async (
     _parent: any,
     args: MutationPostCommentArgs,

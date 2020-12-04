@@ -72,6 +72,7 @@ export type Query = {
   genres?: Maybe<Array<Maybe<Genre>>>;
   users: UserConnection;
   user: User;
+  me: User;
   webtoon: Webtoon;
   randomWebtoons?: Maybe<Array<Webtoon>>;
   search: SearchResult;
@@ -135,6 +136,7 @@ export type Mutation = {
   login: AuthPayload;
   signup: AuthPayload;
   createCollection: Collection;
+  updateCollection: Collection;
   postComment: Comment;
 };
 
@@ -147,7 +149,11 @@ export type MutationSignupArgs = {
 };
 
 export type MutationCreateCollectionArgs = {
-  input: CollectionInput;
+  input: CreateCollectionInput;
+};
+
+export type MutationUpdateCollectionArgs = {
+  input: UpdateCollectionInput;
 };
 
 export type MutationPostCommentArgs = {
@@ -267,11 +273,11 @@ export type User = Node & {
   email: Scalars['String'];
   name: Scalars['String'];
   password: Scalars['String'];
-  collectionsConnection: UserCollectionsConnection;
+  myCollections: UserCollectionsConnection;
   commentsConnection: UserCommentsConnection;
 };
 
-export type UserCollectionsConnectionArgs = {
+export type UserMyCollectionsArgs = {
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['ID']>;
@@ -542,10 +548,17 @@ export type LoginInput = {
   password: Scalars['String'];
 };
 
-export type CollectionInput = {
+export type CreateCollectionInput = {
   title: Scalars['String'];
   description: Scalars['String'];
-  webtoons: Array<Scalars['String']>;
+  webtoonIds: Array<Scalars['ID']>;
+};
+
+export type UpdateCollectionInput = {
+  collectionId: Scalars['ID'];
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  webtoonIds?: Maybe<Array<Scalars['ID']>>;
 };
 
 export type CommentInput = {
@@ -794,7 +807,8 @@ export type ResolversTypes = ResolversObject<{
   CommentCommentsEdge: ResolverTypeWrapper<CommentCommentsEdge>;
   SignupInput: SignupInput;
   LoginInput: LoginInput;
-  CollectionInput: CollectionInput;
+  CreateCollectionInput: CreateCollectionInput;
+  UpdateCollectionInput: UpdateCollectionInput;
   CommentInput: CommentInput;
   SearchFiltering: SearchFiltering;
   Paging: Paging;
@@ -893,7 +907,8 @@ export type ResolversParentTypes = ResolversObject<{
   CommentCommentsEdge: CommentCommentsEdge;
   SignupInput: SignupInput;
   LoginInput: LoginInput;
-  CollectionInput: CollectionInput;
+  CreateCollectionInput: CreateCollectionInput;
+  UpdateCollectionInput: UpdateCollectionInput;
   CommentInput: CommentInput;
   SearchFiltering: SearchFiltering;
   Paging: Paging;
@@ -1022,6 +1037,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryUserArgs, 'id'>
   >;
+  me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   webtoon?: Resolver<
     ResolversTypes['Webtoon'],
     ParentType,
@@ -1069,6 +1085,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationCreateCollectionArgs, 'input'>
+  >;
+  updateCollection?: Resolver<
+    ResolversTypes['Collection'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateCollectionArgs, 'input'>
   >;
   postComment?: Resolver<
     ResolversTypes['Comment'],
@@ -1213,11 +1235,11 @@ export type UserResolvers<
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  collectionsConnection?: Resolver<
+  myCollections?: Resolver<
     ResolversTypes['UserCollectionsConnection'],
     ParentType,
     ContextType,
-    RequireFields<UserCollectionsConnectionArgs, never>
+    RequireFields<UserMyCollectionsArgs, never>
   >;
   commentsConnection?: Resolver<
     ResolversTypes['UserCommentsConnection'],

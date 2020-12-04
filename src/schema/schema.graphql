@@ -72,7 +72,8 @@ type Query {
 type Mutation {
   login(input: LoginInput!): AuthPayload!
   signup(input: SignupInput!): AuthPayload!
-  createCollection(input: CollectionInput!): Collection!
+  createCollection(input: CreateCollectionInput!): Collection!
+  updateCollection(input: UpdateCollectionInput!): Collection!
   postComment(input: CommentInput!): Comment!
 }
 
@@ -411,10 +412,17 @@ input LoginInput {
   password: String!
 }
 
-input CollectionInput {
+input CreateCollectionInput {
   title: String!
   description: String!
-  webtoons: [String!]!
+  webtoonIds: [ID!]!
+}
+
+input UpdateCollectionInput {
+  collectionId: ID!
+  title: String
+  description: String
+  webtoonIds: [ID!]
 }
 
 input CommentInput {
