@@ -137,6 +137,8 @@ export type Mutation = {
   signup: AuthPayload;
   createCollection: Collection;
   updateCollection: Collection;
+  likeCollection: User;
+  dislikeCollection: User;
   postComment: Comment;
 };
 
@@ -154,6 +156,14 @@ export type MutationCreateCollectionArgs = {
 
 export type MutationUpdateCollectionArgs = {
   input: UpdateCollectionInput;
+};
+
+export type MutationLikeCollectionArgs = {
+  collectionId: Scalars['ID'];
+};
+
+export type MutationDislikeCollectionArgs = {
+  collectionId: Scalars['ID'];
 };
 
 export type MutationPostCommentArgs = {
@@ -273,8 +283,16 @@ export type User = Node & {
   email: Scalars['String'];
   name: Scalars['String'];
   password: Scalars['String'];
+  likedCollections: UserCollectionsConnection;
   myCollections: UserCollectionsConnection;
   commentsConnection: UserCommentsConnection;
+};
+
+export type UserLikedCollectionsArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['ID']>;
 };
 
 export type UserMyCollectionsArgs = {
@@ -1092,6 +1110,18 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateCollectionArgs, 'input'>
   >;
+  likeCollection?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationLikeCollectionArgs, 'collectionId'>
+  >;
+  dislikeCollection?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDislikeCollectionArgs, 'collectionId'>
+  >;
   postComment?: Resolver<
     ResolversTypes['Comment'],
     ParentType,
@@ -1235,6 +1265,12 @@ export type UserResolvers<
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  likedCollections?: Resolver<
+    ResolversTypes['UserCollectionsConnection'],
+    ParentType,
+    ContextType,
+    RequireFields<UserLikedCollectionsArgs, never>
+  >;
   myCollections?: Resolver<
     ResolversTypes['UserCollectionsConnection'],
     ParentType,

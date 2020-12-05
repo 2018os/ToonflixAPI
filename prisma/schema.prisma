@@ -8,57 +8,26 @@ datasource db {
   url      = env("LOCAL_DATABASE_URL")
 }
 
-///
-model Webtoon {
-  description String?      @db.Text
-  id          String       @id @db.VarChar(191)
-  isAdult     Boolean      @db.TinyInt
-  isFinish    Boolean      @db.TinyInt
-  isPay       Boolean      @db.TinyInt
-  platform    Platform
-  thumbnail   String       @db.VarChar(191)
-  title       String       @db.VarChar(191)
-  url         String       @db.VarChar(191)
-  comments    Comment[]
-  authors     Author[]
-  collections Collection[]
-  genres      Genre[]
-}
-
 model Author {
   id       String    @id @db.VarChar(191)
   name     String    @db.VarChar(191)
   webtoons Webtoon[]
 }
 
-model Genre {
-  code     String    @id @db.VarChar(191)
-  name     String    @db.VarChar(191)
-  webtoons Webtoon[]
-}
-
 model Collection {
-  createdAt   DateTime       @default(now()) @db.Datetime(0)
-  description String         @db.Text
-  id          String         @id @db.VarChar(191)
-  title       String         @db.VarChar(191)
-  updatedAt   DateTime       @default(now()) @db.Datetime(3)
-  writerId    String         @db.VarChar(191)
-  type        CollectionType @default(Public)
-  writer      User           @relation(fields: [writerId], references: [id])
+  createdAt   DateTime        @default(now()) @db.Datetime(0)
+  description String          @db.Text
+  id          String          @id @db.VarChar(191)
+  title       String          @db.VarChar(191)
+  updatedAt   DateTime        @db.Datetime(3)
+  writerId    String          @db.VarChar(191)
+  type        Collection_type @default(Public)
+  writer      User            @relation("CollectionOnWriter", fields: [writerId], references: [id])
   comments    Comment[]
+  likers      User[]          @relation("CollectionOnLiker")
   webtoons    Webtoon[]
 
   @@index([writerId], name: "writerId")
-}
-
-model User {
-  email       String       @unique @db.VarChar(191)
-  id          String       @id @db.VarChar(191)
-  name        String       @db.VarChar(191)
-  password    String       @db.VarChar(191)
-  collections Collection[]
-  commnets    Comment[]
 }
 
 model Comment {
@@ -70,10 +39,10 @@ model Comment {
   createdAt    DateTime    @default(now()) @db.Datetime(0)
   collectionId String?     @db.VarChar(191)
   collection   Collection? @relation(fields: [collectionId], references: [id])
-  comment      Comment?    @relation("CommentToComment", fields: [commentId], references: [id])
+  comment      Comment?    @relation("CommentToComment_commentId", fields: [commentId], references: [id])
   webtoon      Webtoon?    @relation(fields: [webtoonId], references: [id])
   writer       User?       @relation(fields: [writerId], references: [id])
-  subComments  Comment[]   @relation("CommentToComment")
+  comments     Comment[]   @relation("CommentToComment_commentId")
 
   @@index([collectionId], name: "collectionId")
   @@index([commentId], name: "commentId")
@@ -81,13 +50,44 @@ model Comment {
   @@index([writerId], name: "writerId")
 }
 
-///
-enum Platform {
-  NAVER
-  DAUM
+model Genre {
+  code     String    @id @db.VarChar(191)
+  name     String    @db.VarChar(191)
+  webtoons Webtoon[]
 }
 
-enum CollectionType {
+model User {
+  email            String       @unique @db.VarChar(191)
+  id               String       @id @db.VarChar(191)
+  name             String       @db.VarChar(191)
+  password         String       @db.VarChar(191)
+  collections      Collection[] @relation("CollectionOnWriter")
+  comments         Comment[]
+  likedCollections Collection[] @relation("CollectionOnLiker")
+}
+
+model Webtoon {
+  description String?          @db.Text
+  id          String           @id @db.VarChar(191)
+  isAdult     Boolean          @db.TinyInt
+  isFinish    Boolean          @db.TinyInt
+  isPay       Boolean          @db.TinyInt
+  platform    Webtoon_platform
+  thumbnail   String           @db.VarChar(191)
+  title       String           @db.VarChar(191)
+  url         String           @db.VarChar(191)
+  comments    Comment[]
+  authors     Author[]
+  collections Collection[]
+  genres      Genre[]
+}
+
+enum Collection_type {
   Private
   Public
+}
+
+enum Webtoon_platform {
+  NAVER
+  DAUM
 }

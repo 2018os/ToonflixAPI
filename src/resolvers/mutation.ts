@@ -16,7 +16,9 @@ import {
   MutationCreateCollectionArgs,
   MutationUpdateCollectionArgs,
   MutationSignupArgs,
-  MutationPostCommentArgs
+  MutationPostCommentArgs,
+  MutationLikeCollectionArgs,
+  MutationDislikeCollectionArgs
 } from '../generated/graphql';
 
 const Mutation = {
@@ -151,7 +153,7 @@ const Mutation = {
               }
             : undefined
         },
-        subComments: {
+        comments: {
           connect: args.input.webtoonId
             ? {
                 id: args.input.webtoonId
@@ -161,6 +163,44 @@ const Mutation = {
       }
     });
     return comment;
+  },
+  likeCollection: async (
+    _parent: any,
+    args: MutationLikeCollectionArgs,
+    context: Context
+  ) => {
+    const userId = getUserId(context);
+    return context.prisma.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        likedCollections: {
+          connect: {
+            id: args.collectionId
+          }
+        }
+      }
+    });
+  },
+  dislikeCollection: async (
+    _parent: any,
+    args: MutationDislikeCollectionArgs,
+    context: Context
+  ) => {
+    const userId = getUserId(context);
+    return context.prisma.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        likedCollections: {
+          disconnect: {
+            id: args.collectionId
+          }
+        }
+      }
+    });
   }
 };
 

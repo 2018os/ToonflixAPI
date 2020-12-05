@@ -74,6 +74,8 @@ type Mutation {
   signup(input: SignupInput!): AuthPayload!
   createCollection(input: CreateCollectionInput!): Collection!
   updateCollection(input: UpdateCollectionInput!): Collection!
+  likeCollection(collectionId: ID!): User!
+  dislikeCollection(collectionId: ID!): User!
   postComment(input: CommentInput!): Comment!
 }
 
@@ -171,8 +173,12 @@ type User implements Node {
   email: String!
   name: String!
   password: String!
-  # likedWebtoon
-  # likedCollections
+  likedCollections(
+    first: Int
+    last: Int
+    before: ID
+    after: ID
+  ): UserCollectionsConnection!
   myCollections(
     first: Int
     last: Int
