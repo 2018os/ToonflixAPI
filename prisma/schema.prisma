@@ -22,7 +22,7 @@ model Collection {
   updatedAt   DateTime        @db.Datetime(3)
   writerId    String          @db.VarChar(191)
   type        Collection_type @default(Public)
-  writer      User            @relation("CollectionOnWriter", fields: [writerId], references: [id])
+  writer      User            @relation(fields: [writerId], references: [id])
   comments    Comment[]
   likers      User[]          @relation("CollectionOnLiker")
   webtoons    Webtoon[]
@@ -61,7 +61,9 @@ model User {
   id               String       @id @db.VarChar(191)
   name             String       @db.VarChar(191)
   password         String       @db.VarChar(191)
-  collections      Collection[] @relation("CollectionOnWriter")
+  level            Int          @default(1) @db.Int
+  exp              Int          @default(0) @db.Int
+  collections      Collection[]
   comments         Comment[]
   likedCollections Collection[] @relation("CollectionOnLiker")
 }

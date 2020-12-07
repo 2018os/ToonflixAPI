@@ -173,6 +173,8 @@ type User implements Node {
   email: String!
   name: String!
   password: String!
+  level: Int!
+  exp: Int!
   likedCollections(
     first: Int
     last: Int
