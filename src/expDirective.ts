@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { SchemaDirectiveVisitor } from 'apollo-server-express';
 import { defaultFieldResolver, GraphQLField } from 'graphql';
 
