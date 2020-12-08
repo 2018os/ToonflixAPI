@@ -283,6 +283,8 @@ export type User = Node & {
   email: Scalars['String'];
   name: Scalars['String'];
   password: Scalars['String'];
+  level: Scalars['Int'];
+  exp: Scalars['Int'];
   likedCollections: UserCollectionsConnection;
   myCollections: UserCollectionsConnection;
   commentsConnection: UserCommentsConnection;
@@ -932,6 +934,15 @@ export type ResolversParentTypes = ResolversObject<{
   Paging: Paging;
 }>;
 
+export type ExpDirectiveArgs = { point?: Maybe<Scalars['Int']> };
+
+export type ExpDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = Context,
+  Args = ExpDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export interface DateScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date';
@@ -1265,6 +1276,8 @@ export type UserResolvers<
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  level?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  exp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   likedCollections?: Resolver<
     ResolversTypes['UserCollectionsConnection'],
     ParentType,
@@ -1772,3 +1785,14 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
  */
 export type IResolvers<ContextType = Context> = Resolvers<ContextType>;
+export type DirectiveResolvers<ContextType = Context> = ResolversObject<{
+  exp?: ExpDirectiveResolver<any, any, ContextType>;
+}>;
+
+/**
+ * @deprecated
+ * Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
+ */
+export type IDirectiveResolvers<ContextType = Context> = DirectiveResolvers<
+  ContextType
+>;

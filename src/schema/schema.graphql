@@ -1,3 +1,5 @@
+directive @exp(point: Int) on FIELD | FIELD_DEFINITION
+
 scalar Date
 scalar Url
 
@@ -72,11 +74,11 @@ type Query {
 type Mutation {
   login(input: LoginInput!): AuthPayload!
   signup(input: SignupInput!): AuthPayload!
-  createCollection(input: CreateCollectionInput!): Collection!
+  createCollection(input: CreateCollectionInput!): Collection! @exp(point: 50)
   updateCollection(input: UpdateCollectionInput!): Collection!
-  likeCollection(collectionId: ID!): User!
+  likeCollection(collectionId: ID!): User! @exp(point: 20)
   dislikeCollection(collectionId: ID!): User!
-  postComment(input: CommentInput!): Comment!
+  postComment(input: CommentInput!): Comment! @exp(point: 10)
 }
 
 type AuthPayload {

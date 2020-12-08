@@ -6,6 +6,7 @@ import logger from '../config/winston';
 
 import { prisma } from './utils/context';
 import resolvers from './resolvers';
+import ExpDirective from './expDirective';
 
 const typeDefs = fs.readFileSync(
   path.join(__dirname, '/schema', '/schema.graphql'),
@@ -23,6 +24,9 @@ const schema = makeExecutableSchema({
   resolvers,
   resolverValidationOptions: {
     requireResolversForResolveType: false
+  },
+  schemaDirectives: {
+    exp: ExpDirective
   },
   inheritResolversFromInterfaces: true
 });
