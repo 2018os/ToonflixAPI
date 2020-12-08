@@ -114,8 +114,8 @@ const Query = {
         },
         where: keyword
           ? {
-              NOT: {
-                type: 'Private'
+              type: {
+                not: 'PRIVATE'
               },
               OR: [
                 {
@@ -140,8 +140,8 @@ const Query = {
               ]
             }
           : {
-              NOT: {
-                type: 'Private'
+              type: {
+                not: 'PRIVATE'
               }
             }
       });
@@ -335,8 +335,8 @@ const Query = {
           }, // TODO: Customize ordering
           where: keyword
             ? {
-                NOT: {
-                  type: 'Private'
+                type: {
+                  not: 'PRIVATE'
                 },
                 OR: [
                   {
@@ -370,8 +370,8 @@ const Query = {
                 ]
               }
             : {
-                NOT: {
-                  type: 'Private'
+                type: {
+                  not: 'PRIVATE'
                 }
               }
         });
@@ -394,11 +394,8 @@ const Query = {
         id
       },
       include: {
-        collections: {
-          include: {
-            webtoons: true
-          }
-        }
+        collections: true,
+        comments: true
       }
     });
     return user;

@@ -96,7 +96,7 @@ const Mutation = {
           create: {
             id: collectionId,
             title: '좋아요 표시한 작품',
-            type: 'Private',
+            type: 'PRIVATE',
             description: '',
             updatedAt: new Date()
             // TODO: Enhance date

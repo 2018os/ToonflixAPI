@@ -24,28 +24,14 @@ export type Scalars = {
   Url: any;
 };
 
-export enum OrderBy {
-  Asc = 'asc',
-  Desc = 'desc'
-}
-
-export enum WebtoonOrderByField {
-  Title = 'title'
-}
-
-export enum CollectionOrderByField {
-  Title = 'title',
-  UpdatedAt = 'updatedAt'
-}
-
 export enum Platform {
   Naver = 'NAVER',
   Daum = 'DAUM'
 }
 
 export enum CollectionType {
-  Private = 'Private',
-  Public = 'Public'
+  Private = 'PRIVATE',
+  Public = 'PUBLIC'
 }
 
 export type Node = {
@@ -723,9 +709,6 @@ export type DirectiveResolverFn<
 export type ResolversTypes = ResolversObject<{
   Date: ResolverTypeWrapper<Scalars['Date']>;
   Url: ResolverTypeWrapper<Scalars['Url']>;
-  OrderBy: OrderBy;
-  WebtoonOrderByField: WebtoonOrderByField;
-  CollectionOrderByField: CollectionOrderByField;
   Platform: Platform;
   CollectionType: CollectionType;
   Node:
@@ -933,6 +916,15 @@ export type ResolversParentTypes = ResolversObject<{
   SearchFiltering: SearchFiltering;
   Paging: Paging;
 }>;
+
+export type AuthDirectiveArgs = {};
+
+export type AuthDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = Context,
+  Args = AuthDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type ExpDirectiveArgs = { point?: Maybe<Scalars['Int']> };
 
@@ -1786,6 +1778,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
  */
 export type IResolvers<ContextType = Context> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = Context> = ResolversObject<{
+  auth?: AuthDirectiveResolver<any, any, ContextType>;
   exp?: ExpDirectiveResolver<any, any, ContextType>;
 }>;
 

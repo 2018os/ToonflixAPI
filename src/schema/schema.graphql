@@ -5,19 +5,19 @@ scalar Date
 scalar Url
 
 # enum
-enum OrderBy {
-  asc
-  desc
-}
+# enum OrderBy {
+#   asc
+#   desc
+# }
 
-enum WebtoonOrderByField {
-  title
-}
+# enum WebtoonOrderByField {
+#   title
+# }
 
-enum CollectionOrderByField {
-  title
-  updatedAt
-}
+# enum CollectionOrderByField {
+#   title
+#   updatedAt
+# }
 
 enum Platform {
   NAVER
@@ -25,8 +25,8 @@ enum Platform {
 }
 
 enum CollectionType {
-  Private
-  Public
+  PRIVATE
+  PUBLIC
 }
 
 # interface

@@ -1,6 +1,6 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["nativeTypes"]
+  provider = "prisma-client-js"
+  // previewFeatures = ["nativeTypes"]
 }
 
 datasource db {
@@ -9,19 +9,19 @@ datasource db {
 }
 
 model Author {
-  id       String    @id @db.VarChar(191)
-  name     String    @db.VarChar(191)
+  id       String    @id
+  name     String
   webtoons Webtoon[]
 }
 
 model Collection {
-  createdAt   DateTime        @default(now()) @db.Datetime(0)
-  description String          @db.Text
-  id          String          @id @db.VarChar(191)
-  title       String          @db.VarChar(191)
-  updatedAt   DateTime        @db.Datetime(3)
-  writerId    String          @db.VarChar(191)
-  type        Collection_type @default(Public)
+  createdAt   DateTime        @default(now())
+  description String
+  id          String          @id
+  title       String
+  updatedAt   DateTime
+  writerId    String
+  type        Collection_type @default(PUBLIC)
   writer      User            @relation(fields: [writerId], references: [id])
   comments    Comment[]
   likers      User[]          @relation("CollectionOnLiker")
@@ -31,13 +31,13 @@ model Collection {
 }
 
 model Comment {
-  commentId    String?     @db.VarChar(191)
-  id           String      @id @db.VarChar(191)
-  message      String      @db.VarChar(191)
-  webtoonId    String?     @db.VarChar(191)
-  writerId     String?     @db.VarChar(191)
-  createdAt    DateTime    @default(now()) @db.Datetime(0)
-  collectionId String?     @db.VarChar(191)
+  commentId    String?
+  id           String      @id
+  message      String
+  webtoonId    String?
+  writerId     String?
+  createdAt    DateTime    @default(now())
+  collectionId String?
   collection   Collection? @relation(fields: [collectionId], references: [id])
   comment      Comment?    @relation("CommentToComment_commentId", fields: [commentId], references: [id])
   webtoon      Webtoon?    @relation(fields: [webtoonId], references: [id])
@@ -51,33 +51,33 @@ model Comment {
 }
 
 model Genre {
-  code     String    @id @db.VarChar(191)
-  name     String    @db.VarChar(191)
+  code     String    @id
+  name     String
   webtoons Webtoon[]
 }
 
 model User {
-  email            String       @unique @db.VarChar(191)
-  id               String       @id @db.VarChar(191)
-  name             String       @db.VarChar(191)
-  password         String       @db.VarChar(191)
-  level            Int          @default(1) @db.Int
-  exp              Int          @default(0) @db.Int
+  email            String       @unique
+  id               String       @id
+  name             String
+  password         String
+  level            Int          @default(1)
+  exp              Int          @default(0)
   collections      Collection[]
   comments         Comment[]
   likedCollections Collection[] @relation("CollectionOnLiker")
 }
 
 model Webtoon {
-  description String?          @db.Text
-  id          String           @id @db.VarChar(191)
-  isAdult     Boolean          @db.TinyInt
-  isFinish    Boolean          @db.TinyInt
-  isPay       Boolean          @db.TinyInt
+  description String?
+  id          String           @id
+  isAdult     Boolean
+  isFinish    Boolean
+  isPay       Boolean
   platform    Webtoon_platform
-  thumbnail   String           @db.VarChar(191)
-  title       String           @db.VarChar(191)
-  url         String           @db.VarChar(191)
+  thumbnail   String
+  title       String
+  url         String
   comments    Comment[]
   authors     Author[]
   collections Collection[]
@@ -85,8 +85,8 @@ model Webtoon {
 }
 
 enum Collection_type {
-  Private
-  Public
+  PRIVATE
+  PUBLIC
 }
 
 enum Webtoon_platform {
