@@ -1,3 +1,4 @@
+directive @auth on FIELD | FIELD_DEFINITION
 directive @exp(point: Int) on FIELD | FIELD_DEFINITION
 
 scalar Date
@@ -59,7 +60,7 @@ type Query {
   genres: [Genre]
   users(first: Int, last: Int, before: ID, after: ID): UserConnection!
   user(id: ID!): User!
-  me: User!
+  me: User! @auth
   webtoon(id: ID!): Webtoon!
   randomWebtoons(take: Int = 1): [Webtoon!]
   search(
@@ -74,11 +75,13 @@ type Query {
 type Mutation {
   login(input: LoginInput!): AuthPayload!
   signup(input: SignupInput!): AuthPayload!
-  createCollection(input: CreateCollectionInput!): Collection! @exp(point: 50)
-  updateCollection(input: UpdateCollectionInput!): Collection!
-  likeCollection(collectionId: ID!): User! @exp(point: 20)
-  dislikeCollection(collectionId: ID!): User!
-  postComment(input: CommentInput!): Comment! @exp(point: 10)
+  createCollection(input: CreateCollectionInput!): Collection!
+    @exp(point: 50)
+    @auth
+  updateCollection(input: UpdateCollectionInput!): Collection! @auth
+  likeCollection(collectionId: ID!): User! @exp(point: 20) @auth
+  dislikeCollection(collectionId: ID!): User! @auth
+  postComment(input: CommentInput!): Comment! @exp(point: 10) @auth
 }
 
 type AuthPayload {
@@ -188,7 +191,7 @@ type User implements Node {
     last: Int
     before: ID
     after: ID
-  ): UserCollectionsConnection!
+  ): UserCollectionsConnection! @auth
   commentsConnection(
     first: Int
     last: Int
