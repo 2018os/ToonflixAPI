@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-express';
 import jwt from 'jsonwebtoken';
 
 import { AUTH_TOKEN } from './statics';
@@ -14,18 +13,15 @@ function arrayToObjectArrayConverter<T>(
 
 function getUserId(context: Context): string {
   const Authorization = context.req.get('Authorization');
-  let userId: string;
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '');
     const result: any = jwt.verify(token, AUTH_TOKEN);
     if (typeof result === 'object') {
-      userId = result.userId;
-    } else {
-      userId = result;
+      return result.userId;
     }
-    return userId;
+    return result;
   }
-  throw new ApolloError('No Authentication User', 'NOT_AUTHENTICATION');
+  return '';
 }
 
 function shuffle<T>(array: T[]): T[] {
