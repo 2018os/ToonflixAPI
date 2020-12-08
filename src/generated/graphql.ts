@@ -271,6 +271,7 @@ export type User = Node & {
   password: Scalars['String'];
   level: Scalars['Int'];
   exp: Scalars['Int'];
+  status: UserStatus;
   likedCollections: UserCollectionsConnection;
   myCollections: UserCollectionsConnection;
   commentsConnection: UserCommentsConnection;
@@ -589,6 +590,13 @@ export type Paging = {
   after?: Maybe<Scalars['ID']>;
 };
 
+export type UserStatus = {
+  __typename?: 'UserStatus';
+  commentCounts: Scalars['Int'];
+  collectionCounts: Scalars['Int'];
+  likedCollectionCounts: Scalars['Int'];
+};
+
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
 
@@ -815,6 +823,7 @@ export type ResolversTypes = ResolversObject<{
   CommentInput: CommentInput;
   SearchFiltering: SearchFiltering;
   Paging: Paging;
+  UserStatus: ResolverTypeWrapper<UserStatus>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -915,6 +924,7 @@ export type ResolversParentTypes = ResolversObject<{
   CommentInput: CommentInput;
   SearchFiltering: SearchFiltering;
   Paging: Paging;
+  UserStatus: UserStatus;
 }>;
 
 export type AuthDirectiveArgs = {};
@@ -1270,6 +1280,7 @@ export type UserResolvers<
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   exp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['UserStatus'], ParentType, ContextType>;
   likedCollections?: Resolver<
     ResolversTypes['UserCollectionsConnection'],
     ParentType,
@@ -1709,6 +1720,20 @@ export type CommentCommentsEdgeResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
+export type UserStatusResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['UserStatus'] = ResolversParentTypes['UserStatus']
+> = ResolversObject<{
+  commentCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  collectionCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  likedCollectionCounts?: Resolver<
+    ResolversTypes['Int'],
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+}>;
+
 export type Resolvers<ContextType = Context> = ResolversObject<{
   Date?: GraphQLScalarType;
   Url?: GraphQLScalarType;
@@ -1770,6 +1795,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   UserCollectionsEdge?: UserCollectionsEdgeResolvers<ContextType>;
   UserCommentsEdge?: UserCommentsEdgeResolvers<ContextType>;
   CommentCommentsEdge?: CommentCommentsEdgeResolvers<ContextType>;
+  UserStatus?: UserStatusResolvers<ContextType>;
 }>;
 
 /**

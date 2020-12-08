@@ -9,6 +9,35 @@ import { User, Node } from '../generated/graphql';
 import { Context } from '../utils/context';
 
 export default {
+  status: async (parent: User, _args: any, context: Context) => {
+    const { id } = parent;
+    const commentCounts = context.prisma.comment.count({
+      where: {
+        id
+      }
+    });
+    const collectionCounts = context.prisma.collection.count({
+      where: {
+        writer: {
+          id
+        }
+      }
+    });
+    const likedCollectionCounts = context.prisma.collection.count({
+      where: {
+        likers: {
+          some: {
+            id
+          }
+        }
+      }
+    });
+    return {
+      commentCounts,
+      collectionCounts,
+      likedCollectionCounts
+    };
+  },
   myCollections: connection({
     cursorFromNode: (node: Node) => decodeCursor(node.id),
     nodes: async (parent: User, args, context: Context) => {

@@ -180,6 +180,7 @@ type User implements Node {
   password: String!
   level: Int!
   exp: Int!
+  status: UserStatus!
   likedCollections(
     first: Int
     last: Int
@@ -458,4 +459,10 @@ input Paging {
   last: Int
   before: ID
   after: ID
+}
+
+type UserStatus {
+  commentCounts: Int!
+  collectionCounts: Int!
+  likedCollectionCounts: Int!
 }
