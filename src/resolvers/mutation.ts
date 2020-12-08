@@ -81,10 +81,10 @@ const Mutation = {
     if (existed)
       throw new ApolloError('Already Existing Email', 'INVALID_DATA');
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const userCounts = await context.prisma.user.count();
-    const collectionCounts = await context.prisma.collection.count();
-    const id = encode(USER_ID_UNIT + userCounts);
-    const collectionId = encode(COLLECTION_ID_UNIT + collectionCounts);
+    const allUserCount = await context.prisma.user.count();
+    const allCollectionCount = await context.prisma.collection.count();
+    const id = encode(USER_ID_UNIT + allUserCount);
+    const collectionId = encode(COLLECTION_ID_UNIT + allCollectionCount);
     // TODO: email authentication
     const user = await context.prisma.user.create({
       data: {
@@ -130,8 +130,8 @@ const Mutation = {
   ) => {
     const userId: string = getUserId(context);
     const { message } = args.input;
-    const commentCounts = await context.prisma.comment.count();
-    const id = encode(COMMENT_ID_UNIT + commentCounts);
+    const allCommentCount = await context.prisma.comment.count();
+    const id = encode(COMMENT_ID_UNIT + allCommentCount);
     const comment = await context.prisma.comment.create({
       data: {
         id,

@@ -37,8 +37,8 @@ interface Node {
 interface Connection {
   edges: [Edge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 interface Edge {
@@ -218,113 +218,113 @@ type Comment implements Node {
 type UserConnection implements Connection {
   edges: [UserEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type WebtoonConnection implements Connection {
   edges: [WebtoonEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type CollectionConnection implements Connection {
   edges: [CollectionEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type AuthorConnection implements Connection {
   edges: [AuthorEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type WebtoonAuthorsConnection implements Connection {
   edges: [WebtoonAuthorsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type WebtoonCollectionsConnection implements Connection {
   edges: [WebtoonCollectionsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type WebtoonCommentsConnection implements Connection {
   edges: [WebtoonCommentsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type AuthorWebtoonsConnection implements Connection {
   edges: [AuthorWebtoonsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type CollectionWebtoonsConnection implements Connection {
   edges: [CollectionWebtoonsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type CollectionCommentsConnection implements Connection {
   edges: [CollectionCommentsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type GenreWebtoonsConnection implements Connection {
   edges: [GenreWebtoonsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type SearchResultWebtoonsConnection implements Connection {
   edges: [SearchResultWebtoonsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type SearchResultCollectionsConnection implements Connection {
   edges: [SearchResultCollectionsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type UserCollectionsConnection implements Connection {
   edges: [UserCollectionsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type UserCommentsConnection implements Connection {
   edges: [UserCommentsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 type CommentCommentsConnection implements Connection {
   edges: [CommentCommentsEdge]
   pageInfo: PageInfo!
-  totalCounts: Int!
-  counts: Int!
+  totalCount: Int!
+  count: Int!
 }
 
 # searchResult
@@ -462,7 +462,7 @@ input Paging {
 }
 
 type UserStatus {
-  commentCounts: Int!
-  collectionCounts: Int!
-  likedCollectionCounts: Int!
+  commentsCount: Int!
+  collectionsCount: Int!
+  likedCollectionsCount: Int!
 }

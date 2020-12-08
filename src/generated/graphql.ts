@@ -41,8 +41,8 @@ export type Node = {
 export type Connection = {
   edges?: Maybe<Array<Maybe<Edge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type Edge = {
@@ -318,128 +318,128 @@ export type UserConnection = Connection & {
   __typename?: 'UserConnection';
   edges?: Maybe<Array<Maybe<UserEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type WebtoonConnection = Connection & {
   __typename?: 'WebtoonConnection';
   edges?: Maybe<Array<Maybe<WebtoonEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type CollectionConnection = Connection & {
   __typename?: 'CollectionConnection';
   edges?: Maybe<Array<Maybe<CollectionEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type AuthorConnection = Connection & {
   __typename?: 'AuthorConnection';
   edges?: Maybe<Array<Maybe<AuthorEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type WebtoonAuthorsConnection = Connection & {
   __typename?: 'WebtoonAuthorsConnection';
   edges?: Maybe<Array<Maybe<WebtoonAuthorsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type WebtoonCollectionsConnection = Connection & {
   __typename?: 'WebtoonCollectionsConnection';
   edges?: Maybe<Array<Maybe<WebtoonCollectionsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type WebtoonCommentsConnection = Connection & {
   __typename?: 'WebtoonCommentsConnection';
   edges?: Maybe<Array<Maybe<WebtoonCommentsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type AuthorWebtoonsConnection = Connection & {
   __typename?: 'AuthorWebtoonsConnection';
   edges?: Maybe<Array<Maybe<AuthorWebtoonsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type CollectionWebtoonsConnection = Connection & {
   __typename?: 'CollectionWebtoonsConnection';
   edges?: Maybe<Array<Maybe<CollectionWebtoonsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type CollectionCommentsConnection = Connection & {
   __typename?: 'CollectionCommentsConnection';
   edges?: Maybe<Array<Maybe<CollectionCommentsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type GenreWebtoonsConnection = Connection & {
   __typename?: 'GenreWebtoonsConnection';
   edges?: Maybe<Array<Maybe<GenreWebtoonsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type SearchResultWebtoonsConnection = Connection & {
   __typename?: 'SearchResultWebtoonsConnection';
   edges?: Maybe<Array<Maybe<SearchResultWebtoonsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type SearchResultCollectionsConnection = Connection & {
   __typename?: 'SearchResultCollectionsConnection';
   edges?: Maybe<Array<Maybe<SearchResultCollectionsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type UserCollectionsConnection = Connection & {
   __typename?: 'UserCollectionsConnection';
   edges?: Maybe<Array<Maybe<UserCollectionsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type UserCommentsConnection = Connection & {
   __typename?: 'UserCommentsConnection';
   edges?: Maybe<Array<Maybe<UserCommentsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type CommentCommentsConnection = Connection & {
   __typename?: 'CommentCommentsConnection';
   edges?: Maybe<Array<Maybe<CommentCommentsEdge>>>;
   pageInfo: PageInfo;
-  totalCounts: Scalars['Int'];
-  counts: Scalars['Int'];
+  totalCount: Scalars['Int'];
+  count: Scalars['Int'];
 };
 
 export type SearchResult = {
@@ -592,9 +592,9 @@ export type Paging = {
 
 export type UserStatus = {
   __typename?: 'UserStatus';
-  commentCounts: Scalars['Int'];
-  collectionCounts: Scalars['Int'];
-  likedCollectionCounts: Scalars['Int'];
+  commentsCount: Scalars['Int'];
+  collectionsCount: Scalars['Int'];
+  likedCollectionsCount: Scalars['Int'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -997,8 +997,8 @@ export type ConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 }>;
 
 export type EdgeResolvers<
@@ -1329,8 +1329,8 @@ export type UserConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1344,8 +1344,8 @@ export type WebtoonConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1359,8 +1359,8 @@ export type CollectionConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1374,8 +1374,8 @@ export type AuthorConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1389,8 +1389,8 @@ export type WebtoonAuthorsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1404,8 +1404,8 @@ export type WebtoonCollectionsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1419,8 +1419,8 @@ export type WebtoonCommentsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1434,8 +1434,8 @@ export type AuthorWebtoonsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1449,8 +1449,8 @@ export type CollectionWebtoonsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1464,8 +1464,8 @@ export type CollectionCommentsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1479,8 +1479,8 @@ export type GenreWebtoonsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1494,8 +1494,8 @@ export type SearchResultWebtoonsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1509,8 +1509,8 @@ export type SearchResultCollectionsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1524,8 +1524,8 @@ export type UserCollectionsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1539,8 +1539,8 @@ export type UserCommentsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1554,8 +1554,8 @@ export type CommentCommentsConnectionResolvers<
     ContextType
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  counts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1724,9 +1724,9 @@ export type UserStatusResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['UserStatus'] = ResolversParentTypes['UserStatus']
 > = ResolversObject<{
-  commentCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  collectionCounts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  likedCollectionCounts?: Resolver<
+  commentsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  collectionsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  likedCollectionsCount?: Resolver<
     ResolversTypes['Int'],
     ParentType,
     ContextType

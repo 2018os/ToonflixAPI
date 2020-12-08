@@ -11,19 +11,19 @@ import { Context } from '../utils/context';
 export default {
   status: async (parent: User, _args: any, context: Context) => {
     const { id } = parent;
-    const commentCounts = context.prisma.comment.count({
+    const commentsCount = context.prisma.comment.count({
       where: {
         id
       }
     });
-    const collectionCounts = context.prisma.collection.count({
+    const collectionsCount = context.prisma.collection.count({
       where: {
         writer: {
           id
         }
       }
     });
-    const likedCollectionCounts = context.prisma.collection.count({
+    const likedCollectionsCount = context.prisma.collection.count({
       where: {
         likers: {
           some: {
@@ -33,9 +33,9 @@ export default {
       }
     });
     return {
-      commentCounts,
-      collectionCounts,
-      likedCollectionCounts
+      commentsCount,
+      collectionsCount,
+      likedCollectionsCount
     };
   },
   myCollections: connection({
