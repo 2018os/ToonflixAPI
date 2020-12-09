@@ -7,6 +7,7 @@ import Webtoon from './webtoon';
 import Genre from './genre';
 import Connection from './connection';
 import User from './user';
+import Comment from './comment';
 
 const resolvers = {
   Query,
@@ -16,7 +17,8 @@ const resolvers = {
   Collection,
   Webtoon,
   Genre,
-  User
+  User,
+  Comment
 };
 
 export default resolvers;
