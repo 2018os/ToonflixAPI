@@ -13,14 +13,12 @@ export default {
     const { id } = parent;
     const commentsCount = context.prisma.comment.count({
       where: {
-        id
+        writerId: id
       }
     });
     const collectionsCount = context.prisma.collection.count({
       where: {
-        writer: {
-          id
-        }
+        writerId: id
       }
     });
     const likedCollectionsCount = context.prisma.collection.count({
