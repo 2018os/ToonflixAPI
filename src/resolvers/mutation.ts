@@ -147,16 +147,16 @@ const Mutation = {
             : undefined
         },
         collection: {
-          connect: args.input.webtoonId
+          connect: args.input.collectionId
             ? {
-                id: args.input.webtoonId
+                id: args.input.collectionId
               }
             : undefined
         },
-        comments: {
-          connect: args.input.webtoonId
+        comment: {
+          connect: args.input.commentId
             ? {
-                id: args.input.webtoonId
+                id: args.input.commentId
               }
             : undefined
         }
