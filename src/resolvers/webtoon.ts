@@ -8,7 +8,7 @@ import { Node, Webtoon } from '../generated/graphql';
 import { Context } from '../utils/context';
 
 export default {
-  authorsConnection: connection({
+  authors: connection({
     cursorFromNode: (node: Node) => decodeCursor(node.id),
     nodes: async (parent: Webtoon, args, context: Context) => {
       const cursor = args.after || args.before;
@@ -34,7 +34,7 @@ export default {
       return nodes;
     }
   }),
-  collectionsConnection: connection({
+  collections: connection({
     cursorFromNode: (node: Node) => decodeCursor(node.id),
     nodes: async (parent: Webtoon, args, context: Context) => {
       const cursor = args.after || args.before;
@@ -60,7 +60,7 @@ export default {
       return nodes;
     }
   }),
-  commentsConnection: connection({
+  comments: connection({
     cursorFromNode: (node: Node) => decodeCursor(node.id),
     nodes: async (parent: Webtoon, args, context: Context) => {
       const cursor = args.after || args.before;

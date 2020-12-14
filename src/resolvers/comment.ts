@@ -8,7 +8,7 @@ import { Node, Comment } from '../generated/graphql';
 import { Context } from '../utils/context';
 
 export default {
-  commentsConnection: connection({
+  comments: connection({
     cursorFromNode: (node: Node) => decodeCursor(node.id),
     nodes: async (parent: Comment, args, context: Context) => {
       const cursor = args.after || args.before;

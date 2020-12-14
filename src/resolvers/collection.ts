@@ -9,7 +9,7 @@ import { Collection, Node } from '../generated/graphql';
 import { Context } from '../utils/context';
 
 export default {
-  webtoonsConnection: connection({
+  webtoons: connection({
     cursorFromNode: (node: Node) => decodeCursor(node.id),
     nodes: async (parent: Collection, args, context: Context) => {
       const cursor = args.after || args.before;
