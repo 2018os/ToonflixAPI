@@ -63,12 +63,7 @@ type Query {
   me: User! @auth
   webtoon(id: ID!): Webtoon!
   randomWebtoons(take: Int = 1): [Webtoon!]
-  search(
-    keyword: String
-    where: SearchFiltering
-    webtoonPaging: Paging
-    collectionPaging: Paging
-  ): SearchResult!
+  search(keyword: String, where: SearchFiltering): SearchResult!
   collection(id: ID!): Collection!
 }
 
@@ -103,8 +98,18 @@ type UserStatus {
 }
 
 type SearchResult {
-  webtoonResult: SearchResultWebtoonsConnection
-  collectionResult: SearchResultCollectionsConnection
+  webtoonResult(
+    first: Int
+    last: Int
+    before: ID
+    after: ID
+  ): SearchResultWebtoonsConnection
+  collectionResult(
+    first: Int
+    last: Int
+    before: ID
+    after: ID
+  ): SearchResultCollectionsConnection
 }
 
 # nodes
@@ -308,11 +313,4 @@ input SearchFiltering {
   isFinish: Boolean
   platforms: [Platform!]
   genres: [String]
-}
-
-input Paging {
-  first: Int
-  last: Int
-  before: ID
-  after: ID
 }

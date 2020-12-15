@@ -22,8 +22,8 @@ test('Success get search Result', async () => {
     query: SEARCH
   });
   const { webtoonResult, collectionResult } = data.data.search;
-  expect(webtoonResult.counts).toEqual(expect.any(Number));
-  expect(collectionResult.counts).toEqual(expect.any(Number));
+  expect(webtoonResult.count).toEqual(expect.any(Number));
+  expect(collectionResult.count).toEqual(expect.any(Number));
   expect(webtoonResult.pageInfo.startCursor).toEqual(
     webtoonResult.edges[0].node.id
   );

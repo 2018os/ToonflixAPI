@@ -109,8 +109,6 @@ export type QueryRandomWebtoonsArgs = {
 export type QuerySearchArgs = {
   keyword?: Maybe<Scalars['String']>;
   where?: Maybe<SearchFiltering>;
-  webtoonPaging?: Maybe<Paging>;
-  collectionPaging?: Maybe<Paging>;
 };
 
 export type QueryCollectionArgs = {
@@ -181,6 +179,20 @@ export type SearchResult = {
   __typename?: 'SearchResult';
   webtoonResult?: Maybe<SearchResultWebtoonsConnection>;
   collectionResult?: Maybe<SearchResultCollectionsConnection>;
+};
+
+export type SearchResultWebtoonResultArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['ID']>;
+};
+
+export type SearchResultCollectionResultArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['ID']>;
 };
 
 export type Webtoon = Node & {
@@ -974,12 +986,14 @@ export type SearchResultResolvers<
   webtoonResult?: Resolver<
     Maybe<ResolversTypes['SearchResultWebtoonsConnection']>,
     ParentType,
-    ContextType
+    ContextType,
+    RequireFields<SearchResultWebtoonResultArgs, never>
   >;
   collectionResult?: Resolver<
     Maybe<ResolversTypes['SearchResultCollectionsConnection']>,
     ParentType,
-    ContextType
+    ContextType,
+    RequireFields<SearchResultCollectionResultArgs, never>
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;

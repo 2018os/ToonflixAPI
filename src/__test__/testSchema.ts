@@ -18,9 +18,9 @@ export const WEBTOON_FRAGMENT = gql`
 
 export const SEARCH = gql`
   query {
-    search(webtoonPaging: { first: 10 }, collectionPaging: { first: 10 }) {
-      webtoonResult {
-        counts
+    search {
+      webtoonResult(first: 10) {
+        count
         pageInfo {
           startCursor
         }
@@ -30,8 +30,8 @@ export const SEARCH = gql`
           }
         }
       }
-      collectionResult {
-        counts
+      collectionResult(first: 10) {
+        count
         pageInfo {
           startCursor
         }
@@ -47,8 +47,8 @@ export const SEARCH = gql`
 
 export const SEARCH_WEBTOONS_WITH_KEYWORD = gql`
   query($keyword: String) {
-    search(keyword: $keyword, webtoonPaging: { first: 10 }) {
-      webtoonResult {
+    search(keyword: $keyword) {
+      webtoonResult(first: 10) {
         edges {
           node {
             ...Webtoon
@@ -62,8 +62,8 @@ export const SEARCH_WEBTOONS_WITH_KEYWORD = gql`
 
 export const SEARCH_WEBTOONS_WITH_WHERE = gql`
   query($where: SearchFiltering) {
-    search(where: $where, webtoonPaging: { first: 10 }) {
-      webtoonResult {
+    search(where: $where) {
+      webtoonResult(first: 10) {
         edges {
           node {
             ...Webtoon
@@ -77,8 +77,8 @@ export const SEARCH_WEBTOONS_WITH_WHERE = gql`
 
 export const SEARCH_WEBTOONS_WITH_KEYWORD_AND_WHERE = gql`
   query($keyword: String, $where: SearchFiltering) {
-    search(keyword: $keyword, where: $where, webtoonPaging: { first: 10 }) {
-      webtoonResult {
+    search(keyword: $keyword, where: $where) {
+      webtoonResult(first: 10) {
         edges {
           node {
             ...Webtoon

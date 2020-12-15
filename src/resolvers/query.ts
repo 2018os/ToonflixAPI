@@ -4,12 +4,7 @@ import {
   encodeCursor
 } from 'graphql-connection-resolver';
 
-import {
-  arrayToObjectArrayConverter,
-  encode,
-  getUserId,
-  shuffle
-} from '../utils/tools';
+import { encode, getUserId, shuffle } from '../utils/tools';
 import { WEBTOON_ID_UNIT } from '../utils/statics';
 import { Context } from '../utils/context';
 
@@ -20,19 +15,8 @@ import {
   QueryRandomWebtoonsArgs,
   QueryUserArgs,
   QueryCollectionsArgs,
-  SearchFiltering,
   QueryCollectionArgs
 } from '../generated/graphql';
-
-type SearchArgs = {
-  first?: number | null;
-  last?: number | null;
-  after?: string | null;
-  before?: string | null;
-  keyword?: string | null;
-};
-
-type WebtoonSearchArgs = SearchArgs & SearchFiltering;
 
 const Query = {
   genres: (_parent: any, _args: any, context: Context) => {
@@ -248,144 +232,9 @@ const Query = {
       }
     });
   },
-  search: async (
-    parent: any,
-    queryArgs: QuerySearchArgs,
-    queryContext: Context
-  ) => {
-    const webtoonArgs = {
-      ...(queryArgs.webtoonPaging || {}),
-      ...(queryArgs.where || {}),
-      keyword: queryArgs.keyword
-    };
-    const collectionArgs = {
-      ...(queryArgs.collectionPaging || {}),
-      keyword: queryArgs.keyword
-    };
-    const webtoonConnection = connection({
-      cursorFromNode: (node: Node) => decodeCursor(node.id),
-      nodes: async (_parent, args: WebtoonSearchArgs, context: Context) => {
-        const cursor = args.after || args.before;
-        const { keyword } = args;
-        const encodedCursor = cursor && encodeCursor(cursor);
-        const genres = arrayToObjectArrayConverter(args.genres, 'code');
-        const nodes = await context.prisma.webtoon.findMany({
-          skip: cursor ? 1 : undefined,
-          cursor: cursor
-            ? {
-                id: encodedCursor || undefined
-              }
-            : undefined,
-          include: {
-            authors: true,
-            genres: true,
-            collections: true
-          },
-          // TODO:
-          // Fix Error "mysql lost connection during query"
-          // orderBy: {
-          //   title: args.before ? 'desc' : 'asc'
-          // },
-          where: {
-            OR: keyword
-              ? [
-                  { title: { contains: keyword } },
-                  { description: { contains: keyword } },
-                  { genres: { some: { name: keyword } } }
-                ]
-              : undefined,
-            platform:
-              args.platforms && args.platforms.length > 0
-                ? {
-                    in: args.platforms
-                  }
-                : undefined,
-            genres: {
-              some: {
-                OR: genres
-              }
-            },
-            isPay: args.isPay ? args.isPay : undefined,
-            isAdult: args.isAdult ? args.isAdult : undefined,
-            isFinish: args.isFinish ? args.isFinish : undefined
-          }
-        });
-        return nodes;
-      }
-    });
-    const collectionConnection = connection({
-      cursorFromNode: (node: Node) => decodeCursor(node.id),
-      nodes: async (_parent, args: SearchArgs, context: Context) => {
-        const cursor = args.after || args.before;
-        const { keyword } = args;
-        const encodedCursor = cursor && encodeCursor(cursor);
-        const nodes = await context.prisma.collection.findMany({
-          skip: cursor ? 1 : undefined,
-          cursor: cursor
-            ? {
-                id: encodedCursor || undefined
-              }
-            : undefined,
-          include: {
-            webtoons: true,
-            writer: true
-          },
-          orderBy: {
-            title: args.before ? 'desc' : 'asc'
-          }, // TODO: Customize ordering
-          where: keyword
-            ? {
-                type: {
-                  not: 'PRIVATE'
-                },
-                OR: [
-                  {
-                    title: {
-                      contains: keyword
-                    }
-                  },
-                  {
-                    description: {
-                      contains: keyword
-                    }
-                  },
-                  {
-                    webtoons: {
-                      some: {
-                        OR: [
-                          {
-                            title: {
-                              contains: keyword
-                            }
-                          },
-                          {
-                            description: {
-                              contains: keyword
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
-            : {
-                type: {
-                  not: 'PRIVATE'
-                }
-              }
-        });
-        return nodes;
-      }
-    });
-    return {
-      webtoonResult: webtoonConnection(parent, webtoonArgs, queryContext),
-      collectionResult: collectionConnection(
-        parent,
-        collectionArgs,
-        queryContext
-      )
-    };
+  search: async (_parent: any, args: QuerySearchArgs) => {
+    // To resolve search type
+    return args;
   },
   me: async (_parent: any, _args: any, context: Context) => {
     const id: string = getUserId(context);
