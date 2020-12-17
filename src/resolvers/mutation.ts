@@ -133,6 +133,9 @@ const Mutation = {
     const allCommentCount = await context.prisma.comment.count();
     const id = encode(COMMENT_ID_UNIT + allCommentCount);
     const comment = await context.prisma.comment.create({
+      include: {
+        writer: true
+      },
       data: {
         id,
         writer: {

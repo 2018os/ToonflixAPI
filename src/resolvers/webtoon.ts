@@ -79,7 +79,7 @@ export default {
             }
           : undefined,
         orderBy: {
-          id: args.before ? 'desc' : 'asc'
+          createdAt: args.before ? 'asc' : 'desc'
         }
       });
       return nodes;
