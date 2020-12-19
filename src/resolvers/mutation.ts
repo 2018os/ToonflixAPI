@@ -62,6 +62,9 @@ const Mutation = {
       where: {
         id: args.input.collectionId
       },
+      include: {
+        writer: true
+      },
       data: {
         updatedAt: new Date(),
         title: title || undefined,
