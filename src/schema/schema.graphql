@@ -290,7 +290,7 @@ input LoginInput {
 input CreateCollectionInput {
   title: String!
   description: String!
-  webtoonIds: [ID!]!
+  webtoonIds: [ID]!
 }
 
 input UpdateCollectionInput {

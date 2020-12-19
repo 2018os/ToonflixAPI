@@ -451,7 +451,7 @@ export type LoginInput = {
 export type CreateCollectionInput = {
   title: Scalars['String'];
   description: Scalars['String'];
-  webtoonIds: Array<Scalars['ID']>;
+  webtoonIds: Array<Maybe<Scalars['ID']>>;
 };
 
 export type UpdateCollectionInput = {
@@ -474,13 +474,6 @@ export type SearchFiltering = {
   isFinish?: Maybe<Scalars['Boolean']>;
   platforms?: Maybe<Array<Platform>>;
   genres?: Maybe<Array<Maybe<Scalars['String']>>>;
-};
-
-export type Paging = {
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['ID']>;
-  after?: Maybe<Scalars['ID']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -667,7 +660,6 @@ export type ResolversTypes = ResolversObject<{
   UpdateCollectionInput: UpdateCollectionInput;
   CommentInput: CommentInput;
   SearchFiltering: SearchFiltering;
-  Paging: Paging;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -732,7 +724,6 @@ export type ResolversParentTypes = ResolversObject<{
   UpdateCollectionInput: UpdateCollectionInput;
   CommentInput: CommentInput;
   SearchFiltering: SearchFiltering;
-  Paging: Paging;
 }>;
 
 export type AuthDirectiveArgs = {};
