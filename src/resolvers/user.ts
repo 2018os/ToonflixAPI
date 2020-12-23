@@ -4,7 +4,12 @@ import {
   encodeCursor
 } from 'graphql-connection-resolver';
 
-import { User, Node } from '../generated/graphql';
+import {
+  User,
+  Node,
+  UserMyCollectionsArgs,
+  UserLikedCollectionsArgs
+} from '../generated/graphql';
 
 import { Context } from '../utils/context';
 
@@ -38,14 +43,49 @@ export default {
   },
   myCollections: connection({
     cursorFromNode: (node: Node) => decodeCursor(node.id),
-    nodes: async (parent: User, args, context: Context) => {
+    nodes: async (
+      parent: User,
+      args: UserMyCollectionsArgs,
+      context: Context
+    ) => {
+      const { where } = args;
       const cursor = args.after || args.before;
       const encodedCursor = cursor && encodeCursor(cursor);
       const nodes = await context.prisma.collection.findMany({
         where: {
           writer: {
             id: parent.id
-          }
+          },
+          OR: [
+            {
+              title: {
+                contains: where?.keyword
+              }
+            },
+            {
+              description: {
+                contains: where?.keyword
+              }
+            },
+            {
+              webtoons: {
+                some: {
+                  title: {
+                    contains: where?.keyword
+                  }
+                }
+              }
+            }
+          ],
+          webtoons: where?.containWebtoonIds
+            ? {
+                some: {
+                  id: {
+                    in: where.containWebtoonIds
+                  }
+                }
+              }
+            : undefined
         },
         skip: cursor ? 1 : undefined,
         cursor: cursor
@@ -62,16 +102,51 @@ export default {
   }),
   likedCollections: connection({
     cursorFromNode: (node: Node) => decodeCursor(node.id),
-    nodes: async (parent: User, args, context: Context) => {
+    nodes: async (
+      parent: User,
+      args: UserLikedCollectionsArgs,
+      context: Context
+    ) => {
       const cursor = args.after || args.before;
       const encodedCursor = cursor && encodeCursor(cursor);
+      const { where } = args;
       const nodes = await context.prisma.collection.findMany({
         where: {
           likers: {
             some: {
               id: parent.id
             }
-          }
+          },
+          OR: [
+            {
+              title: {
+                contains: where?.keyword
+              }
+            },
+            {
+              description: {
+                contains: where?.keyword
+              }
+            },
+            {
+              webtoons: {
+                some: {
+                  title: {
+                    contains: where?.keyword
+                  }
+                }
+              }
+            }
+          ],
+          webtoons: where?.containWebtoonIds
+            ? {
+                some: {
+                  id: {
+                    in: where.containWebtoonIds
+                  }
+                }
+              }
+            : undefined
         },
         skip: cursor ? 1 : undefined,
         cursor: cursor

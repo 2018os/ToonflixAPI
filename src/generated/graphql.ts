@@ -84,7 +84,7 @@ export type QueryCollectionsArgs = {
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['ID']>;
   after?: Maybe<Scalars['ID']>;
-  keyword?: Maybe<Scalars['String']>;
+  where?: Maybe<CollectionFiltering>;
 };
 
 export type QueryUsersArgs = {
@@ -307,6 +307,7 @@ export type UserLikedCollectionsArgs = {
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['ID']>;
   after?: Maybe<Scalars['ID']>;
+  where?: Maybe<CollectionFiltering>;
 };
 
 export type UserMyCollectionsArgs = {
@@ -314,6 +315,7 @@ export type UserMyCollectionsArgs = {
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['ID']>;
   after?: Maybe<Scalars['ID']>;
+  where?: Maybe<CollectionFiltering>;
 };
 
 export type UserCommentsArgs = {
@@ -466,6 +468,11 @@ export type CommentInput = {
   webtoonId?: Maybe<Scalars['ID']>;
   collectionId?: Maybe<Scalars['ID']>;
   commentId?: Maybe<Scalars['ID']>;
+};
+
+export type CollectionFiltering = {
+  keyword?: Maybe<Scalars['String']>;
+  containWebtoonIds?: Maybe<Array<Scalars['ID']>>;
 };
 
 export type SearchFiltering = {
@@ -659,6 +666,7 @@ export type ResolversTypes = ResolversObject<{
   CreateCollectionInput: CreateCollectionInput;
   UpdateCollectionInput: UpdateCollectionInput;
   CommentInput: CommentInput;
+  CollectionFiltering: CollectionFiltering;
   SearchFiltering: SearchFiltering;
 }>;
 
@@ -723,6 +731,7 @@ export type ResolversParentTypes = ResolversObject<{
   CreateCollectionInput: CreateCollectionInput;
   UpdateCollectionInput: UpdateCollectionInput;
   CommentInput: CommentInput;
+  CollectionFiltering: CollectionFiltering;
   SearchFiltering: SearchFiltering;
 }>;
 

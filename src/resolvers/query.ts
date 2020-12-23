@@ -79,7 +79,7 @@ const Query = {
   collections: connection({
     cursorFromNode: (node: Node) => decodeCursor(node.id),
     nodes: async (_parent, args: QueryCollectionsArgs, context: Context) => {
-      const { keyword } = args;
+      const { where } = args;
       const cursor = args.after || args.before;
       const encodedCursor = cursor && encodeCursor(cursor);
       const nodes = await context.prisma.collection.findMany({
@@ -96,38 +96,41 @@ const Query = {
         orderBy: {
           title: args.before ? 'desc' : 'asc'
         },
-        where: keyword
-          ? {
-              type: {
-                not: 'PRIVATE'
-              },
-              OR: [
-                {
+        where: {
+          NOT: {
+            type: 'PRIVATE'
+          },
+          OR: [
+            {
+              title: {
+                contains: where?.keyword
+              }
+            },
+            {
+              description: {
+                contains: where?.keyword
+              }
+            },
+            {
+              webtoons: {
+                some: {
                   title: {
-                    contains: keyword
-                  }
-                },
-                {
-                  description: {
-                    contains: keyword
-                  }
-                },
-                {
-                  webtoons: {
-                    some: {
-                      title: {
-                        contains: keyword
-                      }
-                    }
+                    contains: where?.keyword
                   }
                 }
-              ]
-            }
-          : {
-              type: {
-                not: 'PRIVATE'
               }
             }
+          ],
+          webtoons: where?.containWebtoonIds
+            ? {
+                some: {
+                  id: {
+                    in: where.containWebtoonIds
+                  }
+                }
+              }
+            : undefined
+        }
       });
       return nodes;
     }
