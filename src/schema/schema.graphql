@@ -77,6 +77,7 @@ type Mutation {
   likeCollection(collectionId: ID!): User! @exp(point: 20) @auth
   dislikeCollection(collectionId: ID!): User! @auth
   postComment(input: CommentInput!): Comment! @exp(point: 10) @auth
+  deleteCollection(collectionId: ID!): Collection! @auth
 }
 
 type AuthPayload {

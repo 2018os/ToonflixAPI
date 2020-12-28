@@ -18,7 +18,8 @@ import {
   MutationSignupArgs,
   MutationPostCommentArgs,
   MutationLikeCollectionArgs,
-  MutationDislikeCollectionArgs
+  MutationDislikeCollectionArgs,
+  MutationDeleteCollectionArgs
 } from '../generated/graphql';
 
 const Mutation = {
@@ -205,6 +206,17 @@ const Mutation = {
             id: args.collectionId
           }
         }
+      }
+    });
+  },
+  deleteCollection: (
+    _parent: any,
+    args: MutationDeleteCollectionArgs,
+    context: Context
+  ) => {
+    return context.prisma.collection.delete({
+      where: {
+        id: args.collectionId
       }
     });
   }

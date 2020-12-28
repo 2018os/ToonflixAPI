@@ -124,6 +124,7 @@ export type Mutation = {
   likeCollection: User;
   dislikeCollection: User;
   postComment: Comment;
+  deleteCollection: User;
 };
 
 export type MutationLoginArgs = {
@@ -152,6 +153,10 @@ export type MutationDislikeCollectionArgs = {
 
 export type MutationPostCommentArgs = {
   input: CommentInput;
+};
+
+export type MutationDeleteCollectionArgs = {
+  collectionId: Scalars['ID'];
 };
 
 export type AuthPayload = {
@@ -930,6 +935,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationPostCommentArgs, 'input'>
+  >;
+  deleteCollection?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteCollectionArgs, 'collectionId'>
   >;
 }>;
 
