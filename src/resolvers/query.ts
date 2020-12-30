@@ -4,8 +4,7 @@ import {
   encodeCursor
 } from 'graphql-connection-resolver';
 
-import { encode, getUserId, shuffle } from '../utils/tools';
-import { WEBTOON_ID_UNIT } from '../utils/statics';
+import { getUserId } from '../utils/tools';
 import { Context } from '../utils/context';
 
 import {
@@ -220,20 +219,12 @@ const Query = {
     context: Context
   ) => {
     const take = args.take ? args.take : 4;
-    const allWebtoonCount = await context.prisma.webtoon.count();
-    const webtoonIndex = Array.from(
-      Array(allWebtoonCount),
-      (_, i) => WEBTOON_ID_UNIT + i
+    const allWebtoon = await context.prisma.webtoon.findMany();
+    const randomNumberList = Array.from(Array(take), () =>
+      Math.floor(Math.random() * allWebtoon.length)
     );
-    const shuffledWebtoonIndex = shuffle(webtoonIndex);
-    const randomIds = shuffledWebtoonIndex
-      .map((id) => ({ id: encode(id) }))
-      .slice(0, take);
-    return context.prisma.webtoon.findMany({
-      where: {
-        OR: randomIds
-      }
-    });
+    const webtoons = randomNumberList.map((value) => allWebtoon[value]);
+    return webtoons;
   },
   search: async (_parent: any, args: QuerySearchArgs) => {
     // To resolve search type
