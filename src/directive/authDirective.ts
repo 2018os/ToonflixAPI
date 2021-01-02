@@ -1,7 +1,7 @@
 import { ApolloError, SchemaDirectiveVisitor } from 'apollo-server-express';
 import { defaultFieldResolver, GraphQLField } from 'graphql';
 
-import { Context } from './utils/context';
+import { Context } from '../utils/context';
 
 export default class AuthDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field: GraphQLField<any, any>) {

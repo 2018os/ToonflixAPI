@@ -1,8 +1,8 @@
 import { SchemaDirectiveVisitor } from 'apollo-server-express';
 import { defaultFieldResolver, GraphQLField } from 'graphql';
 
-import { Context } from './utils/context';
-import { getUserId } from './utils/tools';
+import { Context } from '../utils/context';
+import { getUserId } from '../utils/tools';
 
 export default class ExpDirective extends SchemaDirectiveVisitor {
   computeExp(level: number, exp: number): object {

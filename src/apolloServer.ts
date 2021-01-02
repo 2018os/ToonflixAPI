@@ -6,8 +6,7 @@ import logger from '../config/winston';
 
 import { prisma } from './utils/context';
 
-import AuthDirective from './authDirective';
-import ExpDirective from './expDirective';
+import { AuthDirective, ExpDirective } from './directive';
 import resolvers from './resolvers';
 
 const typeDefs = fs.readFileSync(
