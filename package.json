@@ -13,7 +13,8 @@
     "migrate_up": "npx prisma migrate up --create-db --experimental",
     "generate": "npx prisma generate",
     "introspect": "npx prisma introspect",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "db": "npx prisma db push --preview-feature --force"
   },
   "engines": {
     "node": "12.18.3"
