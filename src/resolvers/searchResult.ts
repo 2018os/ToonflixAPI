@@ -59,14 +59,17 @@ export default {
                   in: where.platforms
                 }
               : undefined,
+          isPay: where?.isPay === null ? undefined : where?.isPay,
+          isAdult: where?.isAdult === null ? undefined : where?.isAdult,
+          isFinish: where?.isFinish === null ? undefined : where?.isFinish,
           genres: {
-            some: {
-              OR: genres || []
-            }
-          },
-          isPay: where?.isPay ? where.isPay : undefined,
-          isAdult: where?.isAdult ? where.isAdult : undefined,
-          isFinish: where?.isFinish ? where.isFinish : undefined
+            some:
+              genres && genres.length > 0
+                ? {
+                    OR: genres
+                  }
+                : undefined
+          }
         }
       });
       return nodes;

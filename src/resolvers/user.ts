@@ -59,19 +59,19 @@ export default {
           OR: [
             {
               title: {
-                contains: where?.keyword
+                contains: where?.keyword || undefined
               }
             },
             {
               description: {
-                contains: where?.keyword
+                contains: where?.keyword || undefined
               }
             },
             {
               webtoons: {
                 some: {
                   title: {
-                    contains: where?.keyword
+                    contains: where?.keyword || undefined
                   }
                 }
               }
@@ -120,19 +120,19 @@ export default {
           OR: [
             {
               title: {
-                contains: where?.keyword
+                contains: where?.keyword || undefined
               }
             },
             {
               description: {
-                contains: where?.keyword
+                contains: where?.keyword || undefined
               }
             },
             {
               webtoons: {
                 some: {
                   title: {
-                    contains: where?.keyword
+                    contains: where?.keyword || undefined
                   }
                 }
               }
