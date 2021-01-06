@@ -21,22 +21,13 @@ test('Success get search Result', async () => {
   const data: any = await query({
     query: SEARCH
   });
-  const { webtoonResult, collectionResult } = data.data.search;
+  const { webtoonResult } = data.data.search;
   expect(webtoonResult.count).toEqual(expect.any(Number));
-  expect(collectionResult.count).toEqual(expect.any(Number));
   expect(webtoonResult.pageInfo.startCursor).toEqual(
     webtoonResult.edges[0].node.id
   );
-  expect(collectionResult.pageInfo.startCursor).toEqual(
-    collectionResult.edges[0].node.id
-  );
   webtoonResult.edges.forEach((edge: any) => {
     // Test GraphQL Type Node
-    expect(edge.node).toEqual({
-      id: expect.any(String)
-    });
-  });
-  collectionResult.edges.forEach((edge: any) => {
     expect(edge.node).toEqual({
       id: expect.any(String)
     });
