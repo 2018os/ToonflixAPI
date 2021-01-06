@@ -293,14 +293,14 @@ input LoginInput {
 input CreateCollectionInput {
   title: String!
   description: String!
-  webtoonIds: [ID]!
+  webtoonIds: [ID!]!
 }
 
 input UpdateCollectionInput {
   collectionId: ID!
   title: String
   description: String
-  webtoonIds: [ID!]
+  webtoonIds: [ID!]!
 }
 
 input CommentInput {
@@ -312,7 +312,7 @@ input CommentInput {
 
 input CollectionFiltering {
   keyword: String
-  containWebtoonIds: [ID!]
+  containWebtoonIds: [ID!]!
 }
 
 input SearchFiltering {

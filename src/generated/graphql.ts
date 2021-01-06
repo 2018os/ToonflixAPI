@@ -124,7 +124,7 @@ export type Mutation = {
   likeCollection: User;
   dislikeCollection: User;
   postComment: Comment;
-  deleteCollection: User;
+  deleteCollection: Collection;
 };
 
 export type MutationLoginArgs = {
@@ -458,14 +458,14 @@ export type LoginInput = {
 export type CreateCollectionInput = {
   title: Scalars['String'];
   description: Scalars['String'];
-  webtoonIds: Array<Maybe<Scalars['ID']>>;
+  webtoonIds: Array<Scalars['ID']>;
 };
 
 export type UpdateCollectionInput = {
   collectionId: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  webtoonIds?: Maybe<Array<Scalars['ID']>>;
+  webtoonIds: Array<Scalars['ID']>;
 };
 
 export type CommentInput = {
@@ -477,7 +477,7 @@ export type CommentInput = {
 
 export type CollectionFiltering = {
   keyword?: Maybe<Scalars['String']>;
-  containWebtoonIds?: Maybe<Array<Scalars['ID']>>;
+  containWebtoonIds: Array<Scalars['ID']>;
 };
 
 export type SearchFiltering = {
@@ -937,7 +937,7 @@ export type MutationResolvers<
     RequireFields<MutationPostCommentArgs, 'input'>
   >;
   deleteCollection?: Resolver<
-    ResolversTypes['User'],
+    ResolversTypes['Collection'],
     ParentType,
     ContextType,
     RequireFields<MutationDeleteCollectionArgs, 'collectionId'>
