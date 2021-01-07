@@ -162,7 +162,7 @@ const Query = {
   }),
   webtoon: async (_parent: any, args: QueryWebtoonArgs, context: Context) => {
     const id = args;
-    const webtoon = await context.prisma.webtoon.findOne({
+    const webtoon = await context.prisma.webtoon.findUnique({
       where: id,
       include: {
         authors: true,
@@ -182,7 +182,7 @@ const Query = {
   },
   user: async (_parent: any, args: QueryUserArgs, context: Context) => {
     const id = args;
-    const user = await context.prisma.user.findOne({
+    const user = await context.prisma.user.findUnique({
       where: id,
       include: {
         collections: {
@@ -200,7 +200,7 @@ const Query = {
     context: Context
   ) => {
     const id = args;
-    const collection = await context.prisma.collection.findOne({
+    const collection = await context.prisma.collection.findUnique({
       where: id,
       include: {
         writer: true,
@@ -232,7 +232,7 @@ const Query = {
   },
   me: async (_parent: any, _args: any, context: Context) => {
     const id: string = getUserId(context);
-    const user = await context.prisma.user.findOne({
+    const user = await context.prisma.user.findUnique({
       where: {
         id
       },
