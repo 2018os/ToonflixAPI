@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  // previewFeatures = ["nativeTypes"]
 }
 
 datasource db {
@@ -9,7 +8,7 @@ datasource db {
 }
 
 model Author {
-  id       String    @id @default(uuid())
+  id       String    @id
   name     String    @unique
   webtoons Webtoon[]
 }
@@ -17,7 +16,7 @@ model Author {
 model Collection {
   createdAt   DateTime        @default(now())
   description String
-  id          String          @id @default(uuid())
+  id          String          @id
   title       String
   updatedAt   DateTime
   writerId    String
@@ -32,7 +31,7 @@ model Collection {
 
 model Comment {
   commentId    String?
-  id           String      @id @default(uuid())
+  id           String      @id
   message      String
   webtoonId    String?
   writerId     String?
@@ -51,14 +50,14 @@ model Comment {
 }
 
 model Genre {
-  code     String    @id @default(uuid())
-  name     String
+  code     String    @id
+  name     String    @unique
   webtoons Webtoon[]
 }
 
 model User {
   email            String       @unique
-  id               String       @id @default(uuid())
+  id               String       @id
   name             String
   password         String
   level            Int          @default(1)
@@ -70,7 +69,7 @@ model User {
 
 model Webtoon {
   description String?
-  id          String           @id @default(uuid())
+  id          String           @id
   isAdult     Boolean
   isFinish    Boolean
   isPay       Boolean
