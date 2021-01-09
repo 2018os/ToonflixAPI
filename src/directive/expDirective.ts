@@ -29,7 +29,7 @@ export default class ExpDirective extends SchemaDirectiveVisitor {
       const result = await resolve.apply(this, [source, args, context, info]);
       const userId = getUserId(context);
       if (userId && result) {
-        const user = await context.prisma.user.findOne({
+        const user = await context.prisma.user.findUnique({
           where: {
             id: userId
           }

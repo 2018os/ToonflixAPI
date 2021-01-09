@@ -81,7 +81,7 @@ const Mutation = {
   },
   signup: async (_parent: any, args: MutationSignupArgs, context: Context) => {
     const { name, email, password } = args.input;
-    const existed = await context.prisma.user.findOne({ where: { email } });
+    const existed = await context.prisma.user.findUnique({ where: { email } });
     if (existed)
       throw new ApolloError('Already Existing Email', 'INVALID_DATA');
     const hashedPassword = bcrypt.hashSync(password, 10);
@@ -117,7 +117,7 @@ const Mutation = {
   },
   login: async (_parent: any, args: MutationLoginArgs, context: Context) => {
     const { email, password } = args.input;
-    const user = await context.prisma.user.findOne({ where: { email } });
+    const user = await context.prisma.user.findUnique({ where: { email } });
     if (!user) throw new ApolloError('Not Found User', 'INVALID_DATA');
     const valid = bcrypt.compareSync(password, user.password);
     if (!valid) throw new ApolloError('Invalid password', 'INVALID_DATA');
