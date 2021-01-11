@@ -62,6 +62,7 @@ model User {
   password         String
   level            Int          @default(1)
   exp              Int          @default(0)
+  isAuthentication Boolean      @default(false)
   collections      Collection[]
   comments         Comment[]
   likedCollections Collection[] @relation("CollectionOnLiker")

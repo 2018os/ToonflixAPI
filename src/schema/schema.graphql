@@ -78,6 +78,11 @@ type Mutation {
   dislikeCollection(collectionId: ID!): User! @auth
   postComment(input: CommentInput!): Comment! @exp(point: 10) @auth
   deleteCollection(collectionId: ID!): Collection! @auth
+  sendEmail(input: SendEmailInput!): SendEmailPayload!
+}
+
+type SendEmailPayload {
+  user: User
 }
 
 type AuthPayload {
@@ -166,6 +171,7 @@ type User implements Node {
   password: String!
   level: Int!
   exp: Int!
+  isAuthentication: Boolean!
   status: UserStatus!
   likedCollections(
     first: Int
@@ -321,4 +327,8 @@ input SearchFiltering {
   isFinish: Boolean
   platforms: [Platform!]
   genres: [String]
+}
+
+input SendEmailInput {
+  email: String!
 }

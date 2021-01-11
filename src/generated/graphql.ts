@@ -125,6 +125,7 @@ export type Mutation = {
   dislikeCollection: User;
   postComment: Comment;
   deleteCollection: Collection;
+  sendEmail: SendEmailPayload;
 };
 
 export type MutationLoginArgs = {
@@ -157,6 +158,15 @@ export type MutationPostCommentArgs = {
 
 export type MutationDeleteCollectionArgs = {
   collectionId: Scalars['ID'];
+};
+
+export type MutationSendEmailArgs = {
+  input: SendEmailInput;
+};
+
+export type SendEmailPayload = {
+  __typename?: 'SendEmailPayload';
+  user?: Maybe<User>;
 };
 
 export type AuthPayload = {
@@ -301,6 +311,7 @@ export type User = Node & {
   password: Scalars['String'];
   level: Scalars['Int'];
   exp: Scalars['Int'];
+  isAuthentication: Scalars['Boolean'];
   status: UserStatus;
   likedCollections: CollectionsConnection;
   myCollections: CollectionsConnection;
@@ -488,6 +499,10 @@ export type SearchFiltering = {
   genres?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
+export type SendEmailInput = {
+  email: Scalars['String'];
+};
+
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
 
@@ -637,6 +652,7 @@ export type ResolversTypes = ResolversObject<{
   String: ResolverTypeWrapper<Scalars['String']>;
   Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
+  SendEmailPayload: ResolverTypeWrapper<SendEmailPayload>;
   AuthPayload: ResolverTypeWrapper<AuthPayload>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
@@ -673,6 +689,7 @@ export type ResolversTypes = ResolversObject<{
   CommentInput: CommentInput;
   CollectionFiltering: CollectionFiltering;
   SearchFiltering: SearchFiltering;
+  SendEmailInput: SendEmailInput;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -706,6 +723,7 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
   Query: {};
   Mutation: {};
+  SendEmailPayload: SendEmailPayload;
   AuthPayload: AuthPayload;
   PageInfo: PageInfo;
   Boolean: Scalars['Boolean'];
@@ -738,6 +756,7 @@ export type ResolversParentTypes = ResolversObject<{
   CommentInput: CommentInput;
   CollectionFiltering: CollectionFiltering;
   SearchFiltering: SearchFiltering;
+  SendEmailInput: SendEmailInput;
 }>;
 
 export type AuthDirectiveArgs = {};
@@ -942,6 +961,20 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationDeleteCollectionArgs, 'collectionId'>
   >;
+  sendEmail?: Resolver<
+    ResolversTypes['SendEmailPayload'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSendEmailArgs, 'input'>
+  >;
+}>;
+
+export type SendEmailPayloadResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['SendEmailPayload'] = ResolversParentTypes['SendEmailPayload']
+> = ResolversObject<{
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 
 export type AuthPayloadResolvers<
@@ -1114,6 +1147,11 @@ export type UserResolvers<
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   exp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  isAuthentication?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   status?: Resolver<ResolversTypes['UserStatus'], ParentType, ContextType>;
   likedCollections?: Resolver<
     ResolversTypes['CollectionsConnection'],
@@ -1329,6 +1367,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   Edge?: EdgeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  SendEmailPayload?: SendEmailPayloadResolvers<ContextType>;
   AuthPayload?: AuthPayloadResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   UserStatus?: UserStatusResolvers<ContextType>;

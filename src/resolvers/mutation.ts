@@ -1,6 +1,8 @@
 import { ApolloError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 
 import {
   AUTH_TOKEN,
@@ -19,8 +21,11 @@ import {
   MutationPostCommentArgs,
   MutationLikeCollectionArgs,
   MutationDislikeCollectionArgs,
-  MutationDeleteCollectionArgs
+  MutationDeleteCollectionArgs,
+  MutationSendEmailArgs
 } from '../generated/graphql';
+
+dotenv.config();
 
 const Mutation = {
   createCollection: async (
@@ -217,6 +222,36 @@ const Mutation = {
     return context.prisma.collection.delete({
       where: {
         id: args.collectionId
+      }
+    });
+  },
+  sendEmail: async (
+    _parent: any,
+    args: MutationSendEmailArgs,
+    context: Context
+  ) => {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        type: 'OAuth2',
+        user: process.env.EMAIL,
+        clientId: process.env.CLIENTID,
+        clientSecret: process.env.CLIENTSECRET,
+        refreshToken: process.env.REFRESHTOKEN,
+        accessToken: process.env.ACCESSTOKEN
+      }
+    });
+    await transporter.sendMail({
+      from: `Comicsquare Team <${process.env.EMAIL}>`,
+      to: args.input.email,
+      subject: '코믹스퀘어 이메일 인증',
+      html: '<h1>코믹스퀘어 이메일 인증 코드입니다.</h1>'
+    });
+    return context.prisma.user.findUnique({
+      where: {
+        email: args.input.email
       }
     });
   }
