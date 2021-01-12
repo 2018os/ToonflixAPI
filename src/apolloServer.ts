@@ -2,8 +2,6 @@ import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
 import fs from 'fs';
 import path from 'path';
 
-import logger from '../config/winston';
-
 import { prisma } from './utils/context';
 
 import { AuthDirective, ExpDirective } from './directive';
@@ -13,12 +11,6 @@ const typeDefs = fs.readFileSync(
   path.join(__dirname, '/schema', '/schema.graphql'),
   'utf8'
 );
-
-const formatError = (err: any) => {
-  const errLog = `GraphQL ${err.originalError}`;
-  logger.log('error', errLog);
-  return err;
-};
 
 const schema = makeExecutableSchema({
   typeDefs,
@@ -39,7 +31,6 @@ const server = new ApolloServer({
     ...request,
     prisma
   }),
-  formatError,
   debug: false
 });
 

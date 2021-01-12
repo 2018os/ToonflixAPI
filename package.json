@@ -41,10 +41,8 @@
     "@types/graphql": "^14.5.0",
     "@types/jest": "^26.0.14",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/morgan": "^1.9.1",
     "@types/node": "^14.0.14",
     "@types/nodemailer": "^6.4.0",
-    "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^3.4.0",
     "@typescript-eslint/parser": "^3.4.0",
     "eslint": "^5.16.0",
@@ -74,11 +72,8 @@
     "graphql-connection-resolver": "^1.0.0",
     "graphql-voyager": "^1.0.0-rc.31",
     "jsonwebtoken": "^8.5.1",
-    "morgan": "^1.10.0",
     "ncp": "^2.0.0",
     "nodemailer": "^6.4.17",
-    "typescript": "^3.9.5",
-    "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.0"
+    "typescript": "^3.9.5"
   }
 }
