@@ -318,7 +318,7 @@ input CommentInput {
 
 input CollectionFiltering {
   keyword: String
-  containWebtoonIds: [ID!]!
+  containWebtoonIds: [ID!]
 }
 
 input SearchFiltering {

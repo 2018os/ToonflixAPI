@@ -488,7 +488,7 @@ export type CommentInput = {
 
 export type CollectionFiltering = {
   keyword?: Maybe<Scalars['String']>;
-  containWebtoonIds: Array<Scalars['ID']>;
+  containWebtoonIds?: Maybe<Array<Scalars['ID']>>;
 };
 
 export type SearchFiltering = {
