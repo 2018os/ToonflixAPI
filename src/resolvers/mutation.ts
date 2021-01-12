@@ -243,17 +243,48 @@ const Mutation = {
         accessToken: process.env.ACCESSTOKEN
       }
     });
+    const userId: string = getUserId(context);
+    const onSuccessAuthentication = async () => {
+      await context.prisma.user.update({
+        where: {
+          id: userId
+        },
+        data: {
+          isAuthentication: true
+        }
+      });
+    };
     await transporter.sendMail({
       from: `Comicsquare Team <${process.env.EMAIL}>`,
       to: args.input.email,
       subject: '코믹스퀘어 이메일 인증',
-      html: '<h1>코믹스퀘어 이메일 인증 코드입니다.</h1>'
+      html: `
+        <div>
+          <h1>코믹스퀘어 계정 인증입니다.</h1>
+          <br />
+          <strong>본인이 맞습니까?</strong>
+          <br />
+          <br />
+          <a href=${
+            process.env.HOMEPAGE
+          } onclick="handleClick()">네, 제가 맞습니다.</a>
+        </div>
+        <script>
+          function handleClick() {
+            ${onSuccessAuthentication()};
+            return true;
+          }
+        </script>
+      `
     });
-    return context.prisma.user.findUnique({
+    const user = await context.prisma.user.findUnique({
       where: {
         email: args.input.email
       }
     });
+    return {
+      user
+    };
   }
 };
 
