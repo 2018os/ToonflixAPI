@@ -39,4 +39,21 @@ function encode(data: string | number): string {
   return Buffer.from(enhancedData).toString('base64');
 }
 
-export { arrayToObjectArrayConverter, getUserId, shuffle, encode };
+function generateCode() {
+  const result = [];
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let i = 0; i < 6; i += 1) {
+    result.push(
+      characters.charAt(Math.floor(Math.random() * characters.length))
+    );
+  }
+  return result.join('');
+}
+export {
+  arrayToObjectArrayConverter,
+  getUserId,
+  shuffle,
+  encode,
+  generateCode
+};

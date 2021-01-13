@@ -125,7 +125,8 @@ export type Mutation = {
   dislikeCollection: User;
   postComment: Comment;
   deleteCollection: Collection;
-  sendEmail: SendEmailPayload;
+  authenticateByEmail: SendEmailPayload;
+  updateUser: User;
 };
 
 export type MutationLoginArgs = {
@@ -160,13 +161,17 @@ export type MutationDeleteCollectionArgs = {
   collectionId: Scalars['ID'];
 };
 
-export type MutationSendEmailArgs = {
+export type MutationAuthenticateByEmailArgs = {
   input: SendEmailInput;
+};
+
+export type MutationUpdateUserArgs = {
+  input: UpdateUserInput;
 };
 
 export type SendEmailPayload = {
   __typename?: 'SendEmailPayload';
-  user?: Maybe<User>;
+  code: Scalars['String'];
 };
 
 export type AuthPayload = {
@@ -503,6 +508,12 @@ export type SendEmailInput = {
   email: Scalars['String'];
 };
 
+export type UpdateUserInput = {
+  name?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  isAuthentication?: Maybe<Scalars['Boolean']>;
+};
+
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
 
@@ -690,6 +701,7 @@ export type ResolversTypes = ResolversObject<{
   CollectionFiltering: CollectionFiltering;
   SearchFiltering: SearchFiltering;
   SendEmailInput: SendEmailInput;
+  UpdateUserInput: UpdateUserInput;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -757,6 +769,7 @@ export type ResolversParentTypes = ResolversObject<{
   CollectionFiltering: CollectionFiltering;
   SearchFiltering: SearchFiltering;
   SendEmailInput: SendEmailInput;
+  UpdateUserInput: UpdateUserInput;
 }>;
 
 export type AuthDirectiveArgs = {};
@@ -961,11 +974,17 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationDeleteCollectionArgs, 'collectionId'>
   >;
-  sendEmail?: Resolver<
+  authenticateByEmail?: Resolver<
     ResolversTypes['SendEmailPayload'],
     ParentType,
     ContextType,
-    RequireFields<MutationSendEmailArgs, 'input'>
+    RequireFields<MutationAuthenticateByEmailArgs, 'input'>
+  >;
+  updateUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateUserArgs, 'input'>
   >;
 }>;
 
@@ -973,7 +992,7 @@ export type SendEmailPayloadResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['SendEmailPayload'] = ResolversParentTypes['SendEmailPayload']
 > = ResolversObject<{
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 

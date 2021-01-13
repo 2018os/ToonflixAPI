@@ -2,7 +2,6 @@ import { ApolloError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
 
 import {
   AUTH_TOKEN,
@@ -11,7 +10,7 @@ import {
   COMMENT_ID_UNIT
 } from '../utils/statics';
 import { Context } from '../utils/context';
-import { getUserId, encode } from '../utils/tools';
+import { getUserId, encode, generateCode } from '../utils/tools';
 
 import {
   MutationLoginArgs,
@@ -22,7 +21,8 @@ import {
   MutationLikeCollectionArgs,
   MutationDislikeCollectionArgs,
   MutationDeleteCollectionArgs,
-  MutationSendEmailArgs
+  MutationAuthenticateByEmailArgs,
+  MutationUpdateUserArgs
 } from '../generated/graphql';
 
 dotenv.config();
@@ -225,66 +225,48 @@ const Mutation = {
       }
     });
   },
-  sendEmail: async (
+  authenticateByEmail: async (
     _parent: any,
-    args: MutationSendEmailArgs,
+    args: MutationAuthenticateByEmailArgs,
     context: Context
   ) => {
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-        type: 'OAuth2',
-        user: process.env.EMAIL,
-        clientId: process.env.CLIENTID,
-        clientSecret: process.env.CLIENTSECRET,
-        refreshToken: process.env.REFRESHTOKEN,
-        accessToken: process.env.ACCESSTOKEN
-      }
-    });
-    const userId: string = getUserId(context);
-    const onSuccessAuthentication = async () => {
-      await context.prisma.user.update({
-        where: {
-          id: userId
-        },
-        data: {
-          isAuthentication: true
-        }
-      });
-    };
-    await transporter.sendMail({
+    const code = generateCode();
+    await context.transporter.sendMail({
       from: `Comicsquare Team <${process.env.EMAIL}>`,
       to: args.input.email,
       subject: '코믹스퀘어 이메일 인증',
       html: `
         <div>
-          <h1>코믹스퀘어 계정 인증입니다.</h1>
+          <h1>코믹스퀘어 계정 인증을 위한 인증 코드입니다.</h1>
           <br />
-          <strong>본인이 맞습니까?</strong>
-          <br />
-          <br />
-          <a href=${
-            process.env.HOMEPAGE
-          } onclick="handleClick()">네, 제가 맞습니다.</a>
+          <strong>${code}</strong>
         </div>
-        <script>
-          function handleClick() {
-            ${onSuccessAuthentication()};
-            return true;
-          }
-        </script>
       `
     });
-    const user = await context.prisma.user.findUnique({
+    return {
+      code
+    };
+  },
+  updateUser: async (
+    _parent: any,
+    args: MutationUpdateUserArgs,
+    context: Context
+  ) => {
+    const userId = getUserId(context);
+    const user = await context.prisma.user.update({
       where: {
-        email: args.input.email
+        id: userId
+      },
+      data: {
+        name: args.input.name || undefined,
+        password: args.input.password || undefined,
+        isAuthentication:
+          args.input.isAuthentication === null
+            ? undefined
+            : args.input.isAuthentication
       }
     });
-    return {
-      user
-    };
+    return user;
   }
 };
 
