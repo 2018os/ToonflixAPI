@@ -2,7 +2,7 @@ import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
 import fs from 'fs';
 import path from 'path';
 
-import { prisma } from './utils/context';
+import { prisma, transporter } from './utils/context';
 
 import { AuthDirective, ExpDirective } from './directive';
 import resolvers from './resolvers';
@@ -29,7 +29,8 @@ const server = new ApolloServer({
   schema,
   context: (request) => ({
     ...request,
-    prisma
+    prisma,
+    transporter
   }),
   debug: false
 });
