@@ -24,5 +24,5 @@ test('Success get webtoon', async () => {
 });
 
 afterAll(() => {
-  prisma.disconnect();
+  prisma.$disconnect();
 });
