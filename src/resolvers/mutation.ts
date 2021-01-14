@@ -239,7 +239,7 @@ const Mutation = {
         <div>
           <h1>코믹스퀘어 계정 인증을 위한 인증 코드입니다.</h1>
           <br />
-          <strong>${code}</strong>
+          <h2>${code}</h2>
         </div>
       `
     });
