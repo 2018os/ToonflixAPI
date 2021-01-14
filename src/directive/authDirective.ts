@@ -15,6 +15,7 @@ export default class AuthDirective extends SchemaDirectiveVisitor {
         }
       });
       if (user && user.isAuthentication) {
+        // update authentication & authorization
         const result = await resolve.apply(this, [source, args, context, info]);
         return result;
       }
