@@ -481,7 +481,7 @@ export type UpdateCollectionInput = {
   collectionId: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  webtoonIds: Array<Scalars['ID']>;
+  webtoonIds?: Maybe<Array<Scalars['ID']>>;
 };
 
 export type CommentInput = {

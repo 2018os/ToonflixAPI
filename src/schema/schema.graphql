@@ -307,7 +307,7 @@ input UpdateCollectionInput {
   collectionId: ID!
   title: String
   description: String
-  webtoonIds: [ID!]!
+  webtoonIds: [ID!]
 }
 
 input CommentInput {
