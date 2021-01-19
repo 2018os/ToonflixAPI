@@ -3,12 +3,7 @@ import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 
-import {
-  AUTH_TOKEN,
-  COLLECTION_ID_UNIT,
-  USER_ID_UNIT,
-  COMMENT_ID_UNIT
-} from '../utils/statics';
+import { AUTH_TOKEN, USER_ID_UNIT, COMMENT_ID_UNIT } from '../utils/statics';
 import { Context } from '../utils/context';
 import { getUserId, encode, generateCode } from '../utils/tools';
 
@@ -35,8 +30,7 @@ const Mutation = {
   ) => {
     const userId: string = getUserId(context);
     const { title, description, webtoonIds } = args.input;
-    const totalCollection = await context.prisma.collection.count();
-    const collectionId = String(COLLECTION_ID_UNIT + totalCollection);
+    const collectionId = userId.concat(title.slice(0, 4));
     const encodingId = encode(collectionId);
     const collection = await context.prisma.collection.create({
       data: {
@@ -91,10 +85,9 @@ const Mutation = {
       throw new ApolloError('Already Existing Email', 'INVALID_DATA');
     const hashedPassword = bcrypt.hashSync(password, 10);
     const allUserCount = await context.prisma.user.count();
-    const allCollectionCount = await context.prisma.collection.count();
     const id = encode(USER_ID_UNIT + allUserCount);
-    const collectionId = encode(COLLECTION_ID_UNIT + allCollectionCount);
-    // TODO: email authentication
+    const collectionId = email.concat('defaultCollection');
+    const encodingId = encode(collectionId);
     const user = await context.prisma.user.create({
       data: {
         id,
@@ -103,7 +96,7 @@ const Mutation = {
         password: hashedPassword,
         collections: {
           create: {
-            id: collectionId,
+            id: encodingId,
             title: '좋아요 표시한 작품',
             type: 'PRIVATE',
             description: '',
@@ -111,7 +104,6 @@ const Mutation = {
             // TODO: Enhance date
           }
         }
-        // default collection, Read only
       }
     });
     const token = jwt.sign({ userId: user.id }, AUTH_TOKEN);
