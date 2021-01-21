@@ -336,7 +336,6 @@ export type UserMyCollectionsArgs = {
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['ID']>;
   after?: Maybe<Scalars['ID']>;
-  where?: Maybe<CollectionFiltering>;
 };
 
 export type UserCommentsArgs = {

@@ -48,44 +48,13 @@ export default {
       args: UserMyCollectionsArgs,
       context: Context
     ) => {
-      const { where } = args;
       const cursor = args.after || args.before;
       const encodedCursor = cursor && encodeCursor(cursor);
       const nodes = await context.prisma.collection.findMany({
         where: {
           writer: {
             id: parent.id
-          },
-          OR: [
-            {
-              title: {
-                contains: where?.keyword || undefined
-              }
-            },
-            {
-              description: {
-                contains: where?.keyword || undefined
-              }
-            },
-            {
-              webtoons: {
-                some: {
-                  title: {
-                    contains: where?.keyword || undefined
-                  }
-                }
-              }
-            }
-          ],
-          webtoons: where?.containWebtoonIds
-            ? {
-                some: {
-                  id: {
-                    in: where.containWebtoonIds
-                  }
-                }
-              }
-            : undefined
+          }
         },
         skip: cursor ? 1 : undefined,
         cursor: cursor

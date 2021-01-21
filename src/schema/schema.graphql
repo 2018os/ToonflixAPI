@@ -186,7 +186,6 @@ type User implements Node {
     last: Int
     before: ID
     after: ID
-    where: CollectionFiltering
   ): CollectionsConnection! @auth
   comments(first: Int, last: Int, before: ID, after: ID): CommentsConnection!
 }
