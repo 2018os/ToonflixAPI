@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("LOCAL_DATABASE_URL")
+}
+
+model Author {
+  id       String    @id
+  name     String    @unique
+  webtoons Webtoon[]
+}
+
+model Collection {
+  createdAt   DateTime        @default(now())
+  description String
+  id          String          @id
+  title       String
+  updatedAt   DateTime
+  writerId    String
+  type        Collection_type @default(PUBLIC)
+  writer      User            @relation(fields: [writerId], references: [id])
+  comments    Comment[]
+  likers      User[]          @relation("CollectionOnLiker")
+  webtoons    Webtoon[]
+
+  @@index([writerId], name: "writerId")
+}
+
+model Comment {
+  commentId    String?
+  id           String      @id
+  message      String
+  webtoonId    String?
+  writerId     String?
+  createdAt    DateTime    @default(now())
+  collectionId String?
+  collection   Collection? @relation(fields: [collectionId], references: [id])
+  comment      Comment?    @relation("CommentToComment_commentId", fields: [commentId], references: [id])
+  webtoon      Webtoon?    @relation(fields: [webtoonId], references: [id])
+  writer       User?       @relation(fields: [writerId], references: [id])
+  comments     Comment[]   @relation("CommentToComment_commentId")
+
+  @@index([collectionId], name: "collectionId")
+  @@index([commentId], name: "commentId")
+  @@index([webtoonId], name: "webtoonId")
+  @@index([writerId], name: "writerId")
+}
+
+model Genre {
+  code     String    @id
+  name     String    @unique
+  webtoons Webtoon[]
+}
+
+model User {
+  email            String       @unique
+  id               String       @id
+  name             String
+  password         String
+  level            Int          @default(1)
+  exp              Int          @default(0)
+  isAuthentication Boolean      @default(false)
+  collections      Collection[]
+  comments         Comment[]
+  likedCollections Collection[] @relation("CollectionOnLiker")
+}
+
+model Webtoon {
+  description String?
+  id          String           @id
+  isAdult     Boolean
+  isFinish    Boolean
+  isPay       Boolean
+  platform    Webtoon_platform
+  thumbnail   String
+  title       String
+  url         String
+  comments    Comment[]
+  authors     Author[]
+  collections Collection[]
+  genres      Genre[]
+}
+
+enum Collection_type {
+  PRIVATE
+  PUBLIC
+}
+
+enum Webtoon_platform {
+  NAVER
+  DAUM
+}
