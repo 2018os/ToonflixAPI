@@ -1,10 +1,12 @@
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    GraphQLModule.forRoot({
+      autoSchemaFile: join(process.cwd(), 'noonflix/src/schema.graphql'),
+    }),
+  ],
 })
 export class AppModule {}
