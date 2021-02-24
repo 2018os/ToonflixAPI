@@ -1,6 +1,6 @@
+import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import { Module } from '@nestjs/common';
 
 import { WebtoonsModule } from './webtoons/webtoons.module';
 

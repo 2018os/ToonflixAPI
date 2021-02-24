@@ -2,6 +2,22 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Webtoon {
+  id: ID!
+  title: String!
+  description: String!
+  isFinish: Boolean!
+  isAdult: Boolean!
+  isPay: Boolean!
+  thumbnail: URL!
+  url: URL!
+}
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
 type Query {
-  hello: String!
+  webtoons: [Webtoon!]
 }
