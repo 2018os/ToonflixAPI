@@ -18,4 +18,35 @@ describe('WebtoonsResolver', () => {
   it('should be defined', () => {
     expect(resolver).toBeDefined();
   });
+
+  describe('Query webtoons', () => {
+    it('should be return array', async (done) => {
+      const result = await resolver.findAll();
+      expect(result).toBeInstanceOf(Array);
+      done();
+    });
+  });
+
+  describe('Query webtoon', () => {
+    it('should be return null', async (done) => {
+      const result = await resolver.findOne('123');
+      expect(result).toBeNull();
+      done();
+    });
+  });
+
+  describe('Query findRandomWebtoons', () => {
+    it('should be return array', async (done) => {
+      const result = await resolver.findRandomWebtoons(5);
+      expect(result).toBeInstanceOf(Array);
+      done();
+    });
+
+    it('should be no duplicate', async (done) => {
+      const result = await resolver.findRandomWebtoons(5);
+      expect(result.length).toEqual(5);
+      expect(result.length).toBe(new Set(result).size);
+      done();
+    });
+  });
 });
