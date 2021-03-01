@@ -19,5 +19,7 @@ A field whose value conforms to the standard URL format as specified in RFC3986:
 scalar URL
 
 type Query {
-  webtoons: [Webtoon!]
+  webtoons: [Webtoon!]!
+  webtoon(id: ID!): Webtoon!
+  randomWebtoons(take: Int!): [Webtoon!]!
 }
