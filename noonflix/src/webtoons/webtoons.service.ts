@@ -1,13 +1,21 @@
 import { Injectable, Inject } from '@nestjs/common';
+import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
+
 import { PrismaService } from '../common/prisma/prisma.service';
 import { Webtoon } from './entities/webtoon.entity';
+import { WebtoonsConnection } from './entities/webtoon-connection.entity';
+import { PaginationArgs } from 'src/common/pagination/dto/pagination.input';
 
 @Injectable()
 export class WebtoonsService {
   constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
-  findAll(): Promise<Webtoon[]> {
-    return this.prismaService.webtoon.findMany();
+  async findAll(paginationArgs: PaginationArgs): Promise<WebtoonsConnection> {
+    return findManyCursorConnection(
+      (args) => this.prismaService.webtoon.findMany({ ...args }),
+      () => this.prismaService.webtoon.count(),
+      paginationArgs,
+    );
   }
 
   findOne(id: string): Promise<Webtoon> {
@@ -28,7 +36,7 @@ export class WebtoonsService {
   }
 
   async findRandomWebtoons(take: number): Promise<Webtoon[]> {
-    const allWebtoon = await this.findAll();
+    const allWebtoon = await this.prismaService.webtoon.findMany();
     const randomIndexes = this.getRandom(allWebtoon.length, take);
     const webtoons = randomIndexes.map((index) => allWebtoon[index]);
     return webtoons;

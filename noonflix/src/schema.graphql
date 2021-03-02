@@ -18,8 +18,26 @@ A field whose value conforms to the standard URL format as specified in RFC3986:
 """
 scalar URL
 
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type WebtoonEdge {
+  cursor: String!
+  node: Webtoon!
+}
+
+type WebtoonsConnection {
+  edges: [WebtoonEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 type Query {
-  webtoons: [Webtoon!]!
+  webtoons(skip: Int, after: String, before: String, first: Int, last: Int): WebtoonsConnection!
   webtoon(id: ID!): Webtoon!
   randomWebtoons(take: Int!): [Webtoon!]!
 }
