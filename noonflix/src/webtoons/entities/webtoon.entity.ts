@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { URLResolver } from 'graphql-scalars';
+import Platform from './platform.entity';
 
 @ObjectType()
 export class Webtoon {
@@ -26,4 +27,7 @@ export class Webtoon {
 
   @Field(() => URLResolver)
   url: string;
+
+  @Field(() => Platform)
+  platform: Platform;
 }

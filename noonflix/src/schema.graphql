@@ -11,12 +11,18 @@ type Webtoon {
   isPay: Boolean!
   thumbnail: URL!
   url: URL!
+  platform: platform!
 }
 
 """
 A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
 """
 scalar URL
+
+enum platform {
+  NAVER
+  DAUM
+}
 
 type PageInfo {
   endCursor: String
