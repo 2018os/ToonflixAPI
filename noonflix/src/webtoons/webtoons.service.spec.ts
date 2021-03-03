@@ -20,10 +20,12 @@ describe('WebtoonsService', () => {
 
   describe('findAll', () => {
     it('should be return array', async (done) => {
-      const allWebtoon = await service.findAll();
-      expect(allWebtoon).toBeInstanceOf(Array);
+      const allWebtoon = await service.findAll({});
+      expect(allWebtoon.edges).toBeInstanceOf(Array);
       done();
     });
+    it.todo('pageinfo');
+    it.todo('totlaCount');
   });
 
   describe('findOne', () => {

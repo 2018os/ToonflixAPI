@@ -21,10 +21,12 @@ describe('WebtoonsResolver', () => {
 
   describe('Query webtoons', () => {
     it('should be return array', async (done) => {
-      const result = await resolver.findAll();
-      expect(result).toBeInstanceOf(Array);
+      const result = await resolver.findAll({});
+      expect(result.edges).toBeInstanceOf(Array);
       done();
     });
+    it.todo('pageinfo');
+    it.todo('totalCount');
   });
 
   describe('Query webtoon', () => {
