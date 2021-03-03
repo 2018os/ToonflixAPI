@@ -4,7 +4,7 @@ import { WebtoonsService } from './webtoons.service';
 
 import { Webtoon } from './entities/webtoon.entity';
 import { WebtoonsConnection } from './entities/webtoon-connection.entity';
-import { PaginationArgs } from 'src/common/pagination/dto/pagination.input';
+import { PaginationArgs } from '../common/pagination/dto/pagination.input';
 
 @Resolver()
 export class WebtoonsResolver {
