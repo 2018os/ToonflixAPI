@@ -13,8 +13,8 @@ import { WebtoonsService } from './webtoons.service';
 import { Webtoon } from './entities/webtoon.entity';
 import { WebtoonsConnection } from './entities/webtoon-connection.entity';
 import { PaginationArgs } from '../common/pagination/dto/pagination.input';
-import { Genre } from 'src/genres/entities/genre.entity';
-import { GenresService } from 'src/genres/genres.service';
+import { Genre } from '../genres/entities/genre.entity';
+import { GenresService } from '../genres/genres.service';
 
 @Resolver(() => Webtoon)
 export class WebtoonsResolver {

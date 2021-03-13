@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Webtoon } from './webtoon.entity';
-import { PageInfo } from 'src/common/pagination/entities/page-info.entity';
+import { PageInfo } from '../../common/pagination/entities/page-info.entity';
 
 @ObjectType()
 class WebtoonEdge {

@@ -1,8 +1,8 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { GenresResolver } from './genres.resolver';
 import { GenresService } from './genres.service';
-import { WebtoonsModule } from 'src/webtoons/webtoons.module';
-import { PrismaService } from 'src/common/prisma/prisma.service';
+import { WebtoonsModule } from '../webtoons/webtoons.module';
+import { PrismaService } from '../common/prisma/prisma.service';
 
 @Module({
   imports: [forwardRef(() => WebtoonsModule)],
