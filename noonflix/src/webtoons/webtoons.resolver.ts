@@ -1,14 +1,27 @@
-import { Resolver, Query, Args, ID, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Args,
+  ID,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 
 import { WebtoonsService } from './webtoons.service';
 
 import { Webtoon } from './entities/webtoon.entity';
 import { WebtoonsConnection } from './entities/webtoon-connection.entity';
 import { PaginationArgs } from '../common/pagination/dto/pagination.input';
+import { Genre } from 'src/genres/entities/genre.entity';
+import { GenresService } from 'src/genres/genres.service';
 
-@Resolver()
+@Resolver(() => Webtoon)
 export class WebtoonsResolver {
-  constructor(private readonly webtoonsService: WebtoonsService) {}
+  constructor(
+    private readonly webtoonsService: WebtoonsService,
+    private readonly genresService: GenresService,
+  ) {}
 
   @Query(() => WebtoonsConnection, { name: 'webtoons' })
   findAll(@Args() paginationArgs: PaginationArgs): Promise<WebtoonsConnection> {
@@ -25,5 +38,11 @@ export class WebtoonsResolver {
     @Args('take', { type: () => Int }) take: number,
   ): Promise<Webtoon[]> {
     return this.webtoonsService.findRandomWebtoons(take);
+  }
+
+  @ResolveField(() => [Genre])
+  genres(@Parent() webtoon: Webtoon): Promise<Genre[]> {
+    const { id } = webtoon;
+    return this.genresService.findByWebtoon(id);
   }
 }

@@ -12,7 +12,13 @@ export class WebtoonsService {
 
   async findAll(paginationArgs: PaginationArgs): Promise<WebtoonsConnection> {
     return findManyCursorConnection(
-      (args) => this.prismaService.webtoon.findMany({ ...args }),
+      (args) =>
+        this.prismaService.webtoon.findMany({
+          include: {
+            genres: true,
+          },
+          ...args,
+        }),
       () => this.prismaService.webtoon.count(),
       paginationArgs,
     );
@@ -20,6 +26,9 @@ export class WebtoonsService {
 
   findOne(id: string): Promise<Webtoon> {
     return this.prismaService.webtoon.findUnique({
+      include: {
+        genres: true,
+      },
       where: {
         id,
       },
@@ -36,9 +45,37 @@ export class WebtoonsService {
   }
 
   async findRandomWebtoons(take: number): Promise<Webtoon[]> {
-    const allWebtoon = await this.prismaService.webtoon.findMany();
+    const allWebtoon = await this.prismaService.webtoon.findMany({
+      include: {
+        genres: true,
+      },
+    });
     const randomIndexes = this.getRandom(allWebtoon.length, take);
     const webtoons = randomIndexes.map((index) => allWebtoon[index]);
     return webtoons;
+  }
+
+  async findByGenre(
+    paginationArgs: PaginationArgs,
+    code: string,
+  ): Promise<WebtoonsConnection> {
+    return findManyCursorConnection(
+      (args) =>
+        this.prismaService.webtoon.findMany({
+          where: {
+            genres: {
+              some: {
+                code,
+              },
+            },
+          },
+          include: {
+            genres: true,
+          },
+          ...args,
+        }),
+      () => this.prismaService.webtoon.count(),
+      paginationArgs,
+    );
   }
 }
