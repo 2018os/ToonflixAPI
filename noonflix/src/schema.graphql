@@ -2,28 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Webtoon {
-  id: ID!
-  title: String!
-  description: String!
-  isFinish: Boolean!
-  isAdult: Boolean!
-  isPay: Boolean!
-  thumbnail: URL!
-  url: URL!
-  platform: platform!
-}
-
-"""
-A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
-"""
-scalar URL
-
-enum platform {
-  NAVER
-  DAUM
-}
-
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -42,8 +20,38 @@ type WebtoonsConnection {
   totalCount: Int!
 }
 
+type Genre {
+  name: String!
+  code: String!
+  webtoons(skip: Int, after: String, before: String, first: Int, last: Int): WebtoonsConnection!
+}
+
+type Webtoon {
+  id: ID!
+  title: String!
+  description: String!
+  isFinish: Boolean!
+  isAdult: Boolean!
+  isPay: Boolean!
+  thumbnail: URL!
+  url: URL!
+  platform: platform!
+  genres: [Genre!]!
+}
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+enum platform {
+  NAVER
+  DAUM
+}
+
 type Query {
   webtoons(skip: Int, after: String, before: String, first: Int, last: Int): WebtoonsConnection!
   webtoon(id: ID!): Webtoon!
   randomWebtoons(take: Int!): [Webtoon!]!
+  genres: [Genre!]!
 }
