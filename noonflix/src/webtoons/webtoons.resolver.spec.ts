@@ -1,15 +1,19 @@
+import { forwardRef } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { WebtoonsResolver } from './webtoons.resolver';
 import { WebtoonsService } from './webtoons.service';
 import { PrismaService } from '../common/prisma/prisma.service';
+import { GenresModule } from '../genres/genres.module';
 
 describe('WebtoonsResolver', () => {
   let resolver: WebtoonsResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [forwardRef(() => GenresModule)],
       providers: [WebtoonsResolver, WebtoonsService, PrismaService],
+      exports: [WebtoonsService],
     }).compile();
 
     resolver = module.get<WebtoonsResolver>(WebtoonsResolver);
