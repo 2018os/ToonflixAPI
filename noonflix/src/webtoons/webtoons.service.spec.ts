@@ -14,6 +14,8 @@ describe('WebtoonsService', () => {
     service = module.get<WebtoonsService>(WebtoonsService);
   });
 
+  it.todo('Error handling');
+
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
@@ -36,15 +38,36 @@ describe('WebtoonsService', () => {
     });
   });
 
-  describe('findRandom', () => {
+  describe('random', () => {
     it('should be no duplicate', () => {
       const randomArray = service.getRandom(200, 10);
       const arraySet = new Set(randomArray);
       expect(arraySet.size === randomArray.length).toBeTruthy();
     });
+  });
+
+  describe('findRandom', () => {
     it('should be return array', async (done) => {
       const result = await service.findRandomWebtoons(5);
       expect(result).toBeInstanceOf(Array);
+      done();
+    });
+  });
+
+  describe('findByGenre', () => {
+    it('should be return array', async (done) => {
+      const result = await service.findByGenre(
+        {
+          first: 4,
+        },
+        'action',
+      );
+      expect(result.edges).toBeInstanceOf(Array);
+      done();
+    });
+    it('should be return null with Invalid code', async (done) => {
+      const result = await service.findByGenre({ first: 4 }, 'InvalidCode');
+      expect(result.edges).toEqual([]);
       done();
     });
   });
