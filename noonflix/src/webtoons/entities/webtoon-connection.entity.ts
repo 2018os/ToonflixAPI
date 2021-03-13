@@ -1,6 +1,24 @@
-import { ObjectType } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Webtoon } from './webtoon.entity';
-import Paginated from '../../common/pagination/pagination';
+import { PageInfo } from 'src/common/pagination/entities/page-info.entity';
 
 @ObjectType()
-export class WebtoonsConnection extends Paginated(Webtoon) {}
+class WebtoonEdge {
+  @Field((type) => String)
+  cursor: string;
+
+  @Field((type) => Webtoon)
+  node: Webtoon;
+}
+
+@ObjectType()
+export class WebtoonsConnection {
+  @Field((type) => [WebtoonEdge], { nullable: true })
+  edges: Array<WebtoonEdge>;
+
+  @Field((type) => PageInfo)
+  pageInfo: PageInfo;
+
+  @Field((type) => Int)
+  totalCount: number;
+}
