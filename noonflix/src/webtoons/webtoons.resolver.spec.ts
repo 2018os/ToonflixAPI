@@ -9,7 +9,7 @@ import { GenresModule } from '../genres/genres.module';
 describe('WebtoonsResolver', () => {
   let resolver: WebtoonsResolver;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [forwardRef(() => GenresModule)],
       providers: [WebtoonsResolver, WebtoonsService, PrismaService],
