@@ -67,7 +67,7 @@
     "apollo-server-testing": "^2.17.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "graphql": "^15.2.0",
     "graphql-connection-resolver": "^1.0.0",
     "graphql-voyager": "^1.0.0-rc.31",
